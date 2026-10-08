@@ -18,7 +18,7 @@ import {
   Trash2,
 } from 'lucide-react'
 import type { Problem, Difficulty, Pattern, ProblemProgress } from '../types'
-import { MathView } from './MathView'
+import { MarkdownView } from './MarkdownView'
 
 export interface ProblemListProps {
   problems: Problem[]
@@ -152,9 +152,6 @@ export const ProblemList: React.FC<ProblemListProps> = ({
                   {completedCount}/{totalCount} hoàn thành ({percentComplete}%)
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
-                5 bài tập then chốt chọn lọc từ LeetCode & NeetCode 150 để rèn luyện phản xạ dạng bài
-              </p>
             </div>
           </div>
         </div>
@@ -186,14 +183,14 @@ export const ProblemList: React.FC<ProblemListProps> = ({
       {/* F-05: Thanh công cụ lọc nhanh bài tập (Tất cả / Chưa làm / Đã làm) */}
       <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
         {/* Bộ lọc nhanh F-05 */}
-        <div className="flex flex-wrap items-center gap-1.5 text-xs font-medium">
+        <div className="prob-status-tabs flex flex-wrap items-center gap-1.5 text-xs font-medium">
           <span className="text-slate-400 text-[11px] uppercase tracking-wider font-semibold mr-1 flex items-center gap-1">
             <Filter className="w-3.5 h-3.5 text-indigo-400" />
             Lọc bài tập:
           </span>
           <button
             onClick={() => setStatusFilter('all')}
-            className={`px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5 ${
+            className={`prob-status-tab-all px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5 ${
               statusFilter === 'all'
                 ? 'bg-slate-800 text-white font-semibold shadow-sm border border-slate-700'
                 : 'text-slate-400 hover:text-white'
@@ -293,7 +290,7 @@ export const ProblemList: React.FC<ProblemListProps> = ({
               <div
                 key={prob.id}
                 id={`problem-${prob.id}`}
-                className={`p-4 sm:p-5 transition-colors duration-200 space-y-3.5 ${
+                className={`problem-item-row p-4 sm:p-5 transition-colors duration-200 space-y-3.5 ${
                   isDone ? 'bg-emerald-950/15' : 'hover:bg-slate-800/20'
                 }`}
               >
@@ -441,7 +438,7 @@ export const ProblemList: React.FC<ProblemListProps> = ({
                       title="Ghi chú cá nhân"
                     >
                       <FileEdit className="w-3.5 h-3.5" />
-                      <span>{currentNote ? 'Đã có note' : 'Ghi chú'}</span>
+                      <span>{currentNote ? 'Đã có ghi chú' : 'Ghi chú'}</span>
                     </button>
 
                     {/* F-03, F-04: Nút Sửa / Xóa bài tập khi editMode bật */}
@@ -479,7 +476,7 @@ export const ProblemList: React.FC<ProblemListProps> = ({
                     <div className="space-y-1">
                       <strong className="text-indigo-300 font-semibold block">Gợi ý thuật toán:</strong>
                       <div className="text-slate-300">
-                        <MathView math={prob.hint} />
+                        <MarkdownView content={prob.hint} />
                       </div>
                     </div>
                   </div>
@@ -487,7 +484,7 @@ export const ProblemList: React.FC<ProblemListProps> = ({
 
                 {/* F-22: Trình soạn thảo ghi chú cá nhân */}
                 {isEditingNote && (
-                  <div className="rounded-xl border border-purple-500/30 bg-purple-950/20 p-3.5 space-y-2.5">
+                  <div className="prob-note-editor rounded-xl border border-purple-500/30 bg-purple-950/20 p-3.5 space-y-2.5">
                     <div className="flex items-center justify-between text-xs font-semibold text-purple-300">
                       <span className="flex items-center gap-1.5">
                         <FileEdit className="w-3.5 h-3.5" />
@@ -528,7 +525,7 @@ export const ProblemList: React.FC<ProblemListProps> = ({
                 {!isEditingNote && currentNote && (
                   <div
                     onClick={() => toggleNoteEditor(prob.id, currentNote)}
-                    className="cursor-pointer group rounded-lg bg-slate-950/80 border border-slate-800/80 p-2.5 text-xs text-slate-400 hover:border-purple-500/40 transition flex items-start gap-2"
+                    className="prob-note-preview cursor-pointer group rounded-lg bg-slate-950/80 border border-slate-800/80 p-2.5 text-xs text-slate-400 hover:border-purple-500/40 transition flex items-start gap-2"
                   >
                     <FileEdit className="w-3.5 h-3.5 text-purple-400 shrink-0 mt-0.5" />
                     <span className="text-slate-300 italic flex-1 truncate">"{currentNote}"</span>

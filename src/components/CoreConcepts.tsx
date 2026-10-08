@@ -4,7 +4,6 @@ import {
   ChevronDown,
   ChevronUp,
   Table as TableIcon,
-  Sparkles,
   Info,
   Plus,
   Edit3,
@@ -69,7 +68,7 @@ export const GROWTH_LEVEL_CONFIG: Record<
     bgClass: 'hover:bg-indigo-950/10',
   },
   quadratic: {
-    name: 'Bậc hai (Bình phương)',
+    name: 'Bậc hai',
     notation: 'O(N^2)',
     badgeClass: 'bg-rose-500/15 text-rose-400 border-rose-500/30',
     dotClass: 'bg-rose-400',
@@ -129,7 +128,7 @@ export const CoreConcepts: React.FC<CoreConceptsProps> = ({
             </button>
           )}
           <span className="core-concepts-badge text-[11px] font-mono text-cyan-400 px-2 py-0.5 rounded-full bg-cyan-950/50 border border-cyan-800/50">
-            Core Concepts
+            Khái niệm cốt lõi
           </span>
         </div>
       </div>
@@ -237,27 +236,21 @@ export const CoreConcepts: React.FC<CoreConceptsProps> = ({
           <div className="flex items-center gap-2">
             <TableIcon className="w-4 h-4 text-indigo-400" />
             <span className="text-xs font-bold uppercase tracking-wider text-slate-200">
-              Bảng Độ Phức Tạp Thuật Toán (Time & Space Complexity)
+              Bảng Độ Phức Tạp Thuật Toán
             </span>
           </div>
-          <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400">
-            {editMode && onAddComplexityRow && (
+          {editMode && onAddComplexityRow && (
+            <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400">
               <button
                 onClick={onAddComplexityRow}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition cursor-pointer shadow-sm mr-1"
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition cursor-pointer shadow-sm"
                 title="Thêm thao tác mới vào bảng"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Thêm dòng</span>
               </button>
-            )}
-            <span>{sortedComplexities.length} thao tác</span>
-            <span>•</span>
-            <span className="text-emerald-400 flex items-center gap-1">
-              <Sparkles className="w-3 h-3" />
-              Tô màu theo mức độ
-            </span>
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Khung cuộn ngang độc lập cho bảng (C-11: không làm tràn trang ở 360px) */}
@@ -267,8 +260,8 @@ export const CoreConcepts: React.FC<CoreConceptsProps> = ({
             <thead className="bg-slate-950 text-slate-200 uppercase text-[11px] border-b border-slate-800 sticky top-0 backdrop-blur z-10 font-mono">
               <tr>
                 <th className="py-3 px-4 font-semibold">1. Cấu trúc / Thao tác</th>
-                <th className="py-3 px-4 font-semibold text-center w-28">2. Thời gian (Time)</th>
-                <th className="py-3 px-4 font-semibold text-center w-24">3. Bộ nhớ (Space)</th>
+                <th className="py-3 px-4 font-semibold text-center w-28">2. Thời gian</th>
+                <th className="py-3 px-4 font-semibold text-center w-24">3. Bộ nhớ</th>
                 <th className="py-3 px-4 font-semibold">4. Ghi chú</th>
                 <th className="py-3 px-4 font-semibold text-center w-36">5. Mức độ tăng trưởng</th>
                 {editMode && (

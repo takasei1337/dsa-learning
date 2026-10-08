@@ -105,7 +105,7 @@ export const KaTeXEditor: React.FC<KaTeXEditorProps> = ({
   onChange,
   placeholder = 'Nhập nội dung Markdown hoặc ký hiệu KaTeX ($O(N)$ hay $$...$$)...',
   minRows = 6,
-  label = 'Nội dung (Markdown & KaTeX)',
+  label = 'Nội dung Markdown & KaTeX',
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -173,7 +173,7 @@ export const KaTeXEditor: React.FC<KaTeXEditorProps> = ({
           <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 px-1">
             <span className="flex items-center gap-1">
               <Edit3 className="w-3 h-3 text-indigo-400" />
-              <span>1. Soạn thảo (Input)</span>
+              <span>1. Soạn thảo</span>
             </span>
             <span>{value.length} ký tự</span>
           </div>
@@ -192,9 +192,9 @@ export const KaTeXEditor: React.FC<KaTeXEditorProps> = ({
           <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 px-1">
             <span className="flex items-center gap-1 text-cyan-400">
               <Eye className="w-3 h-3 text-cyan-400" />
-              <span>2. Xem trước trực tiếp (Preview)</span>
+              <span>2. Xem trước trực tiếp</span>
             </span>
-            <span className="text-emerald-400">Live KaTeX</span>
+            <span className="text-emerald-400">Hiển thị trực tiếp</span>
           </div>
           <div className="flex-1 p-3 rounded-xl bg-slate-950/60 border border-slate-800 text-slate-200 text-xs overflow-y-auto max-h-[360px] min-h-[140px] leading-relaxed">
             {value.trim() ? (

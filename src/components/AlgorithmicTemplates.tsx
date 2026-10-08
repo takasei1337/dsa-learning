@@ -6,7 +6,6 @@ import {
   Lightbulb,
   Info,
   Hash,
-  Sparkles,
 } from 'lucide-react'
 import type { Template, Pattern } from '../types'
 import { MathView } from './MathView'
@@ -65,15 +64,12 @@ export const AlgorithmicTemplates: React.FC<AlgorithmicTemplatesProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-lg font-bold text-white tracking-tight">
-                  Khung Giải Thuật Mẫu (Algorithmic Templates)
+                  Khung Giải Thuật Mẫu
                 </h3>
                 <span className="px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-violet-500/15 text-violet-300 border border-violet-500/30">
-                  {templates.length} templates
+                  {templates.length} mẫu
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
-                Mẫu mã nguồn chuẩn hóa (C++ & Python), chỉ số độ phức tạp và hướng dẫn biến thể
-              </p>
             </div>
           </div>
         </div>
@@ -160,7 +156,6 @@ export const AlgorithmicTemplates: React.FC<AlgorithmicTemplatesProps> = ({
                 ? tpl.code.py || tpl.code.python || '# Chưa có code Python'
                 : tpl.code.cpp || '// Chưa có code C++'
 
-            const linkedPattern = patterns.find((p) => p.id === tpl.patternId)
             const isHighlighted = highlightedTemplateId === tpl.id
 
             return (
@@ -184,12 +179,6 @@ export const AlgorithmicTemplates: React.FC<AlgorithmicTemplatesProps> = ({
                       <h4 className="text-base sm:text-lg font-bold text-white tracking-tight">
                         {tpl.name}
                       </h4>
-                      {linkedPattern && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/10 border border-indigo-500/20 text-indigo-300">
-                          <Sparkles className="w-3 h-3" />
-                          Pattern: {linkedPattern.name}
-                        </span>
-                      )}
                     </div>
                   </div>
 
@@ -197,12 +186,12 @@ export const AlgorithmicTemplates: React.FC<AlgorithmicTemplatesProps> = ({
                   <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs">
                     <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 font-semibold shadow-sm">
                       <Clock className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>Time:</span>
+                      <span>Thời gian:</span>
                       <MathView math={tpl.time} />
                     </div>
                     <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-semibold shadow-sm">
                       <HardDrive className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Space:</span>
+                      <span>Bộ nhớ:</span>
                       <MathView math={tpl.space} />
                     </div>
                   </div>
@@ -255,10 +244,6 @@ export const AlgorithmicTemplates: React.FC<AlgorithmicTemplatesProps> = ({
                         C++
                       </button>
                     </div>
-
-                    <span className="text-[11px] text-slate-500 font-mono hidden sm:inline">
-                      Mẫu triển khai chuẩn LeetCode / Competitive Programming
-                    </span>
                   </div>
 
                   {/* Enhanced CodeViewer Component (E-20, E-21, E-30, E-31, E-32) */}

@@ -140,7 +140,7 @@ export const ChapterModal: React.FC<ChapterModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Tóm tắt chương (LaTeX / Markdown)</label>
+            <label className="block text-slate-300 font-semibold mb-1">Tóm tắt chương</label>
             <textarea
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
@@ -151,7 +151,7 @@ export const ChapterModal: React.FC<ChapterModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Thứ tự hiển thị (Order)</label>
+            <label className="block text-slate-300 font-semibold mb-1">Thứ tự hiển thị</label>
             <input
               type="number"
               value={order}
@@ -260,7 +260,7 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({
 
         <h3 className="text-lg font-bold text-white flex items-center gap-2">
           {initialData?.id ? <Edit3 className="w-5 h-5 text-indigo-400" /> : <Plus className="w-5 h-5 text-indigo-400" />}
-          {initialData?.id ? 'Chỉnh sửa khái niệm (Mục 5 & C-03)' : 'Thêm khái niệm mới (Mục 5 & C-03)'}
+          {initialData?.id ? 'Chỉnh sửa khái niệm' : 'Thêm khái niệm mới'}
         </h3>
 
         {error && (
@@ -281,12 +281,12 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({
             />
           </div>
 
-          {/* Mục 5.1 & 5.2: Soạn thảo KaTeX với 2 khung nhìn và thanh nút macro */}
+          {/* Soạn thảo KaTeX với 2 khung nhìn và thanh nút macro */}
           <KaTeXEditor
             value={body}
             onChange={setBody}
             minRows={7}
-            label="Nội dung chi tiết (Mục 5: 2 khung nhìn & Thanh Macro công thức)"
+            label="Nội dung chi tiết"
             placeholder="Giải thích nguyên lý hoạt động, định lý, công thức..."
           />
 
@@ -431,7 +431,7 @@ export const ComplexityRowModal: React.FC<ComplexityRowModalProps> = ({
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-slate-300 font-semibold mb-1">Thời gian (LaTeX)</label>
+              <label className="block text-slate-300 font-semibold mb-1">Thời gian</label>
               <input
                 type="text"
                 value={time}
@@ -441,7 +441,7 @@ export const ComplexityRowModal: React.FC<ComplexityRowModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-slate-300 font-semibold mb-1">Không gian (LaTeX)</label>
+              <label className="block text-slate-300 font-semibold mb-1">Bộ nhớ</label>
               <input
                 type="text"
                 value={space}
@@ -603,7 +603,7 @@ export const PatternModal: React.FC<PatternModalProps> = ({
 
         <h3 className="text-lg font-bold text-white flex items-center gap-2">
           {initialData?.id ? <Edit3 className="w-5 h-5 text-indigo-400" /> : <Plus className="w-5 h-5 text-indigo-400" />}
-          {initialData?.id ? 'Chỉnh sửa dạng bài (Pattern)' : 'Thêm dạng bài mới'}
+          {initialData?.id ? 'Chỉnh sửa dạng bài' : 'Thêm dạng bài mới'}
         </h3>
 
         {error && (
@@ -614,7 +614,7 @@ export const PatternModal: React.FC<PatternModalProps> = ({
 
         <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Tên dạng bài (Tiếng Anh) *</label>
+            <label className="block text-slate-300 font-semibold mb-1">Tên dạng bài *</label>
             <input
               type="text"
               value={name}
@@ -825,25 +825,25 @@ export const PitfallModal: React.FC<PitfallModalProps> = ({
               onChange={(e) => setType(e.target.value as PitfallType)}
               className="w-full p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-white focus:outline-none focus:border-indigo-500 cursor-pointer"
             >
-              <option value="edge-case">Edge Case (Trường hợp biên / Rỗng / 1 phần tử)</option>
-              <option value="overflow">Tràn số (Integer Overflow)</option>
-              <option value="memory">Tối ưu bộ nhớ / Con trỏ rác</option>
-              <option value="other">Lưu ý khác</option>
+              <option value="edge-case">Edge Case</option>
+              <option value="overflow">Tràn số</option>
+              <option value="memory">Bộ nhớ</option>
+              <option value="other">Bẫy logic khác</option>
             </select>
           </div>
 
-          {/* Mục 5.1 & 5.2: Soạn thảo KaTeX với 2 khung nhìn và thanh nút macro */}
+          {/* Soạn thảo KaTeX với 2 khung nhìn và thanh nút macro */}
           <KaTeXEditor
             value={body}
             onChange={setBody}
             minRows={5}
-            label="Nội dung giải thích & Cách né tránh (Mục 5: Markdown & KaTeX) *"
+            label="Nội dung giải thích & Cách né tránh *"
             placeholder="Sai lầm thường gặp ở đâu và cách khắc phục..."
           />
 
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-slate-300 font-semibold mb-1">Code né bẫy (Python)</label>
+              <label className="block text-slate-300 font-semibold mb-1">Code né bẫy Python</label>
               <textarea
                 value={pyCode}
                 onChange={(e) => setPyCode(e.target.value)}
@@ -853,7 +853,7 @@ export const PitfallModal: React.FC<PitfallModalProps> = ({
               />
             </div>
             <div>
-              <label className="block text-slate-300 font-semibold mb-1">Code né bẫy (C++)</label>
+              <label className="block text-slate-300 font-semibold mb-1">Code né bẫy C++</label>
               <textarea
                 value={cppCode}
                 onChange={(e) => setCppCode(e.target.value)}
@@ -1064,7 +1064,7 @@ export const ProblemModal: React.FC<ProblemModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Độ khó (Difficulty)</label>
+            <label className="block text-slate-300 font-semibold mb-1">Độ khó</label>
             <div className="grid grid-cols-3 gap-2">
               {(['easy', 'medium', 'hard'] as const).map((diff) => (
                 <button
@@ -1122,7 +1122,7 @@ export const ProblemModal: React.FC<ProblemModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-slate-300 font-semibold mb-1">Gợi ý thuật toán (Hint)</label>
+            <label className="block text-slate-300 font-semibold mb-1">Gợi ý thuật toán</label>
             <textarea
               value={hint}
               onChange={(e) => setHint(e.target.value)}
@@ -1134,7 +1134,7 @@ export const ProblemModal: React.FC<ProblemModalProps> = ({
 
           {patterns.length > 0 && (
             <div>
-              <label className="block text-slate-300 font-semibold mb-1">Liên kết dạng bài (Pattern)</label>
+              <label className="block text-slate-300 font-semibold mb-1">Liên kết dạng bài</label>
               <div className="flex flex-wrap gap-1.5 p-2 rounded-lg bg-slate-950 border border-slate-800 max-h-24 overflow-y-auto">
                 {patterns.map((pat) => (
                   <button

@@ -525,7 +525,7 @@ export const App: React.FC = () => {
               <div>
                 <h3 className="text-base font-bold text-white">Quản lý Dữ liệu Học tập</h3>
                 <p className="text-xs text-slate-400">
-                  Lưu trữ an toàn trên trình duyệt của bạn (Local Storage)
+                  Lưu trữ an toàn trên trình duyệt của bạn
                 </p>
               </div>
             </div>
@@ -551,7 +551,7 @@ export const App: React.FC = () => {
                     title="Tải tệp sao lưu dsa-roadmap-YYYYMMDD.json về máy"
                   >
                     <Download className="w-4 h-4 text-cyan-400" />
-                    <span>Sao lưu ra file (.json)</span>
+                    <span>Sao lưu tệp JSON</span>
                   </button>
 
                   <button
@@ -560,7 +560,7 @@ export const App: React.FC = () => {
                     title="Chọn tệp sao lưu từ máy để phục hồi"
                   >
                     <Upload className="w-4 h-4 text-white" />
-                    <span>Phục hồi từ file backup</span>
+                    <span>Phục hồi từ tệp sao lưu</span>
                   </button>
                   <input
                     type="file"
@@ -573,7 +573,7 @@ export const App: React.FC = () => {
 
                 {/* Chế độ nhập dữ liệu: Ghi đè hoặc Gộp */}
                 <div className="flex items-center justify-between text-xs pt-1 px-1">
-                  <span className="text-slate-400 text-[11px]">Chế độ nhập khi chọn file:</span>
+                  <span className="text-slate-400 text-[11px]">Chế độ nhập khi chọn tệp:</span>
                   <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800">
                     <button
                       type="button"
@@ -584,7 +584,7 @@ export const App: React.FC = () => {
                           : 'text-slate-400 hover:text-slate-200'
                       }`}
                     >
-                      Ghi đè (Replace)
+                      Ghi đè
                     </button>
                     <button
                       type="button"
@@ -595,7 +595,7 @@ export const App: React.FC = () => {
                           : 'text-slate-400 hover:text-slate-200'
                       }`}
                     >
-                      Gộp (Merge)
+                      Gộp dữ liệu
                     </button>
                   </div>
                 </div>

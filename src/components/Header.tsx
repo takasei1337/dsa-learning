@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import {
-  Zap,
   Search,
   Moon,
   Sun,
@@ -186,18 +185,13 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Logo & Tên website */}
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 shrink-0">
-              <Zap className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 shrink-0 select-none">
+              <span className="font-black text-lg text-white font-mono leading-none">D</span>
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-sm sm:text-base tracking-tight text-white">
-                  Thuật Toán Ứng Dụng
-                </span>
-                <span className="hidden sm:inline-flex text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                  DSA
-                </span>
-              </div>
+              <span className="font-bold text-sm sm:text-base tracking-tight text-white">
+                DSA Learning
+              </span>
             </div>
           </div>
         </div>
@@ -284,7 +278,7 @@ export const Header: React.FC<HeaderProps> = ({
                   {matchingPatterns.length > 0 && (
                     <div className="space-y-1">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 px-2 flex items-center gap-1.5">
-                        <Code2 className="w-3 h-3" /> Dạng bài (Pattern & Keywords) ({matchingPatterns.length})
+                        <Code2 className="w-3 h-3" /> Dạng bài ({matchingPatterns.length})
                       </span>
                       {matchingPatterns.map((pat) => {
                         const parentChapter = content.chapters.find((c) => c.id === pat.chapterId)
@@ -306,7 +300,7 @@ export const Header: React.FC<HeaderProps> = ({
                               )}
                             </div>
                             <div className="text-[11px] text-slate-400 line-clamp-1">
-                              <span className="text-slate-500">Keywords: </span>
+                              <span className="text-slate-500">Từ khóa: </span>
                               {pat.keywords.join(', ')}
                             </div>
                           </button>
@@ -319,7 +313,7 @@ export const Header: React.FC<HeaderProps> = ({
                   {matchingProblems.length > 0 && (
                     <div className="space-y-1">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 px-2 flex items-center gap-1.5">
-                        <ListTodo className="w-3 h-3" /> Bài tập (Problem) ({matchingProblems.length})
+                        <ListTodo className="w-3 h-3" /> Bài tập ({matchingProblems.length})
                       </span>
                       {matchingProblems.map((prob) => {
                         const parentChapter = content.chapters.find((c) => c.id === prob.chapterId)
@@ -471,7 +465,7 @@ export const Header: React.FC<HeaderProps> = ({
                     >
                       <div className="font-semibold text-xs text-indigo-300">{pat.name}</div>
                       <div className="text-[11px] text-slate-400 truncate">
-                        Keywords: {pat.keywords.join(', ')}
+                        Từ khóa: {pat.keywords.join(', ')}
                       </div>
                     </button>
                   ))}

@@ -367,31 +367,31 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({ content, className =
         elements.push(
           <div
             key={`table-${i}`}
-            className="my-3.5 overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm"
+            className="my-3.5 overflow-x-auto rounded-xl border border-slate-800 bg-slate-900 shadow-sm"
           >
             <table className="w-full text-xs border-collapse">
               <thead>
-                <tr className="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-800">
+                <tr className="bg-slate-950 text-slate-100 border-b border-slate-800">
                   {headerCells.map((h, colIdx) => (
                     <th
                       key={colIdx}
-                      className={`px-3.5 py-2.5 font-bold text-slate-900 dark:text-white tracking-wide ${alignments[colIdx] || 'text-left'}`}
+                      className={`px-3.5 py-2.5 font-bold text-white tracking-wide ${alignments[colIdx] || 'text-left'}`}
                     >
                       {parseInline(h, `th-${i}-${colIdx}`)}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-800">
                 {rows.map((row, rIdx) => (
                   <tr
                     key={rIdx}
-                    className="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+                    className="hover:bg-slate-800/60 transition-colors"
                   >
                     {row.map((cell, cIdx) => (
                       <td
                         key={cIdx}
-                        className={`px-3.5 py-2 text-slate-800 dark:text-slate-100 font-normal ${alignments[cIdx] || 'text-left'}`}
+                        className={`px-3.5 py-2 text-slate-100 font-normal ${alignments[cIdx] || 'text-left'}`}
                       >
                         {parseInline(cell, `td-${i}-${rIdx}-${cIdx}`)}
                       </td>

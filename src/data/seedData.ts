@@ -78,7 +78,7 @@ export const seedChapters: Chapter[] = [
     slug: 'linked-list',
     title: 'Linked List',
     summary:
-      'Cấu trúc dữ liệu phi liên tục trên bộ nhớ Heap. Nắm vững kỹ thuật nút giả (Dummy Node), đảo liên kết tại chỗ và con trỏ rùa - thỏ (Floyd Cycle Detection).',
+      'Cấu trúc dữ liệu phi liên tục trên bộ nhớ Heap. Nắm vững kỹ thuật Dummy Node, đảo liên kết tại chỗ và thuật toán Floyd Cycle Detection.',
     order: 6,
     createdAt: '2026-10-08T00:00:00Z',
     updatedAt: '2026-10-08T00:00:00Z',
@@ -90,26 +90,26 @@ export const seedConcepts: Concept[] = [
   {
     id: 'con-01',
     chapterId: 'ch-01',
-    title: 'Mô hình tư duy: Mảng động (Dynamic Array) & Bảng băm (Hash Table)',
-    body: `### 1. Bản chất bộ nhớ RAM của Mảng (Array)
-- **Mảng tĩnh (Static Array)**: Cấp phát một khối địa chỉ **liên tục trên RAM**. Nhờ địa chỉ tính theo công thức $\\text{Address}(i) = \\text{Base} + i \\times \\text{ElementSize}$, CPU truy xuất phần tử bất kỳ tức thì trong $O(1)$. Nhược điểm: kích thước cố định, chèn/xóa ở đầu tốn $O(N)$ do phải dịch chuyển toàn bộ phần tử phía sau.
-- **Mảng động (Dynamic Array - \`std::vector\` trong C++, \`list\` trong Python)**:
-  - Khi mảng đầy dung lượng (capacity), hệ điều hành cấp phát một vùng nhớ mới có kích thước gấp đôi ($2\\times$), sao chép toàn bộ dữ liệu cũ sang và giải phóng vùng nhớ cũ.
-  - **Chi phí khấu hao (Amortized $O(1)$)**: Mặc dù thao tác mở rộng tốn $O(N)$, nhưng việc này diễn ra rất hiếm ($N$ lần thêm mới chỉ tốn một lần resize $N$), nên trung bình mỗi thao tác \`append()\` chỉ tốn $O(1)$.
+    title: 'Mô hình tư duy: Mảng động & Bảng băm',
+    body: `### 1. Bản chất bộ nhớ RAM của mảng
+- **Mảng tĩnh**: Cấp phát một khối địa chỉ **liên tục trên RAM**. Nhờ địa chỉ tính theo công thức $\\text{Address}(i) = \\text{Base} + i \\times \\text{ElementSize}$, CPU truy xuất phần tử bất kỳ tức thì trong $O(1)$. Điểm yếu: kích thước cố định, chèn hoặc xóa ở đầu tốn $O(N)$ do phải dịch chuyển toàn bộ phần tử phía sau.
+- **Mảng động**: Đại diện là \`std::vector\` trong C++ và \`list\` trong Python.
+  - Khi mảng đầy dung lượng capacity, hệ điều hành cấp phát một vùng nhớ mới có kích thước gấp đôi ($2\\times$), sao chép toàn bộ dữ liệu cũ sang và giải phóng vùng nhớ cũ.
+  - **Chi phí phân bổ Amortized $O(1)$**: Mặc dù thao tác mở rộng tốn $O(N)$, nhưng việc này diễn ra rất hiếm ($N$ lần thêm mới chỉ tốn một lần cấp phát lại $N$), nên trung bình mỗi thao tác \`append()\` chỉ tốn $O(1)$.
 
-### 2. Bảng băm (Hash Table) & Cơ chế giải quyết va chạm (Collisions)
+### 2. Bảng băm & Cơ chế giải quyết va chạm
 - **Cơ chế**: Ánh xạ một khóa có kiểu dữ liệu bất kỳ thành một chỉ số nguyên trong mảng thông qua hàm băm: $\\text{index} = \\text{hash}(key) \\pmod{\\text{capacity}}$.
 - **Giải quyết va chạm**:
-  - **Separate Chaining (Java HashMap)**: Mỗi ô (bucket) chứa một danh sách liên kết. Nếu va chạm nhiều (bucket $> 8$ phần tử trong Java 8+), bucket tự động chuyển thành **Cây đỏ đen (Red-Black Tree)** để đảm bảo tra cứu xấu nhất là $O(\\log N)$ thay vì thoái hóa thành $O(N)$.
-  - **Open Addressing (Python \`dict\`)**: Khi ô bị trùng, thuật toán tìm ô trống tiếp theo dựa trên cơ chế nhảy có xáo trộn (perturbation probe) để tránh tụ cụm dữ liệu (clustering).
-- **Đánh đổi (Trade-off)**: Đổi dung lượng bộ nhớ phụ $O(N)$ để nhận về tốc độ tra cứu, chèn, xóa trung bình đạt $O(1)$.
+  - **Separate Chaining**: Mỗi ô bucket chứa một danh sách liên kết. Nếu va chạm nhiều (bucket $> 8$ phần tử trong Java 8+), bucket tự động chuyển thành cây đỏ đen Red-Black Tree để đảm bảo tra cứu xấu nhất là $O(\\log N)$ thay vì thoái hóa thành $O(N)$.
+  - **Open Addressing**: Khi ô bị trùng, thuật toán tìm ô trống tiếp theo dựa trên cơ chế nhảy có xáo trộn để tránh tụ cụm dữ liệu.
+- **Sự đánh đổi**: Tốn dung lượng bộ nhớ phụ $O(N)$ để nhận về tốc độ tra cứu, chèn, xóa trung bình đạt $O(1)$.
 
-### 3. Bảng so sánh Trade-off thực chiến
+### 3. Bảng so sánh đặc tính thực chiến
 | Cấu trúc dữ liệu | Truy cập ngẫu nhiên | Thêm/Xóa cuối | Thêm/Xóa đầu | Tìm kiếm phần tử | Bộ nhớ phụ |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Mảng tĩnh** | $O(1)$ | Không hỗ trợ | Không hỗ trợ | $O(N)$ | $O(1)$ |
 | **Mảng động** | $O(1)$ | $O(1)$ amortized | $O(N)$ | $O(N)$ | Hệ số mở rộng $1.5\\times - 2\\times$ |
-| **Hash Table** | Không có thứ tự | $O(1)$ | $O(1)$ | $O(1)$ trung bình | $O(N)$ lưu bảng băm |`,
+| **Bảng băm** | Không có thứ tự | $O(1)$ | $O(1)$ | $O(1)$ trung bình | $O(N)$ lưu bảng băm |`,
     order: 1,
     createdAt: '2026-10-08T00:00:00Z',
     updatedAt: '2026-10-08T00:00:00Z',
@@ -119,18 +119,18 @@ export const seedConcepts: Concept[] = [
   {
     id: 'con-02',
     chapterId: 'ch-02',
-    title: 'Mô hình tư duy: Kỹ thuật Hai Con Trỏ (Two Pointers)',
-    body: `### 1. Bản chất: Thu hẹp không gian trạng thái (State Space Reduction)
-- Phương pháp vét cạn (Brute-force) kiểm tra mọi cặp $(i, j)$ với $i < j$, tạo thành không gian tìm kiếm kích thước ma trận tam giác $\\frac{N(N-1)}{2} \\approx O(N^2)$.
-- Kỹ thuật Hai Con Trỏ khai thác **tính đơn điệu (Monotonicity)** của dữ liệu đã sắp xếp. Mỗi khi ta so sánh tổng $A[left] + A[right]$ với $target$:
-  - Nếu tổng nhỏ hơn $target$: Mọi phần tử từ $left$ đến $right-1$ khi ghép với $left$ đều sẽ nhỏ hơn $target$. Do đó ta có thể an toàn loại bỏ toàn bộ hàng $left$ bằng cách tăng \`left++\`.
-  - Nếu tổng lớn hơn $target$: Ta an toàn loại bỏ toàn bộ cột $right$ bằng cách giảm \`right--\`.
+    title: 'Mô hình tư duy: Kỹ thuật Two Pointers',
+    body: `### 1. Bản chất: Thu hẹp không gian trạng thái
+- Phương pháp vét cạn Brute-force kiểm tra mọi cặp $(i, j)$ với $i < j$, tạo thành không gian tìm kiếm kích thước ma trận tam giác $\\frac{N(N-1)}{2} \\approx O(N^2)$.
+- Kỹ thuật Two Pointers khai thác **tính đơn điệu** của dữ liệu đã sắp xếp. Mỗi khi ta so sánh tổng $A[left] + A[right]$ với $target$:
+  - Nếu tổng nhỏ hơn $target$: Mọi phần tử từ $left$ đến $right-1$ khi ghép với $left$ đều sẽ nhỏ hơn $target$. Do đó ta loại bỏ an toàn toàn bộ hàng $left$ bằng cách tăng \`left++\`.
+  - Nếu tổng lớn hơn $target$: Ta loại bỏ an toàn toàn bộ cột $right$ bằng cách giảm \`right--\`.
 - **Kết quả**: Mỗi bước loại bỏ hẳn một hàng hoặc một cột của không gian trạng thái, giảm độ phức tạp từ $O(N^2)$ xuống tối đa $N$ bước ($O(N)$).
 
 ### 2. Ba biến thể Two Pointers kinh điển
-1. **Đối xứng hai đầu (Opposite Ends)**: \`left = 0\`, \`right = n - 1\`. Thường dùng cho bài toán tìm cặp số, diện tích chứa nước (Container With Most Water), hoặc kiểm tra xâu đối xứng (Valid Palindrome).
-2. **Cùng chiều nhanh - chậm (Fast & Slow)**: Hai con trỏ xuất phát cùng phía nhưng tốc độ khác nhau. Dùng trong duyệt mảng tại chỗ (Move Zeroes, Remove Duplicates) hoặc phát hiện chu trình.
-3. **Cố định kết hợp di động (K-Sum)**: Dùng vòng lặp cố định $K-2$ phần tử bên ngoài, bên trong chạy con trỏ đối xứng cho 2 phần tử cuối (3Sum $O(N^2)$, 4Sum $O(N^3)$).`,
+1. **Hai đầu đối xứng**: \`left = 0\`, \`right = n - 1\`. Thường dùng cho bài toán tìm cặp số, diện tích chứa nước Container With Most Water, hoặc kiểm tra chuỗi đối xứng Valid Palindrome.
+2. **Con trỏ nhanh - chậm**: Hai con trỏ xuất phát cùng phía nhưng tốc độ khác nhau. Dùng trong duyệt mảng tại chỗ như Move Zeroes, Remove Duplicates hoặc phát hiện chu trình.
+3. **Cố định kết hợp hai con trỏ**: Dùng vòng lặp cố định $K-2$ phần tử bên ngoài, bên trong chạy con trỏ đối xứng cho 2 phần tử cuối như 3Sum $O(N^2)$, 4Sum $O(N^3)$.`,
     order: 1,
     createdAt: '2026-10-08T00:00:00Z',
     updatedAt: '2026-10-08T00:00:00Z',
@@ -140,14 +140,14 @@ export const seedConcepts: Concept[] = [
   {
     id: 'con-03',
     chapterId: 'ch-03',
-    title: 'Mô hình tư duy: Ngăn Xếp (Stack) & Monotonic Stack',
+    title: 'Mô hình tư duy: Ngăn xếp Stack & Monotonic Stack',
     body: `### 1. Bản chất: Cấu trúc LIFO & Khử đệ quy
-- Ngăn xếp hoạt động theo cơ chế **Last In, First Out**: Phần tử đưa vào sau cùng sẽ được lấy ra đầu tiên. Mọi thao tác \`push\`, \`pop\`, \`top\` đều đạt $O(1)$.
-- **Mental Model**: Tương tự như ngăn kéo đĩa ăn hoặc Call Stack của chương trình máy tính. Khi một bài toán có tính chất phụ thuộc lồng nhau (nested dependency) như cặp ngoặc \`{[()]}\` hay lời gọi hàm, Stack là cấu trúc dữ liệu tự nhiên nhất để lưu trữ ngữ cảnh chưa hoàn tất.
+- Ngăn xếp hoạt động theo cơ chế **Last In, First Out (LIFO)**: Phần tử đưa vào sau cùng sẽ được lấy ra đầu tiên. Mọi thao tác \`push\`, \`pop\`, \`top\` đều đạt $O(1)$.
+- **Mô hình tư duy**: Tương tự như ngăn kéo xếp đĩa ăn hoặc Call Stack của chương trình máy tính. Khi một bài toán có tính chất phụ thuộc lồng nhau như cặp ngoặc \`{[()]}\` hay lời gọi hàm, Stack là cấu trúc dữ liệu tự nhiên nhất để lưu trữ ngữ cảnh chưa hoàn tất.
 
-### 2. Monotonic Stack (Ngăn xếp đơn điệu) & Hiện tượng "Che bóng"
-- **Định nghĩa**: Một Stack mà giá trị các phần tử bên trong luôn được duy trì theo thứ tự tăng dần hoặc giảm dần nghiêm ngặt.
-- **Mental Model - Hiệu ứng che bóng (Shadowing Effect)**:
+### 2. Monotonic Stack & Hiện tượng che bóng
+- **Định nghĩa**: Ngăn xếp mà giá trị các phần tử bên trong luôn được duy trì theo thứ tự tăng dần hoặc giảm dần nghiêm ngặt.
+- **Hiện tượng che bóng**:
   - Tưởng tượng một hàng người có chiều cao khác nhau đứng nhìn về phía mặt trời lặn. Một người cao đứng ở vị trí sau sẽ che khuất tầm nhìn của những người thấp hơn đứng trước họ.
   - Khi duyệt phần tử $x$: ta liên tục loại bỏ (\`pop\`) các phần tử trong stack yếu thế hơn $x$, vì từ thời điểm này trở đi, $x$ sẽ là ứng viên tối ưu hơn cho mọi phần tử xuất hiện ở phía sau.
 - **Phân tích độ phức tạp**: Dù có vòng lặp \`while\` bên trong vòng \`for\`, nhưng mỗi phần tử trong mảng chỉ được đưa vào stack đúng **1 lần** và lấy ra khỏi stack tối đa **1 lần**. Do đó, tổng số thao tác amortized trên toàn mảng $N$ phần tử luôn được giới hạn ở mức **$2N$ thao tác** $\\rightarrow O(N)$ thời gian.`,
@@ -160,18 +160,18 @@ export const seedConcepts: Concept[] = [
   {
     id: 'con-04',
     chapterId: 'ch-04',
-    title: 'Mô hình tư duy: Tìm Kiếm Nhị Phân & Ranh Giới Đơn Điệu',
-    body: `### 1. Bản chất: Phân định ranh giới nhị phân (Binary Invariant)
-- Tìm kiếm nhị phân không chỉ áp dụng cho mảng đã sắp xếp! Bản chất sâu xa của thuật toán là tìm kiếm **điểm chuyển tiếp giữa hai trạng thái True/False** trên một hàm mệnh đề $P(x)$ có tính chất đơn điệu:
+    title: 'Mô hình tư duy: Tìm kiếm nhị phân & Ranh giới đơn điệu',
+    body: `### 1. Bản chất: Phân định ranh giới nhị phân
+- Tìm kiếm nhị phân không chỉ áp dụng cho mảng đã sắp xếp. Bản chất sâu xa của thuật toán là tìm kiếm **điểm chuyển tiếp giữa hai trạng thái True/False** trên một hàm mệnh đề $P(x)$ có tính chất đơn điệu:
 $$P(x): [\\text{False}, \\text{False}, \\dots, \\text{False}, \\mathbf{True}, \\text{True}, \\dots, \\text{True}]$$
 - Mỗi bước so sánh tại phần tử trung vị $mid$, ta loại trừ chắc chắn một nửa không gian tìm kiếm, giảm số bước tối đa xuống $\\lceil \\log_2 N \\rceil$ bước.
 
 ### 2. Công thức tính trung điểm chống tràn số 32-bit
-- **Sai lầm kinh điển**: \`mid = (left + right) / 2\` có thể gây tràn số nguyên 32-bit khi $left + right > 2^{31} - 1$ (dẫn tới giá trị âm trong C++ hoặc Java).
+- **Sai lầm kinh điển**: Phép tính \`mid = (left + right) / 2\` có thể gây tràn số nguyên 32-bit khi $left + right > 2^{31} - 1$ (dẫn tới giá trị âm trong C++ hoặc Java).
 - **Chuẩn an toàn**:
 $$mid = left + \\lfloor \\frac{right - left}{2} \\rfloor$$
 
-### 3. Binary Search on Answer (Tìm kiếm nhị phân trên không gian kết quả)
+### 3. Tìm kiếm nhị phân trên không gian kết quả (Binary Search on Answer)
 - Áp dụng khi bài toán yêu cầu: *"Tìm giá trị nhỏ nhất sao cho..."* hoặc *"Tìm giá trị lớn nhất mà vẫn thỏa mãn..."*.
 - Nếu ta có thể viết một hàm kiểm tra khả thi \`feasible(k)\` chạy trong $O(N)$, và hàm này mang tính đơn điệu (nếu $k$ thỏa mãn thì mọi giá trị lớn hơn $k$ cũng thỏa mãn), ta có thể nhị phân trực tiếp trên khoảng đáp án $[\\text{min\\_val}, \\text{max\\_val}]$ với chi phí tổng thể $O(N \\log(\\text{range}))$.`,
     order: 1,
@@ -183,19 +183,19 @@ $$mid = left + \\lfloor \\frac{right - left}{2} \\rfloor$$
   {
     id: 'con-05',
     chapterId: 'ch-05',
-    title: 'Mô hình tư duy: Cửa Sổ Trượt (Sliding Window)',
-    body: `### 1. Bản chất: Mô hình con sâu đo (Caterpillar Method)
-- Cửa sổ trượt là kỹ thuật tối ưu hóa bài toán trên **mảng con liên tục (contiguous subarray/substring)**.
-- **Mental Model**: Tưởng tượng con sâu đo bò trên cành cây:
+    title: 'Mô hình tư duy: Kỹ thuật Sliding Window',
+    body: `### 1. Bản chất: Mô hình con sâu đo Caterpillar
+- Sliding Window là kỹ thuật tối ưu hóa bài toán trên **mảng con hoặc chuỗi con liên tục**.
+- **Mô hình tư duy**: Tưởng tượng con sâu đo bò trên cành cây:
   - Đầu sâu (con trỏ \`right\`) bò về phía trước để nạp thêm phần tử vào cửa sổ.
   - Đuôi sâu (con trỏ \`left\`) co lại khi cửa sổ vi phạm điều kiện bài toán để loại bỏ bớt phần tử.
-- Thay vì tính toán lại toàn bộ đoạn $[left, right]$ từ đầu tốn $O(N)$, ta chỉ cập nhật gia tăng (incremental update) phần tử vừa vào và phần tử vừa ra với chi phí $O(1)$.
+- Thay vì tính toán lại toàn bộ đoạn $[left, right]$ từ đầu tốn $O(N)$, ta chỉ cập nhật gia tăng phần tử vừa vào và phần tử vừa ra với chi phí $O(1)$.
 
 ### 2. Phân loại hai dạng bài toán cốt lõi
-1. **Cửa sổ cố định kích thước $K$ (Fixed Window)**:
+1. **Cửa sổ cố định kích thước $K$**:
    - Chiều dài cửa sổ luôn bằng $K$.
-   - Mỗi bước: Thêm $A[right]$ vào tập trạng thái, bỏ $A[right - K]$ ra khỏi tập trạng thái. Độ phức tạp toàn bài: $O(N)$.
-2. **Cửa sổ biến thiên (Variable Window)**:
+   - Mỗi bước: Thêm $A[right]$ vào tập trạng thái, loại bỏ $A[right - K]$ ra khỏi tập trạng thái. Độ phức tạp toàn bài: $O(N)$.
+2. **Cửa sổ biến thiên**:
    - **Tìm cửa sổ dài nhất**: Mở rộng \`right\` liên tục, chỉ dùng \`while\` thu hẹp \`left\` khi điều kiện bị vi phạm. Cập nhật kết quả cực đại khi cửa sổ hợp lệ: \`best = max(best, right - left + 1)\`.
    - **Tìm cửa sổ ngắn nhất**: Mở rộng \`right\` đến khi điều kiện được thỏa mãn, sau đó dùng \`while\` thu hẹp \`left\` nhiều nhất có thể để tìm kích thước tối thiểu trước khi điều kiện bị phá vỡ.`,
     order: 1,
@@ -207,19 +207,19 @@ $$mid = left + \\lfloor \\frac{right - left}{2} \\rfloor$$
   {
     id: 'con-06',
     chapterId: 'ch-06',
-    title: 'Mô hình tư duy: Danh Sách Liên Kết & Kỹ Thuật Con Trỏ Nâng Cao',
+    title: 'Mô hình tư duy: Danh sách liên kết & Kỹ thuật con trỏ',
     body: `### 1. Bản chất: Khối bộ nhớ phân mảnh trên Heap
-- Khác với Array cấp phát liên tục, các nút của Danh sách liên kết (Node) nằm rải rác bất kỳ nơi nào trên bộ nhớ Heap và kết nối với nhau bằng con trỏ địa chỉ (\`next\`).
-- **Hệ quả**: Không có tính chất Cache Locality (CPU không thể nạp trước mảng vào L1/L2 Cache), truy cập ngẫu nhiên tốn $O(N)$. Bù lại, thao tác chèn/xóa nút khi đã nắm giữ con trỏ chỉ tốn $O(1)$ mà không cần dịch chuyển dữ liệu.
+- Khác với mảng cấp phát liên tục, các nút của danh sách liên kết nằm rải rác bất kỳ nơi nào trên bộ nhớ Heap và kết nối với nhau bằng con trỏ địa chỉ \`next\`.
+- **Hệ quả**: Không có tính chất Cache Locality, truy cập ngẫu nhiên tốn $O(N)$. Bù lại, thao tác chèn hoặc xóa nút khi đã nắm giữ con trỏ chỉ tốn $O(1)$ mà không cần dịch chuyển dữ liệu.
 
-### 2. Hai vũ khí tối thượng trong phỏng vấn Linked List
-- **Nút giả (Dummy Node / Sentinel Node)**:
+### 2. Hai kỹ thuật then chốt trong Linked List
+- **Kỹ thuật Dummy Node**:
   - *Vấn đề*: Khi xóa hoặc chèn phần tử ở đầu danh sách, con trỏ \`head\` thay đổi khiến code phát sinh nhiều câu lệnh \`if-else\` xử lý trường hợp biên.
   - *Giải pháp*: Khởi tạo một nút giả \`dummy = ListNode(0)\` trỏ tới \`head\`. Mọi thao tác trên danh sách đều quy về xử lý nút ở giữa, cuối cùng chỉ cần trả về \`dummy.next\`.
-- **Kỹ thuật Con trỏ Rùa và Thỏ (Floyd's Tortoise and Hare)**:
+- **Kỹ thuật Fast & Slow Pointers**:
   - Cho con trỏ chậm \`slow\` đi 1 bước, con trỏ nhanh \`fast\` đi 2 bước.
-  - **Ứng dụng 1 - Tìm trung điểm**: Khi \`fast\` chạm cuối danh sách, \`slow\` luôn nằm chính xác ở vị trí chính giữa.
-  - **Ứng dụng 2 - Phát hiện chu trình**: Nếu danh sách có chu trình khép kín, \`fast\` chắc chắn sẽ bắt kịp \`slow\` từ phía sau với bộ nhớ phụ $O(1)$.`,
+  - **Tìm trung điểm**: Khi \`fast\` chạm cuối danh sách, \`slow\` luôn nằm chính xác ở vị trí chính giữa.
+  - **Phát hiện chu trình**: Nếu danh sách có chu trình khép kín, \`fast\` chắc chắn sẽ bắt kịp \`slow\` từ phía sau với bộ nhớ phụ $O(1)$.`,
     order: 1,
     createdAt: '2026-10-08T00:00:00Z',
     updatedAt: '2026-10-08T00:00:00Z',
@@ -231,47 +231,47 @@ export const seedComplexityRows: ComplexityRow[] = [
   {
     id: 'cx-01-01',
     chapterId: 'ch-01',
-    operation: 'Truy cập phần tử theo chỉ số (Array indexing)',
+    operation: 'Truy cập phần tử theo chỉ số',
     time: '$O(1)$',
     space: '$O(1)$',
-    note: 'Nhờ địa chỉ vùng nhớ RAM liên tục: Address = Base + i * ElementSize.',
+    note: 'Nhờ địa chỉ RAM liên tục: Address = Base + i * ElementSize.',
     level: 'constant',
     order: 1,
   },
   {
     id: 'cx-01-02',
     chapterId: 'ch-01',
-    operation: 'Thêm/xóa cuối mảng động (Append/Pop back)',
+    operation: 'Thêm hoặc xóa cuối mảng động',
     time: '$O(1)$',
     space: '$O(1)$',
-    note: 'Chi phí khấu hao (Amortized). Thỉnh thoảng nhân đôi mảng tốn O(N).',
+    note: 'Chi phí Amortized O(1). Thao tác mở rộng mảng diễn ra hiếm hoi.',
     level: 'constant',
     order: 2,
   },
   {
     id: 'cx-01-03',
     chapterId: 'ch-01',
-    operation: 'Chèn/xóa phần tử ở đầu hoặc giữa mảng',
+    operation: 'Chèn hoặc xóa ở đầu hay giữa mảng',
     time: '$O(N)$',
     space: '$O(1)$',
-    note: 'Bắt buộc phải dịch chuyển toàn bộ các phần tử phía sau sang một vị trí.',
+    note: 'Phải dịch chuyển các phần tử phía sau sang một vị trí.',
     level: 'linear',
     order: 3,
   },
   {
     id: 'cx-01-04',
     chapterId: 'ch-01',
-    operation: 'Tra cứu, Thêm, Xóa trong Hash Table (Trung bình)',
+    operation: 'Tra cứu, thêm, xóa trong bảng băm',
     time: '$O(1)$',
     space: '$O(N)$',
-    note: 'Kỳ vọng với hàm băm phân phối đều và hệ số tải (load factor) <= 0.75.',
+    note: 'Hiệu năng trung bình với hàm băm phân phối đều và hệ số tải <= 0.75.',
     level: 'constant',
     order: 4,
   },
   {
     id: 'cx-01-05',
     chapterId: 'ch-01',
-    operation: 'Tra cứu Hash Table (Trường hợp xấu nhất)',
+    operation: 'Tra cứu bảng băm trong trường hợp xấu nhất',
     time: '$O(N)$',
     space: '$O(N)$',
     note: 'Xảy ra khi toàn bộ khóa bị va chạm vào cùng một bucket duy nhất.',
@@ -283,30 +283,30 @@ export const seedComplexityRows: ComplexityRow[] = [
   {
     id: 'cx-02-01',
     chapterId: 'ch-02',
-    operation: 'Duyệt hai con trỏ đối xứng (Opposite Ends)',
+    operation: 'Duyệt hai con trỏ đối xứng',
     time: '$O(N)$',
     space: '$O(1)$',
-    note: 'Mỗi bước ít nhất một con trỏ tiến/lùi, tổng số bước tối đa N.',
+    note: 'Mỗi bước ít nhất một con trỏ di chuyển, tổng số bước tối đa N.',
     level: 'linear',
     order: 1,
   },
   {
     id: 'cx-02-02',
     chapterId: 'ch-02',
-    operation: '3Sum (Sắp xếp + Two Pointers)',
+    operation: 'Thuật toán 3Sum',
     time: '$O(N^2)$',
     space: '$O(1)$',
-    note: 'Sắp xếp tốn O(N log N), vòng ngoài N lần kết hợp hai con trỏ N bước.',
+    note: 'Sắp xếp mảng O(N log N), vòng ngoài N lần kết hợp hai con trỏ N bước.',
     level: 'quadratic',
     order: 2,
   },
   {
     id: 'cx-02-03',
     chapterId: 'ch-02',
-    operation: 'Read/Write In-place (Ví dụ Move Zeroes)',
+    operation: 'Ghi đè mảng tại chỗ In-place',
     time: '$O(N)$',
     space: '$O(1)$',
-    note: 'Quét 1 lượt mảng duy nhất, ghi đè trực tiếp không tốn bộ nhớ phụ.',
+    note: 'Quét mảng một lượt duy nhất, ghi đè trực tiếp với bộ nhớ phụ O(1).',
     level: 'linear',
     order: 3,
   },
@@ -315,17 +315,17 @@ export const seedComplexityRows: ComplexityRow[] = [
   {
     id: 'cx-03-01',
     chapterId: 'ch-03',
-    operation: 'Push, Pop, Top trên Stack',
+    operation: 'Thao tác Push, Pop, Top trên Stack',
     time: '$O(1)$',
     space: '$O(1)$',
-    note: 'Chỉ thao tác trên đỉnh ngăn xếp (LIFO).',
+    note: 'Thao tác trực tiếp trên đỉnh ngăn xếp theo cơ chế LIFO.',
     level: 'constant',
     order: 1,
   },
   {
     id: 'cx-03-02',
     chapterId: 'ch-03',
-    operation: 'Xử lý chuỗi ngoặc (Matching Parentheses)',
+    operation: 'Kiểm tra chuỗi ngoặc hợp lệ',
     time: '$O(N)$',
     space: '$O(N)$',
     note: 'Stack lưu trữ tối đa N ký tự ngoặc mở trong trường hợp xấu nhất.',
@@ -335,10 +335,10 @@ export const seedComplexityRows: ComplexityRow[] = [
   {
     id: 'cx-03-03',
     chapterId: 'ch-03',
-    operation: 'Xây dựng Monotonic Stack (Next Greater Element)',
+    operation: 'Xây dựng Monotonic Stack',
     time: '$O(N)$',
     space: '$O(N)$',
-    note: 'Khấu hao: mỗi phần tử vào stack 1 lần và ra stack tối đa 1 lần.',
+    note: 'Mỗi phần tử vào stack một lần và ra khỏi stack tối đa một lần.',
     level: 'linear',
     order: 3,
   },
@@ -347,20 +347,20 @@ export const seedComplexityRows: ComplexityRow[] = [
   {
     id: 'cx-04-01',
     chapterId: 'ch-04',
-    operation: 'Tìm kiếm nhị phân chuẩn (Standard Binary Search)',
+    operation: 'Tìm kiếm nhị phân tiêu chuẩn',
     time: '$O(\\log N)$',
     space: '$O(1)$',
-    note: 'Không gian tìm kiếm bị thu hẹp một nửa sau mỗi phép so sánh.',
+    note: 'Không gian tìm kiếm thu hẹp một nửa sau mỗi phép so sánh.',
     level: 'log',
     order: 1,
   },
   {
     id: 'cx-04-02',
     chapterId: 'ch-04',
-    operation: 'Lower Bound / Upper Bound',
+    operation: 'Tìm kiếm biên Lower Bound / Upper Bound',
     time: '$O(\\log N)$',
     space: '$O(1)$',
-    note: 'Xác định điểm biên đầu tiên thỏa mãn hàm điều kiện đơn điệu.',
+    note: 'Xác định điểm biên đầu tiên thỏa mãn điều kiện đơn điệu.',
     level: 'log',
     order: 2,
   },
@@ -370,7 +370,7 @@ export const seedComplexityRows: ComplexityRow[] = [
     operation: 'Binary Search on Answer',
     time: '$O(C \\cdot \\log(\\text{range}))$',
     space: '$O(1)$',
-    note: 'C là chi phí hàm kiểm tra feasible(x), range = high - low.',
+    note: 'Hàm kiểm tra feasible(x) tốn C bước, khoảng nghiệm range = high - low.',
     level: 'log',
     order: 3,
   },
@@ -379,17 +379,17 @@ export const seedComplexityRows: ComplexityRow[] = [
   {
     id: 'cx-05-01',
     chapterId: 'ch-05',
-    operation: 'Cửa sổ trượt kích thước cố định (Fixed-size Window)',
+    operation: 'Cửa sổ trượt cố định',
     time: '$O(N)$',
     space: '$O(1)$',
-    note: 'Cập nhật trượt cửa sổ O(1) mỗi bước nhờ thêm mới và trừ cũ.',
+    note: 'Cập nhật cửa sổ trong O(1) mỗi bước nhờ thêm phần tử mới và bỏ phần tử cũ.',
     level: 'linear',
     order: 1,
   },
   {
     id: 'cx-05-02',
     chapterId: 'ch-05',
-    operation: 'Cửa sổ trượt biến thiên (Variable-size Window)',
+    operation: 'Cửa sổ trượt biến thiên',
     time: '$O(N)$',
     space: '$O(\\Sigma)$',
     note: 'Cả con trỏ trái và phải chỉ dịch về phía trước tối đa N bước.',
@@ -401,7 +401,7 @@ export const seedComplexityRows: ComplexityRow[] = [
   {
     id: 'cx-06-01',
     chapterId: 'ch-06',
-    operation: 'Chèn/xóa tại đầu danh sách (Prepend/Delete head)',
+    operation: 'Chèn hoặc xóa tại đầu danh sách',
     time: '$O(1)$',
     space: '$O(1)$',
     note: 'Chỉ thay đổi con trỏ địa chỉ của head, không cần dịch dữ liệu.',
@@ -411,27 +411,27 @@ export const seedComplexityRows: ComplexityRow[] = [
   {
     id: 'cx-06-02',
     chapterId: 'ch-06',
-    operation: 'Truy cập phần tử thứ k (Access by index)',
+    operation: 'Truy cập phần tử thứ k',
     time: '$O(N)$',
     space: '$O(1)$',
-    note: 'Bắt buộc phải duyệt tuần tự từ đầu danh sách qua từng con trỏ next.',
+    note: 'Duyệt tuần tự từ đầu danh sách qua từng con trỏ next.',
     level: 'linear',
     order: 2,
   },
   {
     id: 'cx-06-03',
     chapterId: 'ch-06',
-    operation: 'Đảo ngược danh sách tại chỗ (Reverse in-place)',
+    operation: 'Đảo ngược danh sách liên kết tại chỗ',
     time: '$O(N)$',
     space: '$O(1)$',
-    note: 'Sử dụng 3 con trỏ đảo hướng liên kết, bộ nhớ phụ hoàn toàn O(1).',
+    note: 'Sử dụng 3 con trỏ đảo hướng liên kết với bộ nhớ phụ O(1).',
     level: 'linear',
     order: 3,
   },
   {
     id: 'cx-06-04',
     chapterId: 'ch-06',
-    operation: 'Phát hiện chu trình (Floyd Fast & Slow Pointers)',
+    operation: 'Phát hiện chu trình bằng Fast & Slow Pointers',
     time: '$O(N)$',
     space: '$O(1)$',
     note: 'Con trỏ nhanh đuổi kịp con trỏ chậm trong tối đa N bước lặp.',
@@ -447,7 +447,7 @@ export const seedPatterns: Pattern[] = [
     chapterId: 'ch-01',
     name: 'Hash Set Membership',
     description:
-      'Lưu vết các phần tử đã duyệt qua vào tập hợp băm (Hash Set) để kiểm tra sự tồn tại trong $O(1)$. Khi nào KHÔNG NÊN DÙNG: Khi mảng yêu cầu bộ nhớ nghiêm ngặt $O(1)$ và được phép sắp xếp tại chỗ, hoặc khi cần lưu trữ thứ tự xuất hiện ban đầu.',
+      'Lưu vết các phần tử đã duyệt qua vào Hash Set để kiểm tra sự tồn tại trong $O(1)$. Khi nào KHÔNG NÊN DÙNG: Khi mảng yêu cầu bộ nhớ nghiêm ngặt $O(1)$ và được phép sắp xếp tại chỗ, hoặc khi cần lưu trữ thứ tự xuất hiện ban đầu.',
     keywords: ['contains duplicate', 'find duplicate', 'seen set', 'xuất hiện ít nhất hai lần', 'phần tử trùng lặp'],
     examplePhrases: [
       'Given an integer array nums, return true if any value appears at least twice in the array.',
@@ -458,7 +458,7 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-01-hash-map',
     chapterId: 'ch-01',
-    name: 'Hash Map Complement Lookup (Two Sum Pattern)',
+    name: 'Two Sum Pattern (Hash Map Complement)',
     description:
       'Duyệt mảng một lượt duy nhất, với mỗi phần tử $x$, tìm kiếm phần tử bù $target - x$ đã lưu trong Hash Map trước đó. Khi nào KHÔNG NÊN DÙNG: Khi mảng đầu vào đã được sắp xếp trước (nên dùng Two Pointers để đạt $O(1)$ bộ nhớ).',
     keywords: ['two sum', 'complement', 'target sum', 'đếm tần suất', 'chỉ số của cặp số'],
@@ -471,9 +471,9 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-01-canonical-key',
     chapterId: 'ch-01',
-    name: 'Canonical Key Hashing (Group Anagrams)',
+    name: 'Group Anagrams (Canonical Key)',
     description:
-      'Quy chuẩn hóa các đối tượng tương đương về một khóa đại diện duy nhất (Canonical Key) bằng cách sắp xếp ký tự hoặc đếm mảng tần số 26 chữ cái. Khi nào KHÔNG NÊN DÙNG: Khi kích thước xâu $K$ quá lớn và bảng chữ cái mở rộng (Unicode) làm chi phí chuẩn hóa vượt ngưỡng.',
+      'Quy chuẩn hóa các đối tượng tương đương về một khóa đại diện Canonical Key bằng cách sắp xếp ký tự hoặc đếm mảng tần số 26 chữ cái. Khi nào KHÔNG NÊN DÙNG: Khi kích thước chuỗi $K$ quá lớn và bảng chữ cái mở rộng làm chi phí chuẩn hóa vượt ngưỡng.',
     keywords: ['group anagrams', 'canonical key', 'đảo chữ', 'phân loại nhóm', 'tần số ký tự'],
     examplePhrases: [
       'Given an array of strings strs, group the anagrams together in any order.',
@@ -497,7 +497,7 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-01-bucket-sort',
     chapterId: 'ch-01',
-    name: 'Bucket Sort by Frequency (Top K Elements)',
+    name: 'Top K Frequent Elements (Bucket Sort)',
     description:
       'Đếm tần suất các phần tử, sau đó sử dụng mảng bucket với chỉ số là tần suất ($0 \\dots N$) để thu thập $K$ phần tử nhiều nhất trong $O(N)$ thay vì $O(N \\log N)$ của heap/sort. Khi nào KHÔNG NÊN DÙNG: Khi miền giá trị tần suất không bị chặn bởi $N$.',
     keywords: ['top k frequent', 'bucket sort', 'tần suất cao nhất', 'không dùng sorting'],
@@ -515,7 +515,7 @@ export const seedPatterns: Pattern[] = [
     name: 'Opposite Ends Two Pointers',
     description:
       'Hai con trỏ xuất phát từ hai đầu mảng (trái $l$ và phải $r$) di chuyển về phía nhau dựa trên điều kiện so sánh. Khi nào KHÔNG NÊN DÙNG: Khi mảng chưa sắp xếp và không có tính chất đơn điệu, hoặc khi việc sắp xếp làm mất tính hợp lệ của bài toán ban đầu.',
-    keywords: ['two pointers', 'opposite ends', 'sorted array', 'palindrome', 'container with most water'],
+    keywords: ['two pointers', 'opposite ends', 'sorted array', 'palindrome', 'container with most water', 'hai con trỏ'],
     examplePhrases: [
       'Given a string s, return true if it is a palindrome, after converting all uppercase letters into lowercase letters and removing non-alphanumeric characters.',
       'Find two lines that together with the x-axis form a container, such that the container contains the most water.',
@@ -525,10 +525,10 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-02-k-sum',
     chapterId: 'ch-02',
-    name: 'K-Sum (Sort + Fix + Two Pointers)',
+    name: 'K-Sum Pattern',
     description:
-      'Sắp xếp mảng, cố định $K-2$ phần tử ở các vòng lặp ngoài và dùng hai con trỏ cho 2 phần tử cuối, kèm xử lý bỏ qua các giá trị trùng lặp. Khi nào KHÔNG NÊN DÙNG: Khi $K > 3$ và yêu cầu thời gian nhỏ hơn $O(N^{K-1})$ (có thể cân nhắc Hash Map trade-off).',
-    keywords: ['3sum', '4sum', 'k-sum', 'bộ ba có tổng bằng 0', 'unique triplets', 'không trùng lặp'],
+      'Sắp xếp mảng, cố định $K-2$ phần tử ở các vòng lặp ngoài và dùng hai con trỏ cho 2 phần tử cuối, kèm xử lý bỏ qua các giá trị trùng lặp. Khi nào KHÔNG NÊN DÙNG: Khi $K > 3$ và yêu cầu thời gian nhỏ hơn $O(N^{K-1})$ (có thể cân nhắc Hash Map).',
+    keywords: ['3sum', '4sum', 'k-sum', 'bộ ba có tổng bằng 0', 'unique triplets', 'không trùng lặp', 'hai con trỏ'],
     examplePhrases: [
       'Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.',
       'Find all unique quadruplets that sum to a given target.',
@@ -538,10 +538,10 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-02-read-write',
     chapterId: 'ch-02',
-    name: 'Fast/Slow Read-Write Pointers (In-place Array Modification)',
+    name: 'Fast & Slow Pointers In-place',
     description:
-      'Dùng con trỏ đọc (read pointer) quét qua toàn bộ mảng và con trỏ ghi (write pointer) lưu các phần tử thỏa mãn tại chỗ mà không cấp phát thêm bộ nhớ. Khi nào KHÔNG NÊN DÙNG: Khi cần bảo toàn nguyên vẹn mảng gốc.',
-    keywords: ['in-place', 'move zeroes', 'remove duplicates', 'read write pointers', 'O(1) memory'],
+      'Dùng con trỏ đọc quét qua toàn bộ mảng và con trỏ ghi lưu các phần tử thỏa mãn tại chỗ mà không cấp phát thêm bộ nhớ. Khi nào KHÔNG NÊN DÙNG: Khi cần bảo toàn nguyên vẹn mảng gốc.',
+    keywords: ['in-place', 'move zeroes', 'remove duplicates', 'read write pointers', 'hai con trỏ', 'O(1) memory'],
     examplePhrases: [
       'Given an integer array nums, move all 0s to the end of it while maintaining the relative order of the non-zero elements.',
       'Remove duplicates from sorted array in-place such that each unique element appears only once.',
@@ -553,7 +553,7 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-03-matching',
     chapterId: 'ch-03',
-    name: 'Parentheses & Tag Matching',
+    name: 'Parentheses Matching',
     description:
       'Sử dụng Stack để kiểm tra tính hợp lệ của các cấu trúc lồng nhau: gặp mở thì push, gặp đóng thì pop và so khớp. Khi nào KHÔNG NÊN DÙNG: Khi chỉ có một loại ngoặc duy nhất (chỉ cần dùng một biến đếm số nguyên để đạt $O(1)$ bộ nhớ).',
     keywords: ['valid parentheses', 'matching brackets', 'ngăn xếp ngoặc', 'lồng nhau'],
@@ -566,7 +566,7 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-03-monotonic-stack',
     chapterId: 'ch-03',
-    name: 'Monotonic Stack (Next Greater Element)',
+    name: 'Monotonic Stack',
     description:
       'Duy trì stack có thứ tự đơn điệu để tìm phần tử lớn hơn hoặc nhỏ hơn kế tiếp của mọi vị trí trong $O(N)$. Khi nào KHÔNG NÊN DÙNG: Khi bài toán yêu cầu tìm phần tử lớn nhất trên toàn bộ mảng (chỉ cần quét qua mảng một lượt với 1 biến max).',
     keywords: ['next greater element', 'daily temperatures', 'monotonic stack', 'phần tử lớn hơn tiếp theo', 'histogram'],
@@ -579,9 +579,9 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-03-expression-eval',
     chapterId: 'ch-03',
-    name: 'Postfix / RPN Expression Evaluation',
+    name: 'Reverse Polish Notation',
     description:
-      'Đánh giá biểu thức ký pháp nghịch đảo Ba Lan (Reverse Polish Notation): gặp toán hạng thì push vào stack, gặp toán tử thì pop 2 toán hạng ra tính toán và push kết quả trở lại. Khi nào KHÔNG NÊN DÙNG: Khi biểu thức chứa biến số hoặc hàm chưa xác định.',
+      'Đánh giá biểu thức ký pháp Ba Lan ngược: gặp toán hạng thì push vào stack, gặp toán tử thì pop 2 toán hạng ra tính toán và push kết quả trở lại. Khi nào KHÔNG NÊN DÙNG: Khi biểu thức chứa biến số hoặc hàm chưa xác định.',
     keywords: ['evaluate reverse polish notation', 'rpn', 'biểu thức hậu tố', 'calculator'],
     examplePhrases: [
       'Evaluate the value of an arithmetic expression in Reverse Polish Notation. Valid operators are +, -, *, and /.',
@@ -594,7 +594,7 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-04-basic-bs',
     chapterId: 'ch-04',
-    name: 'Standard Binary Search (Exact Target)',
+    name: 'Standard Binary Search',
     description:
       'Chia đôi không gian tìm kiếm trên mảng đã sắp xếp để tìm chính xác giá trị target trong $O(\\log N)$. Khi nào KHÔNG NÊN DÙNG: Khi mảng rất nhỏ ($N < 16$), tìm kiếm tuần tự thường nhanh hơn do tận dụng Cache Locality.',
     keywords: ['binary search', 'search in sorted array', 'tìm kiếm nhị phân', 'O(log N)'],
@@ -607,7 +607,7 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-04-bound',
     chapterId: 'ch-04',
-    name: 'Boundary Binary Search (First/Last Occurrence & Lower Bound)',
+    name: 'Lower Bound & Upper Bound',
     description:
       'Tìm vị trí phần tử đầu tiên thỏa mãn điều kiện $P(x) = \\text{True}$ (Lower Bound) hoặc phần tử cuối cùng thỏa mãn. Khi nào KHÔNG NÊN DÙNG: Khi hàm kiểm tra $P(x)$ không có tính chất đơn điệu.',
     keywords: ['search insert position', 'find first and last position', 'lower bound', 'upper bound'],
@@ -620,7 +620,7 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-04-bs-answer',
     chapterId: 'ch-04',
-    name: 'Binary Search on Answer Range',
+    name: 'Binary Search on Answer',
     description:
       'Xác định không gian kết quả khả dĩ $[low, high]$ và dùng hàm kiểm tra đơn điệu $feasible(k)$ để tìm giá trị tối ưu. Khi nào KHÔNG NÊN DÙNG: Khi khoảng giá trị quá lớn không có biên chặn, hoặc hàm $feasible(k)$ không thể tính trong thời gian đa thức.',
     keywords: ['koko eating bananas', 'capacity to ship packages', 'binary search on answer', 'tốc độ tối thiểu', 'giá trị nhỏ nhất thỏa mãn'],
@@ -651,7 +651,7 @@ export const seedPatterns: Pattern[] = [
     name: 'Fixed-Size Sliding Window',
     description:
       'Duy trì cửa sổ có độ dài cố định $K$, mỗi bước trượt nạp phần tử mới ở biên phải và trừ phần tử cũ bị đẩy ra khỏi biên trái trong $O(1)$. Khi nào KHÔNG NÊN DÙNG: Khi độ dài cửa sổ không cố định mà phụ thuộc vào điều kiện tổng hoặc số lượng phần tử.',
-    keywords: ['fixed size window', 'maximum sum subarray of size k', 'permutation in string', 'cửa sổ cố định'],
+    keywords: ['fixed size window', 'maximum sum subarray of size k', 'permutation in string', 'cửa sổ cố định', 'cửa sổ'],
     examplePhrases: [
       'Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise.',
       'Find the maximum average of any contiguous subarray of length k.',
@@ -661,10 +661,10 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-05-variable-longest',
     chapterId: 'ch-05',
-    name: 'Variable Window (Longest Valid Substring)',
+    name: 'Variable Window (Longest Substring)',
     description:
-      'Mở rộng biên phải $right$ liên tục; khi cửa sổ vi phạm điều kiện, dùng vòng lặp while co biên trái $left$ đến khi hợp lệ trở lại, sau đó cập nhật độ dài cực đại. Khi nào KHÔNG NÊN DÙNG: Khi mảng có chứa số âm khiến tổng không có tính chất đơn điệu tăng (nên dùng Prefix Sum + Hash Map).',
-    keywords: ['longest substring without repeating characters', 'longest repeating character replacement', 'chuỗi con dài nhất', 'xâu con liên tục', 'xâu con'],
+      'Mở rộng biên phải $right$ liên tục; khi cửa sổ vi phạm điều kiện, dùng vòng lặp while co biên trái $left$ đến khi hợp lệ trở lại, sau đó cập nhật độ dài cực đại. Khi nào KHÔNG NÊN DÙNG: Khi mảng có chứa số âm khiến tổng không có tính chất đơn điệu tăng (nên dùng Prefix Sum kết hợp Hash Map).',
+    keywords: ['longest substring without repeating characters', 'longest repeating character replacement', 'chuỗi con dài nhất', 'xâu con liên tục', 'xâu con', 'cửa sổ'],
     examplePhrases: [
       'Given a string s, find the length of the longest substring without duplicate characters.',
       'Find the length of the longest substring containing the same letter you can get after performing at most k character replacements.',
@@ -674,10 +674,10 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-05-variable-shortest',
     chapterId: 'ch-05',
-    name: 'Variable Window (Shortest Valid Substring)',
+    name: 'Variable Window (Shortest Substring)',
     description:
-      'Mở rộng biên phải $right$ đến khi cửa sổ thỏa mãn điều kiện, sau đó thu hẹp biên trái $left$ để tìm kích thước tối thiểu và liên tục cập nhật đáp án ngay trong vòng lặp while. Khi nào KHÔNG NÊN DÙNG: Khi điều kiện bài toán không thể kiểm tra tăng dần (incremental).',
-    keywords: ['minimum window substring', 'minimum size subarray sum', 'chuỗi con ngắn nhất', 'xâu con ngắn nhất'],
+      'Mở rộng biên phải $right$ đến khi cửa sổ thỏa mãn điều kiện, sau đó thu hẹp biên trái $left$ để tìm kích thước tối thiểu và liên tục cập nhật đáp án ngay trong vòng lặp while. Khi nào KHÔNG NÊN DÙNG: Khi điều kiện bài toán không thể kiểm tra tăng dần.',
+    keywords: ['minimum window substring', 'minimum size subarray sum', 'chuỗi con ngắn nhất', 'xâu con ngắn nhất', 'cửa sổ'],
     examplePhrases: [
       'Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t is included in the window.',
       'Find the minimal length of a contiguous subarray of which the sum is greater than or equal to target.',
@@ -691,7 +691,7 @@ export const seedPatterns: Pattern[] = [
     chapterId: 'ch-06',
     name: 'Reverse Linked List In-place',
     description:
-      'Dùng 3 con trỏ \`prev\`, \`curr\`, \`next_temp\` để đổi hướng mũi tên liên kết giữa các nút liên tiếp với $O(1)$ bộ nhớ phụ. Khi nào KHÔNG NÊN DÙNG: Khi danh sách liên kết là bất biến (immutable) hoặc dùng chung trong môi trường đa luồng.',
+      'Dùng 3 con trỏ \`prev\`, \`curr\`, \`next_temp\` để đổi hướng mũi tên liên kết giữa các nút liên tiếp với $O(1)$ bộ nhớ phụ. Khi nào KHÔNG NÊN DÙNG: Khi danh sách liên kết là bất biến hoặc dùng chung trong môi trường đa luồng.',
     keywords: ['reverse linked list', 'đảo ngược danh sách', 'in-place pointer reversal'],
     examplePhrases: [
       'Given the head of a singly linked list, reverse the list, and return the reversed list.',
@@ -704,7 +704,7 @@ export const seedPatterns: Pattern[] = [
     chapterId: 'ch-06',
     name: 'Dummy Node Technique',
     description:
-      'Khởi tạo nút giả đứng trước nút đầu tiên để quy chuẩn hóa mọi thao tác chèn/xóa, triệt tiêu toàn bộ phân nhánh đặc biệt cho nút head. Khi nào KHÔNG NÊN DÙNG: Không có trường hợp kiêng kỵ; Dummy Node là best practice trong hầu hết bài toán thao tác con trỏ.',
+      'Khởi tạo nút giả đứng trước nút đầu tiên để quy chuẩn hóa mọi thao tác chèn và xóa, triệt tiêu toàn bộ phân nhánh đặc biệt cho nút head. Khi nào KHÔNG NÊN DÙNG: Không có trường hợp kiêng kỵ; Dummy Node là chuẩn mực trong hầu hết bài toán thao tác con trỏ.',
     keywords: ['dummy node', 'sentinel node', 'merge two sorted lists', 'remove nth node from end', 'nút giả'],
     examplePhrases: [
       'Merge the two sorted lists into one sorted list. The list should be made by splicing together the nodes of the first two lists.',
@@ -715,9 +715,9 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-06-fast-slow',
     chapterId: 'ch-06',
-    name: 'Floyd\'s Fast & Slow Pointers (Tortoise and Hare)',
+    name: 'Floyd Fast & Slow Pointers',
     description:
-      'Con trỏ chậm đi 1 bước, con trỏ nhanh đi 2 bước để tìm nút giữa hoặc phát hiện chu trình khép kín trong $O(N)$ thời gian và $O(1)$ không gian. Khi nào KHÔNG NÊN DÙNG: Khi có thể tự do gắn cờ boolean \`visited\` vào thuộc tính của Node mà không bị giới hạn bộ nhớ.',
+      'Con trỏ chậm đi 1 bước, con trỏ nhanh đi 2 bước để tìm nút giữa hoặc phát hiện chu trình khép kín trong $O(N)$ thời gian và $O(1)$ không gian. Khi nào KHÔNG NÊN DÙNG: Khi có thể tự do gắn cờ boolean \`visited\` vào thuộc tính của nút mà không bị giới hạn bộ nhớ.',
     keywords: ['linked list cycle', 'middle of the linked list', 'rùa và thỏ', 'fast and slow pointers', 'chu trình'],
     examplePhrases: [
       'Given head, the head of a linked list, determine if the linked list has a cycle in it.',
@@ -728,9 +728,9 @@ export const seedPatterns: Pattern[] = [
   {
     id: 'pt-06-merge-reorder',
     chapterId: 'ch-06',
-    name: 'Reorder List (Split + Reverse + Interleave)',
+    name: 'Reorder List (Split, Reverse & Interleave)',
     description:
-      'Kỹ thuật phối hợp 3 bước kinh điển: Tìm trung điểm chia đôi danh sách $\\rightarrow$ Đảo ngược nửa sau $\\rightarrow$ Trộn xen kẽ hai nửa lại với nhau. Khi nào KHÔNG NÊN DÙNG: Khi bài toán cho phép cấp phát mảng phụ để lưu trữ con trỏ ($O(N)$ space).',
+      'Kỹ thuật phối hợp 3 bước kinh điển: Tìm trung điểm chia đôi danh sách $\\rightarrow$ Đảo ngược nửa sau $\\rightarrow$ Trộn xen kẽ hai nửa lại với nhau. Khi nào KHÔNG NÊN DÙNG: Khi bài toán cho phép cấp phát mảng phụ để lưu trữ con trỏ ($O(N)$ bộ nhớ).',
     keywords: ['reorder list', 'interleave', 'chia đôi và đảo ngược', 'sắp xếp xen kẽ'],
     examplePhrases: [
       'You are given the head of a singly linked-list. Reorder the list to be: L0 -> Ln -> L1 -> Ln-1 -> L2 -> Ln-2...',
@@ -834,7 +834,7 @@ return {};`,
   {
     id: 'pf-01-canonical-key',
     chapterId: 'ch-01',
-    title: 'Khóa không băm được (Unhashable Type) và chi phí băm quá cao',
+    title: 'Khóa không băm được Unhashable Type và chi phí băm quá cao',
     type: 'other',
     body: `Trong Python, kiểu danh sách \`list\` là mutable nên không thể sử dụng làm khóa cho dictionary (sẽ văng lỗi \`TypeError: unhashable type: 'list'\`). Phải ép kiểu mảng đếm sang \`tuple\`.
 Ngoài ra, việc sắp xếp từng xâu tốn $O(K \\log K)$, với xâu dài $K \\ge 10^4$ sẽ rất chậm so với việc đếm mảng tần số 26 ký tự tốn $O(K)$.
@@ -937,7 +937,7 @@ return true;`,
   {
     id: 'pf-02-ksum-duplicate',
     chapterId: 'ch-02',
-    title: 'Trùng lặp bộ số trong bài toán 3Sum & Tràn số nguyên',
+    title: 'Trùng lặp bộ số trong bài toán 3Sum và tràn số nguyên',
     type: 'edge-case',
     body: `Để kết quả không chứa các bộ số trùng lặp, bắt buộc phải bỏ qua phần tử trùng ở **cả hai cấp độ**:
 1. Ở vòng lặp cố định ngoài: \`if i > 0 and nums[i] == nums[i-1]: continue\` (chú ý so sánh với phần tử trước đó, không phải phần tử kế tiếp để không bỏ sót bộ số hợp lệ như \`[-1, -1, 2]\`).
@@ -1120,7 +1120,7 @@ mid = left + (right - left) // 2`,
   {
     id: 'pf-04-infinite-loop',
     chapterId: 'ch-04',
-    title: 'Vòng lặp vô hạn (Infinite Loop) do cập nhật biên và làm tròn mid',
+    title: 'Vòng lặp vô hạn do cập nhật biên và làm tròn mid',
     type: 'edge-case',
     body: `Khi còn đúng 2 phần tử (\`right = left + 1\`), công thức \`mid = left + (right - left) // 2\` sẽ làm tròn xuống khiến \`mid == left\`.
 - Nếu cập nhật \`left = mid\`, giá trị \`left\` không thay đổi, dẫn đến vòng lặp lặp lại vô tận.
@@ -1156,7 +1156,7 @@ return -1;`,
   {
     id: 'pf-05-while-vs-if',
     chapterId: 'ch-05',
-    title: 'Dùng lệnh "if" thay vì vòng lặp "while" khi thu hẹp cửa sổ trượt',
+    title: 'Dùng lệnh if thay vì vòng lặp while khi thu hẹp cửa sổ trượt',
     type: 'edge-case',
     body: `Khi nạp một phần tử mới vào biên phải khiến cửa sổ bị vi phạm điều kiện, một lần dịch biên trái duy nhất (\`if condition: left += 1\`) có thể chưa đủ để đưa cửa sổ trở về trạng thái hợp lệ. Bắt buộc phải dùng vòng lặp \`while\` để thu hẹp cửa sổ liên tục cho đến khi điều kiện được khôi phục.
 
@@ -1267,7 +1267,7 @@ return prev;`,
   {
     id: 'pf-06-fast-slow-null',
     chapterId: 'ch-06',
-    title: 'Lỗi truy cập con trỏ rỗng (Null Pointer Exception) khi nhảy 2 bước',
+    title: 'Lỗi con trỏ rỗng khi con trỏ nhanh nhảy 2 bước',
     type: 'edge-case',
     body: `Vì con trỏ nhanh nhảy 2 bước mỗi lần (\`fast = fast.next.next\`), nếu chỉ kiểm tra \`while fast != None\` thì khi \`fast\` là nút cuối cùng của danh sách có độ dài lẻ, \`fast.next\` sẽ là \`None\`. Lệnh \`fast.next.next\` sẽ lập tức văng lỗi \`AttributeError: 'NoneType' object has no attribute 'next'\` (hoặc SIGSEGV trong C++).
 Bắt buộc phải kiểm tra cả hai điều kiện: \`while fast and fast.next:\`.`,
@@ -1295,14 +1295,55 @@ return false;`,
 ]
 
 export const seedTemplates: Template[] = [
-  // Chapter 1: Arrays & Hashing
+  // ==================== Chapter 1: Arrays & Hashing ====================
+  {
+    id: 'tpl-01-hashset',
+    chapterId: 'ch-01',
+    patternId: 'pt-01-hash-set',
+    name: 'Hash Set Membership',
+    whenToUse:
+      'Khi cần kiểm tra sự tồn tại của phần tử hoặc phát hiện phần tử trùng lặp trong mảng với thời gian $O(1)$ cho mỗi thao tác tra cứu.',
+    time: '$O(N)$',
+    space: '$O(N)$',
+    code: {
+      py: `from typing import List, Set
+
+def contains_duplicate(nums: List[int]) -> bool:
+    """Kiểm tra mảng có chứa phần tử xuất hiện ít nhất 2 lần hay không.
+    
+    Time: O(N) | Space: O(N)
+    """
+    seen: Set[int] = set()
+    for num in nums:
+        if num in seen:
+            return True
+        seen.add(num)
+    return False`,
+      cpp: `#include <vector>
+#include <unordered_set>
+
+bool containsDuplicate(const std::vector<int>& nums) {
+    std::unordered_set<int> seen;
+    for (int num : nums) {
+        if (seen.count(num)) {
+            return true;
+        }
+        seen.insert(num);
+    }
+    return false;
+}`,
+    },
+    notes:
+      'Dùng Hash Set giúp giảm thời gian kiểm tra từ $O(N)$ của mảng xuống $O(1)$ thời gian trung bình.',
+    order: 1,
+  },
   {
     id: 'tpl-01-hashmap',
     chapterId: 'ch-01',
     patternId: 'pt-01-hash-map',
-    name: 'Hash Map Complement Lookup (Two Sum Pattern)',
+    name: 'Two Sum Pattern (Hash Map Complement)',
     whenToUse:
-      'Khi cần tìm cặp phần tử có quan hệ tổng/hiệu cho trước, hoặc kiểm tra sự tồn tại trong $O(1)$ thời gian.',
+      'Khi cần tìm cặp phần tử có quan hệ tổng hoặc hiệu cho trước, hoặc kiểm tra sự tồn tại trong $O(1)$ thời gian.',
     time: '$O(N)$',
     space: '$O(N)$',
     code: {
@@ -1346,17 +1387,195 @@ std::vector<int> twoSum(const std::vector<int>& nums, int target) {
     },
     notes:
       'Có thể linh hoạt thay đổi công thức số bù: `diff = target - num` cho phép cộng, `target + num` cho phép trừ, hoặc kiểm tra chia hết.',
-    order: 1,
+    order: 2,
+  },
+  {
+    id: 'tpl-01-canonical-key',
+    chapterId: 'ch-01',
+    patternId: 'pt-01-canonical-key',
+    name: 'Group Anagrams (Canonical Key)',
+    whenToUse:
+      'Khi cần gom nhóm các xâu/đối tượng có cùng phân phối tần suất ký tự hoặc cấu trúc tương đương về cùng một khóa đại diện.',
+    time: '$O(N \\times K)$',
+    space: '$O(N \\times K)$',
+    code: {
+      py: `from typing import List, Dict
+from collections import defaultdict
+
+def group_anagrams(strs: List[str]) -> List[List[str]]:
+    """Gom nhóm các chuỗi đảo chữ bằng mảng tần số 26 ký tự làm khóa.
+    
+    Time: O(N * K) | Space: O(N * K)
+    """
+    ans: Dict[tuple, List[str]] = defaultdict(list)
+    
+    for s in strs:
+        count = [0] * 26
+        for c in s:
+            count[ord(c) - ord('a')] += 1
+        # Ép kiểu count thành tuple để có thể băm (hashable)
+        ans[tuple(count)].append(s)
+        
+    return list(ans.values())`,
+      cpp: `#include <vector>
+#include <string>
+#include <unordered_map>
+
+std::vector<std::vector<std::string>> groupAnagrams(const std::vector<std::string>& strs) {
+    std::unordered_map<std::string, std::vector<std::string>> groups;
+    
+    for (const auto& s : strs) {
+        std::string key(26, 0);
+        for (char c : s) {
+            key[c - 'a']++;
+        }
+        groups[key].push_back(s);
+    }
+    
+    std::vector<std::vector<std::string>> result;
+    for (auto& pair : groups) {
+        result.push_back(std::move(pair.second));
+    }
+    return result;
+}`,
+    },
+    notes:
+      'Trong Python, mảng `list` không băm được nên cần chuyển thành `tuple`. Trong C++, chuỗi `std::string` độ dài 26 có thể làm key cho `unordered_map`.',
+    order: 3,
+  },
+  {
+    id: 'tpl-01-prefix-suffix',
+    chapterId: 'ch-01',
+    patternId: 'pt-01-prefix-suffix',
+    name: 'Prefix & Suffix Accumulation',
+    whenToUse:
+      'Khi kết quả tại vị trí $i$ phụ thuộc vào tích/tổng của toàn bộ các phần tử bên trái $i$ và bên phải $i$ mà không được dùng phép chia.',
+    time: '$O(N)$',
+    space: '$O(1)$',
+    code: {
+      py: `from typing import List
+
+def product_except_self(nums: List[int]) -> List[int]:
+    """Tính tích mảng ngoại trừ chính nó mà không dùng phép chia.
+    
+    Time: O(N) | Space: O(1) (không tính mảng kết quả)
+    """
+    n = len(nums)
+    res = [1] * n
+    
+    # Lượt 1: Tính tích tiền tố Prefix từ trái qua phải
+    prefix = 1
+    for i in range(n):
+        res[i] = prefix
+        prefix *= nums[i]
+        
+    # Lượt 2: Nhân dồn tích hậu tố Suffix từ phải qua trái
+    suffix = 1
+    for i in range(n - 1, -1, -1):
+        res[i] *= suffix
+        suffix *= nums[i]
+        
+    return res`,
+      cpp: `#include <vector>
+
+std::vector<int> productExceptSelf(const std::vector<int>& nums) {
+    int n = static_cast<int>(nums.size());
+    std::vector<int> res(n, 1);
+    
+    // Lượt 1: Tích tiền tố
+    int prefix = 1;
+    for (int i = 0; i < n; ++i) {
+        res[i] = prefix;
+        prefix *= nums[i];
+    }
+    
+    // Lượt 2: Tích hậu tố
+    int suffix = 1;
+    for (int i = n - 1; i >= 0; --i) {
+        res[i] *= suffix;
+        suffix *= nums[i];
+    }
+    
+    return res;
+}`,
+    },
+    notes:
+      'Tránh dùng phép chia giúp giải quyết triệt để trường hợp mảng có chứa các phần tử bằng $0$.',
+    order: 4,
+  },
+  {
+    id: 'tpl-01-bucket-sort',
+    chapterId: 'ch-01',
+    patternId: 'pt-01-bucket-sort',
+    name: 'Top K Frequent Elements (Bucket Sort)',
+    whenToUse:
+      'Khi cần đếm tần suất và rút ra $K$ phần tử xuất hiện nhiều nhất trong thời gian tuyến tính $O(N)$.',
+    time: '$O(N)$',
+    space: '$O(N)$',
+    code: {
+      py: `from typing import List, Dict
+from collections import Counter
+
+def top_k_frequent(nums: List[int], k: int) -> List[int]:
+    """Tìm K phần tử có tần suất cao nhất bằng Bucket Sort.
+    
+    Time: O(N) | Space: O(N)
+    """
+    count: Dict[int, int] = Counter(nums)
+    # Mảng buckets: chỉ số là tần suất (từ 0 đến N)
+    freq_buckets: List[List[int]] = [[] for _ in range(len(nums) + 1)]
+    
+    for num, cnt in count.items():
+        freq_buckets[cnt].append(num)
+        
+    res: List[int] = []
+    # Duyệt ngược từ tần suất cao nhất về 1
+    for i in range(len(freq_buckets) - 1, 0, -1):
+        for num in freq_buckets[i]:
+            res.append(num)
+            if len(res) == k:
+                return res
+    return res`,
+      cpp: `#include <vector>
+#include <unordered_map>
+
+std::vector<int> topKFrequent(const std::vector<int>& nums, int k) {
+    std::unordered_map<int, int> count;
+    for (int num : nums) {
+        count[num]++;
+    }
+    
+    int n = static_cast<int>(nums.size());
+    std::vector<std::vector<int>> buckets(n + 1);
+    for (const auto& pair : count) {
+        buckets[pair.second].push_back(pair.first);
+    }
+    
+    std::vector<int> res;
+    for (int i = n; i > 0; --i) {
+        for (int num : buckets[i]) {
+            res.push_back(num);
+            if (static_cast<int>(res.size()) == k) {
+                return res;
+            }
+        }
+    }
+    return res;
+}`,
+    },
+    notes:
+      'Bucket Sort sử dụng tần suất làm chỉ số mảng giúp đạt độ phức tạp $O(N)$, vượt trội hơn so với Heap $O(N \\log K)$ hoặc Sắp xếp $O(N \\log N)$.',
+    order: 5,
   },
 
-  // Chapter 2: Two Pointers
+  // ==================== Chapter 2: Two Pointers ====================
   {
     id: 'tpl-02-opposite',
     chapterId: 'ch-02',
     patternId: 'pt-02-opposite-ends',
     name: 'Opposite Ends Two Pointers',
     whenToUse:
-      'Áp dụng trên mảng đã sắp xếp để tìm cặp số thỏa mãn điều kiện hoặc bài toán tối ưu diện tích (Container With Most Water).',
+      'Áp dụng trên mảng đã sắp xếp để tìm cặp số thỏa mãn điều kiện hoặc bài toán tối ưu diện tích Container With Most Water / Trapping Water.',
     time: '$O(N)$',
     space: '$O(1)$',
     code: {
@@ -1403,15 +1622,199 @@ std::vector<int> twoSumSorted(const std::vector<int>& arr, int target) {
       'Nếu mảng đầu vào chưa sắp xếp, có thể gọi hàm sắp xếp trước với chi phí $O(N \\log N)$ rồi mới áp dụng mẫu này.',
     order: 1,
   },
+  {
+    id: 'tpl-02-k-sum',
+    chapterId: 'ch-02',
+    patternId: 'pt-02-k-sum',
+    name: 'K-Sum Pattern (3Sum / 4Sum)',
+    whenToUse:
+      'Khi cần tìm tất cả các bộ $K$ số có tổng bằng target mà không bị trùng lặp kết quả trong kết quả trả về.',
+    time: '$O(N^2)$',
+    space: '$O(1)$',
+    code: {
+      py: `from typing import List
 
-  // Chapter 3: Stack
+def three_sum(nums: List[int]) -> List[List[int]]:
+    """Tìm tất cả bộ 3 số có tổng bằng 0 không trùng lặp.
+    
+    Time: O(N^2) | Space: O(1) (không tính mảng kết quả)
+    """
+    nums.sort()
+    res: List[List[int]] = []
+    
+    for i in range(len(nums) - 2):
+        # Bỏ qua giá trị trùng ở vòng lặp ngoài
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+            
+        left, right = i + 1, len(nums) - 1
+        while left < right:
+            total = nums[i] + nums[left] + nums[right]
+            if total < 0:
+                left += 1
+            elif total > 0:
+                right -= 1
+            else:
+                res.append([nums[i], nums[left], nums[right]])
+                # Khử trùng lặp ở hai con trỏ trong
+                while left < right and nums[left] == nums[left + 1]:
+                    left += 1
+                while left < right and nums[right] == nums[right - 1]:
+                    right -= 1
+                left += 1
+                right -= 1
+                
+    return res`,
+      cpp: `#include <vector>
+#include <algorithm>
+
+std::vector<std::vector<int>> threeSum(std::vector<int>& nums) {
+    std::sort(nums.begin(), nums.end());
+    std::vector<std::vector<int>> res;
+    int n = static_cast<int>(nums.size());
+    
+    for (int i = 0; i < n - 2; ++i) {
+        if (i > 0 && nums[i] == nums[i - 1]) continue;
+        
+        int left = i + 1, right = n - 1;
+        while (left < right) {
+            int total = nums[i] + nums[left] + nums[right];
+            if (total < 0) {
+                left++;
+            } else if (total > 0) {
+                right--;
+            } else {
+                res.push_back({nums[i], nums[left], nums[right]});
+                while (left < right && nums[left] == nums[left + 1]) left++;
+                while (left < right && nums[right] == nums[right - 1]) right--;
+                left++;
+                right--;
+            }
+        }
+    }
+    return res;
+}`,
+    },
+    notes:
+      'Chú ý phải bỏ qua các phần tử trùng lặp ở cả hai cấp độ (vòng ngoài và hai con trỏ trong) để tránh kết quả bị trùng.',
+    order: 2,
+  },
+  {
+    id: 'tpl-02-read-write',
+    chapterId: 'ch-02',
+    patternId: 'pt-02-read-write',
+    name: 'Fast & Slow Pointers In-place',
+    whenToUse:
+      'Khi cần biến đổi mảng tại chỗ với bộ nhớ phụ $O(1)$ (ví dụ: xóa trùng lặp, chuyển số 0 về cuối mảng).',
+    time: '$O(N)$',
+    space: '$O(1)$',
+    code: {
+      py: `from typing import List
+
+def remove_duplicates(nums: List[int]) -> int:
+    """Xóa trùng lặp trong mảng đã sắp xếp tại chỗ.
+    
+    Time: O(N) | Space: O(1)
+    """
+    if not nums:
+        return 0
+        
+    write_ptr = 1 # Con trỏ ghi vị trí hợp lệ kế tiếp
+    
+    for read_ptr in range(1, len(nums)):
+        if nums[read_ptr] != nums[read_ptr - 1]:
+            nums[write_ptr] = nums[read_ptr]
+            write_ptr += 1
+            
+    return write_ptr`,
+      cpp: `#include <vector>
+
+int removeDuplicates(std::vector<int>& nums) {
+    if (nums.empty()) return 0;
+    
+    int writePtr = 1;
+    for (int readPtr = 1; readPtr < static_cast<int>(nums.size()); ++readPtr) {
+        if (nums[readPtr] != nums[readPtr - 1]) {
+            nums[writePtr] = nums[readPtr];
+            writePtr++;
+        }
+    }
+    return writePtr;
+}`,
+    },
+    notes:
+      'Con trỏ đọc `read_ptr` duyệt qua toàn bộ dữ liệu, trong khi con trỏ ghi `write_ptr` chỉ tiến lên khi gặp dữ liệu hợp lệ.',
+    order: 3,
+  },
+
+  // ==================== Chapter 3: Stack ====================
+  {
+    id: 'tpl-03-matching',
+    chapterId: 'ch-03',
+    patternId: 'pt-03-matching',
+    name: 'Parentheses Matching',
+    whenToUse:
+      'Khi cần kiểm tra tính hợp lệ của các cấu trúc lồng nhau như cặp dấu ngoặc `()`, `{}`, `[]` hoặc thẻ đóng mở HTML/XML.',
+    time: '$O(N)$',
+    space: '$O(N)$',
+    code: {
+      py: `from typing import List, Dict
+
+def is_valid_parentheses(s: str) -> bool:
+    """Kiểm tra chuỗi ngoặc lồng nhau có hợp lệ hay không.
+    
+    Time: O(N) | Space: O(N)
+    """
+    stack: List[str] = []
+    mapping: Dict[str, str] = {')': '(', '}': '{', ']': '['}
+    
+    for ch in s:
+        if ch in mapping:
+            # Ngoặc đóng: Pop phần tử đỉnh stack để so sánh
+            top = stack.pop() if stack else '#'
+            if top != mapping[ch]:
+                return False
+        else:
+            # Ngoặc mở: Push vào stack
+            stack.append(ch)
+            
+    return len(stack) == 0`,
+      cpp: `#include <string>
+#include <stack>
+#include <unordered_map>
+
+bool isValidParentheses(const std::string& s) {
+    std::stack<char> st;
+    std::unordered_map<char, char> mapping = {
+        {')', '('},
+        {'}', '{'},
+        {']', '['}
+    };
+    
+    for (char ch : s) {
+        if (mapping.count(ch)) {
+            if (st.empty() || st.top() != mapping[ch]) {
+                return false;
+            }
+            st.pop();
+        } else {
+            st.push(ch);
+        }
+    }
+    return st.empty();
+}`,
+    },
+    notes:
+      'Bắt buộc kiểm tra `len(stack) == 0` ở cuối bài để xử lý các trường hợp chuỗi còn dư ngoặc mở như `"((("`.',
+    order: 1,
+  },
   {
     id: 'tpl-03-monotonic',
     chapterId: 'ch-03',
     patternId: 'pt-03-monotonic-stack',
     name: 'Monotonic Decreasing Stack (Next Greater Element)',
     whenToUse:
-      'Tìm phần tử lớn hơn đầu tiên ở bên phải (hoặc bên trái) cho mọi vị trí trong mảng trong $O(N)$.',
+      'Tìm phần tử lớn hơn đầu tiên ở bên phải hoặc bên trái cho mọi vị trí trong mảng trong $O(N)$.',
     time: '$O(N)$',
     space: '$O(N)$',
     code: {
@@ -1455,18 +1858,133 @@ std::vector<int> nextGreaterElements(const std::vector<int>& nums) {
 }`,
     },
     notes:
-      'Lưu chỉ số (\`index\`) thay vì lưu giá trị (\`value\`) vào stack giúp ta vừa tính được khoảng cách chỉ số vừa gán được kết quả trực tiếp.',
-    order: 1,
+      'Lưu chỉ số (`index`) thay vì lưu giá trị (`value`) vào stack giúp ta vừa tính được khoảng cách chỉ số vừa gán được kết quả trực tiếp.',
+    order: 2,
+  },
+  {
+    id: 'tpl-03-expression-eval',
+    chapterId: 'ch-03',
+    patternId: 'pt-03-expression-eval',
+    name: 'Reverse Polish Notation Evaluation',
+    whenToUse:
+      'Khi cần tính toán giá trị biểu thức toán học biểu diễn ở dạng ký pháp Ba Lan ngược (RPN).',
+    time: '$O(N)$',
+    space: '$O(N)$',
+    code: {
+      py: `from typing import List
+
+def eval_rpn(tokens: List[str]) -> int:
+    """Đánh giá giá trị biểu thức Ba Lan ngược (RPN).
+    
+    Time: O(N) | Space: O(N)
+    """
+    stack: List[int] = []
+    
+    for token in tokens:
+        if token in {"+", "-", "*", "/"}:
+            b = stack.pop() # Toán hạng thứ hai
+            a = stack.pop() # Toán hạng thứ nhất
+            if token == "+":
+                stack.append(a + b)
+            elif token == "-":
+                stack.append(a - b)
+            elif token == "*":
+                stack.append(a * b)
+            elif token == "/":
+                # Chú ý: int(a / b) làm tròn về 0 đúng chuẩn LeetCode
+                stack.append(int(a / b))
+        else:
+            stack.append(int(token))
+            
+    return stack[0]`,
+      cpp: `#include <vector>
+#include <string>
+#include <stack>
+
+int evalRPN(const std::vector<std::string>& tokens) {
+    std::stack<int> st;
+    
+    for (const std::string& token : tokens) {
+        if (token == "+" || token == "-" || token == "*" || token == "/") {
+            int b = st.top(); st.pop();
+            int a = st.top(); st.pop();
+            if (token == "+") st.push(a + b);
+            else if (token == "-") st.push(a - b);
+            else if (token == "*") st.push(a * b);
+            else if (token == "/") st.push(a / b);
+        } else {
+            st.push(std::stoi(token));
+        }
+    }
+    return st.top();
+}`,
+    },
+    notes:
+      'Chú ý thứ tự toán hạng: phần tử pop ra trước là $b$ (số chia), phần tử pop ra sau là $a$ (số bị chia). Phép chia Python dùng `int(a / b)` để cắt phần thập phân về 0.',
+    order: 3,
   },
 
-  // Chapter 4: Binary Search
+  // ==================== Chapter 4: Binary Search ====================
+  {
+    id: 'tpl-04-basic-bs',
+    chapterId: 'ch-04',
+    patternId: 'pt-04-basic-bs',
+    name: 'Standard Binary Search',
+    whenToUse:
+      'Khi cần tìm vị trí của một phần tử target trong mảng hoặc ma trận đã sắp xếp tăng dần.',
+    time: '$O(\\log N)$',
+    space: '$O(1)$',
+    code: {
+      py: `from typing import List
+
+def binary_search(nums: List[int], target: int) -> int:
+    """Tìm kiếm nhị phân chuẩn trên mảng đã sắp xếp.
+    
+    Time: O(log N) | Space: O(1)
+    """
+    left: int = 0
+    right: int = len(nums) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+            
+    return -1`,
+      cpp: `#include <vector>
+
+int binarySearch(const std::vector<int>& nums, int target) {
+    int left = 0;
+    int right = static_cast<int>(nums.size()) - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) {
+            return mid;
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return -1;
+}`,
+    },
+    notes:
+      'Luôn tính `mid = left + (right - left) // 2` để tránh nguy cơ tràn số nguyên trong các ngôn ngữ như C++.',
+    order: 1,
+  },
   {
     id: 'tpl-04-binary-search',
     chapterId: 'ch-04',
     patternId: 'pt-04-bound',
-    name: 'Binary Search Lower Bound (First True Invariant)',
+    name: 'Binary Search Lower Bound',
     whenToUse:
-      'Tìm vị trí phần tử đầu tiên thỏa mãn điều kiện $feasible(x)$ hoặc tìm vị trí chèn (Insert Position).',
+      'Tìm vị trí phần tử đầu tiên thỏa mãn điều kiện $feasible(x)$ hoặc tìm vị trí chèn Insert Position.',
     time: '$O(\\log N)$',
     space: '$O(1)$',
     code: {
@@ -1507,15 +2025,202 @@ int lowerBound(const std::vector<int>& nums, int target) {
     },
     notes:
       'Mẫu nửa khoảng `[left, right)` đảm bảo không bao giờ bị lặp vô hạn và khi kết thúc vòng lặp `left == right`.',
-    order: 1,
+    order: 2,
+  },
+  {
+    id: 'tpl-04-bs-answer',
+    chapterId: 'ch-04',
+    patternId: 'pt-04-bs-answer',
+    name: 'Binary Search on Answer (Parametric Search)',
+    whenToUse:
+      'Khi cần tìm giá trị nhỏ nhất hoặc lớn nhất của một tham số $k$ sao cho hàm kiểm tra tính khả thi $feasible(k)$ là đơn điệu.',
+    time: '$O(N \\log (high - low))$',
+    space: '$O(1)$',
+    code: {
+      py: `from typing import List
+import math
+
+def min_eating_speed(piles: List[int], h: int) -> int:
+    """Bài toán Koko Eating Bananas - Tìm tốc độ ăn nhỏ nhất thỏa mãn trong h giờ.
+    
+    Time: O(N * log(max_pile)) | Space: O(1)
+    """
+    def feasible(speed: int) -> bool:
+        # Tính tổng số giờ cần với tốc độ speed
+        hours = sum(math.ceil(p / speed) for p in piles)
+        return hours <= h
+
+    left = 1
+    right = max(piles)
+    
+    while left < right:
+        mid = left + (right - left) // 2
+        if feasible(mid):
+            right = mid     # Thử tốc độ nhỏ hơn
+        else:
+            left = mid + 1  # Tốc độ quá chậm, phải tăng lên
+            
+    return left`,
+      cpp: `#include <vector>
+#include <algorithm>
+
+bool feasible(const std::vector<int>& piles, int speed, int h) {
+    long long hours = 0;
+    for (int p : piles) {
+        hours += (p + speed - 1) / speed; // Tính ceil(p / speed) bằng số nguyên
+    }
+    return hours <= h;
+}
+
+int minEatingSpeed(const std::vector<int>& piles, int h) {
+    int left = 1;
+    int right = *std::max_element(piles.begin(), piles.end());
+    
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (feasible(piles, mid, h)) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+}`,
+    },
+    notes:
+      'Tính chất đơn điệu: Nếu tốc độ $k$ thỏa mãn, mọi tốc độ $> k$ đều thỏa mãn. Điều này cho phép áp dụng Tìm kiếm nhị phân trên không gian đáp án.',
+    order: 3,
+  },
+  {
+    id: 'tpl-04-rotated-array',
+    chapterId: 'ch-04',
+    patternId: 'pt-04-rotated-array',
+    name: 'Rotated Sorted Array Search',
+    whenToUse:
+      'Khi mảng đã sắp xếp bị xoay tại một điểm uốn (pivot) và cần tìm vị trí target trong thời gian $O(\\log N)$.',
+    time: '$O(\\log N)$',
+    space: '$O(1)$',
+    code: {
+      py: `from typing import List
+
+def search_rotated(nums: List[int], target: int) -> int:
+    """Tìm target trong mảng đã sắp xếp bị xoay.
+    
+    Time: O(log N) | Space: O(1)
+    """
+    left, right = 0, len(nums) - 1
+    
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            return mid
+            
+        # Kiểm tra nửa bên trái có được sắp xếp tuần tự hay không
+        if nums[left] <= nums[mid]:
+            if nums[left] <= target < nums[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        else:
+            # Nửa bên phải được sắp xếp tuần tự
+            if nums[mid] < target <= nums[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+                
+    return -1`,
+      cpp: `#include <vector>
+
+int searchRotated(const std::vector<int>& nums, int target) {
+    int left = 0, right = static_cast<int>(nums.size()) - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) return mid;
+        
+        if (nums[left] <= nums[mid]) {
+            if (nums[left] <= target && target < nums[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        } else {
+            if (nums[mid] < target && target <= nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+    return -1;
+}`,
+    },
+    notes:
+      'Khi chia đôi mảng xoay, luôn có ít nhất một nửa (trái hoặc phải) giữ nguyên trật tự sắp xếp tăng dần. Dùng nửa đó để phân loại vị trí của target.',
+    order: 4,
   },
 
-  // Chapter 5: Sliding Window
+  // ==================== Chapter 5: Sliding Window ====================
+  {
+    id: 'tpl-05-fixed-window',
+    chapterId: 'ch-05',
+    patternId: 'pt-05-fixed-window',
+    name: 'Fixed-Size Sliding Window',
+    whenToUse:
+      'Khi cần tính toán các chỉ số (như tổng lớn nhất, hoán vị xâu) trên mọi mảng con có kích thước cố định $K$.',
+    time: '$O(N)$',
+    space: '$O(1)$',
+    code: {
+      py: `from typing import List
+
+def max_sub_array_sum(nums: List[int], k: int) -> int:
+    """Tìm tổng lớn nhất của mảng con có độ dài cố định k.
+    
+    Time: O(N) | Space: O(1)
+    """
+    if len(nums) < k:
+        return 0
+        
+    # Tính tổng cửa sổ đầu tiên
+    window_sum = sum(nums[:k])
+    max_sum = window_sum
+    
+    # Trượt cửa sổ từ vị trí k đến hết mảng
+    for i in range(k, len(nums)):
+        window_sum += nums[i] - nums[i - k]
+        max_sum = max(max_sum, window_sum)
+        
+    return max_sum`,
+      cpp: `#include <vector>
+#include <numeric>
+#include <algorithm>
+
+int maxSubArraySum(const std::vector<int>& nums, int k) {
+    int n = static_cast<int>(nums.size());
+    if (n < k) return 0;
+    
+    int windowSum = 0;
+    for (int i = 0; i < k; ++i) {
+        windowSum += nums[i];
+    }
+    int maxSum = windowSum;
+    
+    for (int i = k; i < n; ++i) {
+        windowSum += nums[i] - nums[i - k];
+        maxSum = std::max(maxSum, windowSum);
+    }
+    return maxSum;
+}`,
+    },
+    notes:
+      'Mỗi bước trượt cửa sổ chỉ tốn $O(1)$ bằng cách cộng thêm phần tử mới ở biên phải và trừ đi phần tử cũ ở biên trái.',
+    order: 1,
+  },
   {
     id: 'tpl-05-sliding-window',
     chapterId: 'ch-05',
     patternId: 'pt-05-variable-longest',
-    name: 'Variable Sliding Window (Longest Valid Window)',
+    name: 'Variable Sliding Window (Longest)',
     whenToUse:
       'Tìm độ dài lớn nhất của mảng con hoặc chuỗi con liên tục thỏa mãn một điều kiện cho trước.',
     time: '$O(N)$',
@@ -1572,18 +2277,109 @@ int longestSubstringKDistinct(const std::string& s, int k) {
 }`,
     },
     notes:
-      'Với bài toán tìm cửa sổ ngắn nhất, ta cập nhật `min_len = min(min_len, right - left + 1)` ngay bên trong vòng lặp `while`.',
-    order: 1,
+      'Với bài toán tìm cửa sổ dài nhất, ta cập nhật kết quả sau khi cửa sổ đã được thu hẹp về trạng thái hợp lệ.',
+    order: 2,
+  },
+  {
+    id: 'tpl-05-variable-shortest',
+    chapterId: 'ch-05',
+    patternId: 'pt-05-variable-shortest',
+    name: 'Variable Sliding Window (Shortest)',
+    whenToUse:
+      'Tìm độ dài nhỏ nhất của cửa sổ con liên tục thỏa mãn điều kiện (ví dụ: Minimum Window Substring).',
+    time: '$O(N)$',
+    space: '$O(\\Sigma)$',
+    code: {
+      py: `from typing import Dict
+from collections import Counter
+
+def min_window(s: str, t: str) -> str:
+    """Tìm chuỗi con ngắn nhất của s chứa đủ các ký tự của t.
+    
+    Time: O(N) | Space: O(Sigma)
+    """
+    if not t or not s:
+        return ""
+        
+    target_count = Counter(t)
+    window: Dict[str, int] = {}
+    
+    have, need = 0, len(target_count)
+    res, res_len = [-1, -1], float("inf")
+    left = 0
+    
+    for right in range(len(s)):
+        ch = s[right]
+        window[ch] = window.get(ch, 0) + 1
+        
+        if ch in target_count and window[ch] == target_count[ch]:
+            have += 1
+            
+        # Khi cửa sổ đã hợp lệ, liên tục thu hẹp biên trái để tìm cửa sổ cực tiểu
+        while have == need:
+            if (right - left + 1) < res_len:
+                res = [left, right]
+                res_len = right - left + 1
+                
+            window[s[left]] -= 1
+            if s[left] in target_count and window[s[left]] < target_count[s[left]]:
+                have -= 1
+            left += 1
+            
+    l, r = res
+    return s[l : r + 1] if res_len != float("inf") else ""`,
+      cpp: `#include <string>
+#include <unordered_map>
+#include <climits>
+
+std::string minWindow(std::string s, std::string t) {
+    if (s.empty() || t.empty()) return "";
+    
+    std::unordered_map<char, int> targetCount, window;
+    for (char c : t) targetCount[c]++;
+    
+    int have = 0, need = static_cast<int>(targetCount.size());
+    int minLen = INT_MAX, minStart = 0;
+    int left = 0;
+    
+    for (int right = 0; right < static_cast<int>(s.size()); ++right) {
+        char c = s[right];
+        window[c]++;
+        
+        if (targetCount.count(c) && window[c] == targetCount[c]) {
+            have++;
+        }
+        
+        while (have == need) {
+            if (right - left + 1 < minLen) {
+                minLen = right - left + 1;
+                minStart = left;
+            }
+            
+            char leftChar = s[left];
+            window[leftChar]--;
+            if (targetCount.count(leftChar) && window[leftChar] < targetCount[leftChar]) {
+                have--;
+            }
+            left++;
+        }
+    }
+    return minLen == INT_MAX ? "" : s.substr(minStart, minLen);
+}`,
+    },
+    notes:
+      'Với bài toán tìm cửa sổ ngắn nhất, ta cập nhật `min_len` ngay bên trong vòng lặp `while` khi cửa sổ còn hợp lệ.',
+    order: 3,
   },
 
-  // Chapter 6: Linked List
+  // ==================== Chapter 6: Linked List ====================
   {
     id: 'tpl-06-reverse-linkedlist',
     chapterId: 'ch-06',
     patternId: 'pt-06-reverse-in-place',
-    name: 'Reverse Linked List & Fast-Slow Pointers',
+    name: 'Reverse Linked List In-place',
     whenToUse:
-      'Đảo ngược danh sách liên kết đơn tại chỗ với bộ nhớ $O(1)$ và tìm điểm chính giữa danh sách.',
+      'Đảo ngược danh sách liên kết đơn tại chỗ với bộ nhớ $O(1)$.',
     time: '$O(N)$',
     space: '$O(1)$',
     code: {
@@ -1608,15 +2404,7 @@ def reverse_list(head: Optional[ListNode]) -> Optional[ListNode]:
         prev = curr            # Bước 3: Tiến prev lên
         curr = next_temp       # Bước 4: Tiến curr lên
         
-    return prev
-
-def find_middle(head: Optional[ListNode]) -> Optional[ListNode]:
-    """Tìm nút chính giữa danh sách bằng con trỏ nhanh - chậm."""
-    slow = fast = head
-    while fast and fast.next:
-        slow = slow.next
-        fast = fast.next.next
-    return slow`,
+    return prev`,
       cpp: `struct ListNode {
     int val;
     ListNode* next;
@@ -1633,6 +2421,133 @@ ListNode* reverseList(ListNode* head) {
         curr = nextTemp;
     }
     return prev;
+}`,
+    },
+    notes:
+      'Cần sử dụng 3 con trỏ `prev`, `curr`, `next_temp` để không làm mất liên kết tới phần còn lại của danh sách.',
+    order: 1,
+  },
+  {
+    id: 'tpl-06-dummy-node',
+    chapterId: 'ch-06',
+    patternId: 'pt-06-dummy-node',
+    name: 'Dummy Node Technique (Merge Two Lists)',
+    whenToUse:
+      'Khi cần tạo danh sách liên kết mới (trộn hai danh sách, xóa nút head) để tránh rẽ nhánh kiểm tra nút rỗng.',
+    time: '$O(N + M)$',
+    space: '$O(1)$',
+    code: {
+      py: `from typing import Optional
+
+class ListNode:
+    def __init__(self, val: int = 0, next: Optional['ListNode'] = None):
+        self.val = val
+        self.next = next
+
+def merge_two_lists(l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+    """Trộn hai danh sách liên kết đã sắp xếp bằng Dummy Node.
+    
+    Time: O(N + M) | Space: O(1)
+    """
+    dummy = ListNode(0)
+    tail = dummy
+    
+    while l1 and l2:
+        if l1.val <= l2.val:
+            tail.next = l1
+            l1 = l1.next
+        else:
+            tail.next = l2
+            l2 = l2.next
+        tail = tail.next
+        
+    # Nối phần còn lại của danh sách chưa duyệt hết
+    tail.next = l1 if l1 else l2
+    return dummy.next`,
+      cpp: `struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+    ListNode dummy(0);
+    ListNode* tail = &dummy;
+    
+    while (l1 != nullptr && l2 != nullptr) {
+        if (l1->val <= l2->val) {
+            tail->next = l1;
+            l1 = l1->next;
+        } else {
+            tail->next = l2;
+            l2 = l2->next;
+        }
+        tail = tail->next;
+    }
+    
+    tail->next = (l1 != nullptr) ? l1 : l2;
+    return dummy.next;
+}`,
+    },
+    notes:
+      'Sử dụng `dummy node` giúp loại bỏ hoàn toàn các câu lệnh kiểm tra `if head is None` ban đầu.',
+    order: 2,
+  },
+  {
+    id: 'tpl-06-fast-slow',
+    chapterId: 'ch-06',
+    patternId: 'pt-06-fast-slow',
+    name: 'Floyd Fast & Slow Pointers',
+    whenToUse:
+      'Khi cần tìm nút trung điểm hoặc phát hiện chu trình khép kín trong danh sách liên kết với $O(1)$ bộ nhớ.',
+    time: '$O(N)$',
+    space: '$O(1)$',
+    code: {
+      py: `from typing import Optional
+
+class ListNode:
+    def __init__(self, val: int = 0, next: Optional['ListNode'] = None):
+        self.val = val
+        self.next = next
+
+def has_cycle(head: Optional[ListNode]) -> bool:
+    """Phát hiện chu trình trong danh sách liên kết (Thuật toán rùa và thỏ).
+    
+    Time: O(N) | Space: O(1)
+    """
+    slow = fast = head
+    
+    while fast and fast.next:
+        slow = slow.next          # Rùa đi 1 bước
+        fast = fast.next.next     # Thỏ đi 2 bước
+        if slow == fast:
+            return True
+            
+    return False
+
+def find_middle(head: Optional[ListNode]) -> Optional[ListNode]:
+    """Tìm nút trung điểm của danh sách liên kết."""
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    return slow`,
+      cpp: `struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+bool hasCycle(ListNode* head) {
+    ListNode* slow = head;
+    ListNode* fast = head;
+    
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) return true;
+    }
+    return false;
 }
 
 ListNode* findMiddle(ListNode* head) {
@@ -1646,8 +2561,107 @@ ListNode* findMiddle(ListNode* head) {
 }`,
     },
     notes:
-      'Để ngắt đôi danh sách tại trung điểm, nhớ lưu `slow.next` rồi gán `slow.next = None` trước khi tiếp tục thao tác.',
-    order: 1,
+      'Bắt buộc phải kiểm tra điều kiện `while fast and fast.next:` để tránh văng lỗi truy cập con trỏ rỗng (`NullPointerException`).',
+    order: 3,
+  },
+  {
+    id: 'tpl-06-merge-reorder',
+    chapterId: 'ch-06',
+    patternId: 'pt-06-merge-reorder',
+    name: 'Reorder List (Split, Reverse & Interleave)',
+    whenToUse:
+      'Khi cần sắp xếp lại danh sách liên kết theo dạng $L_0 \\to L_n \\to L_1 \\to L_{n-1} \\dots$ tại chỗ.',
+    time: '$O(N)$',
+    space: '$O(1)$',
+    code: {
+      py: `from typing import Optional
+
+class ListNode:
+    def __init__(self, val: int = 0, next: Optional['ListNode'] = None):
+        self.val = val
+        self.next = next
+
+def reorder_list(head: Optional[ListNode]) -> None:
+    """Sắp xếp lại danh sách xen kẽ L0 -> Ln -> L1 -> Ln-1... tại chỗ.
+    
+    Time: O(N) | Space: O(1)
+    """
+    if not head or not head.next:
+        return
+        
+    # Bước 1: Tìm trung điểm và ngắt đôi danh sách
+    slow, fast = head, head.next
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        
+    second = slow.next
+    slow.next = None # Ngắt đôi danh sách
+    
+    # Bước 2: Đảo ngược nửa sau danh sách
+    prev = None
+    curr = second
+    while curr:
+        nxt = curr.next
+        curr.next = prev
+        prev = curr
+        curr = nxt
+    second = prev
+    
+    # Bước 3: Trộn xen kẽ hai nửa danh sách
+    first = head
+    while second:
+        tmp1, tmp2 = first.next, second.next
+        first.next = second
+        second.next = tmp1
+        first = tmp1
+        second = tmp2`,
+      cpp: `struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+
+void reorderList(ListNode* head) {
+    if (head == nullptr || head->next == nullptr) return;
+    
+    // Bước 1: Tìm trung điểm
+    ListNode* slow = head;
+    ListNode* fast = head->next;
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    
+    ListNode* second = slow->next;
+    slow->next = nullptr;
+    
+    // Bước 2: Đảo ngược nửa sau
+    ListNode* prev = nullptr;
+    ListNode* curr = second;
+    while (curr != nullptr) {
+        ListNode* nxt = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = nxt;
+    }
+    second = prev;
+    
+    // Bước 3: Trộn xen kẽ
+    ListNode* first = head;
+    while (second != nullptr) {
+        ListNode* tmp1 = first->next;
+        ListNode* tmp2 = second->next;
+        first->next = second;
+        second->next = tmp1;
+        first = tmp1;
+        second = tmp2;
+    }
+}`,
+    },
+    notes:
+      'Kết hợp 3 kỹ thuật nền tảng: Fast & Slow Pointers $\\to$ Reverse Linked List $\\to$ Interleave Nodes.',
+    order: 4,
   },
 ]
 
@@ -1687,7 +2701,7 @@ export const seedProblems: Problem[] = [
     leetcodeUrl: 'https://leetcode.com/problems/group-anagrams/',
     neetcodeUrl: 'https://neetcode.io/problems/anagram-groups',
     patternIds: ['pt-01-canonical-key'],
-    hint: `- **Tầng 1 (Tư duy):** Hai xâu là đảo chữ của nhau (anagram) khi và chỉ khi chúng có cùng phân phối tần suất các chữ cái.
+    hint: `- **Tầng 1 (Tư duy):** Hai chuỗi là đảo chữ của nhau khi và chỉ khi chúng có cùng phân phối tần suất các chữ cái.
 - **Tầng 2 (Cấu trúc dữ liệu):** Dùng \`HashMap<CanonicalKey, List<String>>\` để gom nhóm.
 - **Tầng 3 (Kỹ thuật then chốt):** Tạo khóa đại diện bằng mảng tần số 26 ký tự chuyển thành tuple \`tuple(count)\` đạt $O(K)$, hoặc sắp xếp xâu \`"".join(sorted(s))\` đạt $O(K \\log K)$.`,
     order: 3,
@@ -1713,8 +2727,8 @@ export const seedProblems: Problem[] = [
     leetcodeUrl: 'https://leetcode.com/problems/product-of-array-except-self/',
     neetcodeUrl: 'https://neetcode.io/problems/products-of-array-discluding-self',
     patternIds: ['pt-01-prefix-suffix'],
-    hint: `- **Tầng 1 (Tư duy):** Tích của mọi phần tử trừ $A[i]$ chính bằng (Tích các phần tử bên trái $i$) $\\times$ (Tích các phần tử bên phải $i$).
-- **Tầng 2 (Cấu trúc dữ liệu):** Dùng mảng kết quả để lưu tích tiền tố (prefix), và dùng một biến số nguyên duy nhất tích lũy tích hậu tố (suffix).
+    hint: `- **Tầng 1 (Tư duy):** Tích của mọi phần tử trừ $A[i]$ chính bằng tích các phần tử bên trái $i$ nhân với tích các phần tử bên phải $i$.
+- **Tầng 2 (Cấu trúc dữ liệu):** Dùng mảng kết quả để lưu tích tiền tố Prefix, và dùng một biến tích lũy tích hậu tố Suffix.
 - **Tầng 3 (Kỹ thuật then chốt):** Quét lượt 1 từ trái sang phải tính prefix; quét lượt 2 từ phải sang trái nhân dồn biến suffix vào kết quả để đạt $O(1)$ bộ nhớ phụ (ngoại trừ mảng output).`,
     order: 5,
   },
@@ -1795,7 +2809,7 @@ export const seedProblems: Problem[] = [
     leetcodeUrl: 'https://leetcode.com/problems/valid-parentheses/',
     neetcodeUrl: 'https://neetcode.io/problems/validate-parentheses',
     patternIds: ['pt-03-matching'],
-    hint: `- **Tầng 1 (Tư duy):** Ngoặc mở gần nhất phải khớp với ngoặc đóng đầu tiên gặp phải (nguyên lý LIFO).
+    hint: `- **Tầng 1 (Tư duy):** Ngoặc mở gần nhất phải khớp với ngoặc đóng đầu tiên gặp phải theo nguyên lý LIFO.
 - **Tầng 2 (Cấu trúc dữ liệu):** Sử dụng \`Stack\` cùng bảng tra cứu \`mapping = {')': '(', '}': '{', ']': '['}\`.
 - **Tầng 3 (Kỹ thuật then chốt):** Gặp ngoặc đóng: pop phần tử đỉnh stack so sánh; nếu stack rỗng hoặc không khớp thì trả về \`False\`. Cuối cùng kiểm tra \`len(stack) == 0\`.`,
     order: 1,
