@@ -199,7 +199,7 @@ export const PatternRecognition: React.FC<PatternRecognitionProps> = ({
                   </div>
                 </div>
 
-                <div className="text-xs text-slate-300 leading-relaxed">
+                <div className="text-xs text-slate-200 leading-relaxed">
                   <MathView math={pat.description} />
                 </div>
               </div>
@@ -394,14 +394,14 @@ export const PatternRecognition: React.FC<PatternRecognitionProps> = ({
                 </div>
 
                 {/* Nội dung: "Sai ở đâu" & "Cách né" (D-10: Markdown + LaTeX) */}
-                <div className="text-xs text-slate-300 leading-relaxed bg-slate-950/60 p-4 rounded-xl border border-slate-800/80">
+                <div className="text-xs text-slate-100 leading-relaxed bg-slate-950/50 p-4 rounded-xl border border-slate-800/80 shadow-inner">
                   <MarkdownView content={pf.body} />
                 </div>
 
                 {/* Đoạn code minh họa ngắn né bẫy (D-10: Python / C++) */}
                 {pf.code && (pf.code.python || pf.code.cpp) && (
                   <div className="space-y-2 pt-1">
-                    <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+                    <span className="text-[11px] font-semibold text-slate-300 uppercase tracking-wider block">
                       Đoạn mã minh họa cách né:
                     </span>
                     {pf.code.python && (

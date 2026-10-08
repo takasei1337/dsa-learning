@@ -219,7 +219,7 @@ export const CoreConcepts: React.FC<CoreConceptsProps> = ({
 
               {/* Nội dung Concept (C-02: Markdown + KaTeX, C-07: Error isolation) */}
               {!isCollapsed && (
-                <div className="p-5 text-xs text-slate-300 leading-relaxed bg-slate-950/40">
+                <div className="p-5 text-xs text-slate-100 leading-relaxed bg-slate-950/40 border-t border-slate-800/80">
                   <MarkdownView content={concept.body} />
                 </div>
               )}
@@ -264,7 +264,7 @@ export const CoreConcepts: React.FC<CoreConceptsProps> = ({
         <div className="overflow-x-auto max-w-full">
           <table className="w-full text-left text-xs min-w-[620px]">
             {/* Hàng tiêu đề cố định (C-11) */}
-            <thead className="bg-slate-950/95 text-slate-400 uppercase text-[11px] border-b border-slate-800 sticky top-0 backdrop-blur z-10 font-mono">
+            <thead className="bg-slate-950 text-slate-200 uppercase text-[11px] border-b border-slate-800 sticky top-0 backdrop-blur z-10 font-mono">
               <tr>
                 <th className="py-3 px-4 font-semibold">1. Cấu trúc / Thao tác</th>
                 <th className="py-3 px-4 font-semibold text-center w-28">2. Thời gian (Time)</th>
@@ -310,7 +310,7 @@ export const CoreConcepts: React.FC<CoreConceptsProps> = ({
                     </td>
 
                     {/* Cột 4: Ghi chú ngắn */}
-                    <td className="py-3.5 px-4 text-slate-400 text-[11px] leading-relaxed">
+                    <td className="py-3.5 px-4 text-slate-200 text-[11px] leading-relaxed">
                       <MathView math={row.note} />
                     </td>
 
