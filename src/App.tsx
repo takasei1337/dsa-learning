@@ -504,8 +504,13 @@ export const App: React.FC = () => {
 
       {/* Storage Management Modal */}
       {showDataModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative">
+        <div
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowDataModal(false)
+          }}
+          className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-sm p-4 sm:p-6 flex justify-center items-start"
+        >
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 my-6 sm:my-10 space-y-5 shadow-2xl relative">
             <button
               onClick={() => setShowDataModal(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 cursor-pointer"
