@@ -1,0 +1,67 @@
+# Dependencies & Packages
+node_modules/
+.pnp
+.pnp.js
+
+# Production Build Output
+dist/
+dist-ssr/
+build/
+*.local
+
+# Environment & Local Configuration
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+*.env*.local
+
+# Logs & Debug
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Testing & Coverage
+coverage/
+*.lcov
+.nyc_output/
+.vitest/
+
+# Vite / Bundler Cache
+.vite/
+.turbo/
+.cache/
+.eslintcache
+
+# Editor & IDE Config
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swo
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# Office & Temporary Lock Files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+*.tmp
+*.bak
