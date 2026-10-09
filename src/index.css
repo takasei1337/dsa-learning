@@ -1,42 +1,93 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html.light {
   color-scheme: light;
 }
 
-/* ========================================================
-   LIGHT MODE OVERRIDES (Tối ưu độ tương phản và giao diện sáng)
-   ======================================================== */
-
-html.light body {
-  background-color: #f8fafc;
-  color: #0f172a;
+html:not(.light),
+html.dark {
+  color-scheme: dark;
 }
 
-/* 1. Nền tổng thể và thanh Header */
+body {
+  background-color: #f8fafc;
+  color: #334155;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+html:not(.light) body,
+html.dark body {
+  background-color: #0f172a !important;
+  color: #e2e8f0 !important;
+}
+
+/* ========================================================
+   0. SMOOTH THEME TRANSITION (GPU Accelerated View Transitions)
+   ======================================================== */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fallback nhẹ nhàng: Chỉ transition trên body & header để giữ 60fps tuyệt đối */
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+header {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* ========================================================
+   1. HIGHER LEVEL CONTAINERS & HEADER (Nền & Thanh điều hướng)
+   ======================================================== */
+
+/* Light Mode Header & Backgrounds */
 html.light .bg-\[\#070b14\],
 html.light .bg-\[\#090d16\],
 html.light .bg-\[\#090d16\]\/90,
 html.light .bg-\[\#0b101d\],
 html.light .bg-\[\#0b101d\]\/80 {
-  background-color: #ffffff !important;
+  background-color: #f8fafc !important;
 }
 
 html.light header {
-  background-color: rgba(255, 255, 255, 0.92) !important;
+  background-color: rgba(255, 255, 255, 0.85) !important;
   border-bottom-color: #e2e8f0 !important;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.06) !important;
 }
 
-/* 2. Banner thông tin chương (Gradient sáng sang trọng, độ tương phản cao) */
+/* Dark Mode Header & Backgrounds (Soften to #0f172a Slate-900) */
+html:not(.light) .bg-\[\#070b14\],
+html.dark .bg-\[\#070b14\],
+html:not(.light) .bg-\[\#090d16\],
+html.dark .bg-\[\#090d16\],
+html:not(.light) .bg-\[\#090d16\]\/90,
+html.dark .bg-\[\#090d16\]\/90,
+html:not(.light) .bg-\[\#0b101d\],
+html.dark .bg-\[\#0b101d\] {
+  background-color: #0f172a !important;
+}
+
+html:not(.light) header,
+html.dark header {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  border-bottom-color: #334155 !important;
+}
+
+/* ========================================================
+   2. CHAPTER INFORMATION BANNER
+   ======================================================== */
+
 html.light .chapter-banner {
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #eef2ff 100%) !important;
-  border-color: #cbd5e1 !important;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.06) !important;
 }
 
 html.light .chapter-banner h2 {
@@ -44,7 +95,6 @@ html.light .chapter-banner h2 {
 }
 
 html.light .chapter-banner .text-slate-300,
-html.light .chapter-banner .markdown-body,
 html.light .chapter-banner p {
   color: #334155 !important;
 }
@@ -53,7 +103,28 @@ html.light .chapter-banner .text-slate-400 {
   color: #64748b !important;
 }
 
-/* 3. Khối container thẻ (Cards, Sections) */
+html:not(.light) .chapter-banner,
+html.dark .chapter-banner {
+  background: linear-gradient(135deg, #1e293b 0%, #172033 50%, #1e1b4b 100%) !important;
+  border-color: #334155 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3) !important;
+}
+
+html:not(.light) .chapter-banner h2,
+html.dark .chapter-banner h2 {
+  color: #f8fafc !important;
+}
+
+html:not(.light) .chapter-banner .text-slate-300,
+html.dark .chapter-banner .text-slate-300 {
+  color: #e2e8f0 !important;
+}
+
+/* ========================================================
+   3. CARD CONTAINERS & SECTIONS
+   ======================================================== */
+
+/* Light Mode Cards */
 html.light .bg-slate-900,
 html.light .bg-slate-900\/40,
 html.light .bg-slate-900\/50,
@@ -62,6 +133,7 @@ html.light .bg-slate-900\/80,
 html.light .bg-slate-900\/90,
 html.light .bg-slate-900\/95 {
   background-color: #ffffff !important;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.06) !important;
 }
 
 html.light .bg-slate-950,
@@ -71,7 +143,7 @@ html.light .bg-slate-950\/60,
 html.light .bg-slate-950\/70,
 html.light .bg-slate-950\/80,
 html.light .bg-slate-950\/90 {
-  background-color: #f8fafc !important;
+  background-color: #f1f5f9 !important;
 }
 
 html.light .bg-slate-800,
@@ -81,7 +153,42 @@ html.light .bg-slate-800\/80 {
   background-color: #f1f5f9 !important;
 }
 
-/* 4. Đường viền phân cách (Borders) */
+/* Dark Mode Cards */
+html:not(.light) .bg-slate-900,
+html.dark .bg-slate-900,
+html:not(.light) .bg-slate-900\/40,
+html.dark .bg-slate-900\/40,
+html:not(.light) .bg-slate-900\/60,
+html.dark .bg-slate-900\/60,
+html:not(.light) .bg-slate-900\/80,
+html.dark .bg-slate-900\/80,
+html:not(.light) .bg-slate-900\/90,
+html.dark .bg-slate-900\/90 {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+html:not(.light) .bg-slate-950,
+html.dark .bg-slate-950,
+html:not(.light) .bg-slate-950\/50,
+html.dark .bg-slate-950\/50,
+html:not(.light) .bg-slate-950\/60,
+html.dark .bg-slate-950\/60 {
+  background-color: rgba(51, 65, 85, 0.45) !important;
+  border-color: #334155 !important;
+}
+
+html:not(.light) .bg-slate-800,
+html.dark .bg-slate-800 {
+  background-color: #273449 !important;
+  border-color: #334155 !important;
+}
+
+/* ========================================================
+   4. BORDERS & TYPOGRAPHY
+   ======================================================== */
+
+/* Borders - Light Mode */
 html.light .border-slate-800,
 html.light .border-slate-800\/40,
 html.light .border-slate-800\/60,
@@ -93,14 +200,24 @@ html.light .border-slate-700\/80 {
   border-color: #e2e8f0 !important;
 }
 
-/* 5. Màu sắc văn bản (Text colors) */
+/* Borders - Dark Mode */
+html:not(.light) .border-slate-800,
+html.dark .border-slate-800,
+html:not(.light) .border-slate-800\/80,
+html.dark .border-slate-800\/80,
+html:not(.light) .border-slate-700,
+html.dark .border-slate-700 {
+  border-color: #334155 !important;
+}
+
+/* Text Colors - Light Mode */
 html.light .text-white,
 html.light .text-slate-100 {
   color: #0f172a !important;
 }
 
 html.light .text-slate-200 {
-  color: #1e293b !important;
+  color: #0f172a !important;
 }
 
 html.light .text-slate-300 {
@@ -108,80 +225,97 @@ html.light .text-slate-300 {
 }
 
 html.light .text-slate-400 {
-  color: #64748b !important;
+  color: #475569 !important;
 }
 
 html.light .text-slate-500 {
+  color: #5b6b82 !important;
+}
+
+/* Text Colors - Dark Mode */
+html:not(.light) .text-white,
+html.dark .text-white,
+html:not(.light) .text-slate-100,
+html.dark .text-slate-100 {
+  color: #f8fafc !important;
+}
+
+html:not(.light) .text-slate-200,
+html.dark .text-slate-200,
+html:not(.light) .text-slate-300,
+html.dark .text-slate-300 {
+  color: #e2e8f0 !important;
+}
+
+html:not(.light) .text-slate-400,
+html.dark .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+html:not(.light) .text-slate-500,
+html.dark .text-slate-500 {
   color: #64748b !important;
 }
 
-/* Các nhãn trạng thái và badge độ khó trong Light mode */
-html.light .text-emerald-400,
-html.light .text-emerald-300 {
-  color: #059669 !important;
+/* Links */
+html.light a {
+  color: #4f46e5;
+}
+html.light a:hover {
+  color: #4338ca;
+}
+html:not(.light) a,
+html.dark a {
+  color: #818cf8;
+}
+html:not(.light) a:hover,
+html.dark a:hover {
+  color: #a5b4fc;
 }
 
-html.light .text-amber-400,
-html.light .text-yellow-400 {
-  color: #d97706 !important;
-}
+/* ========================================================
+   5. SIDEBAR & CHAPTER SELECTION
+   ======================================================== */
 
-html.light .text-amber-300 {
-  color: #b45309 !important;
-}
-
-html.light .text-orange-400 {
-  color: #ea580c !important;
-}
-
-html.light .text-rose-400,
-html.light .text-rose-300 {
-  color: #e11d48 !important;
-}
-
-html.light .text-indigo-400,
-html.light .text-indigo-300 {
-  color: #4f46e5 !important;
-}
-
-html.light .text-cyan-400,
-html.light .text-cyan-300 {
-  color: #0891b2 !important;
-}
-
-/* 6. Hiệu ứng hover cho nút và hàng danh sách */
-html.light .hover\:bg-slate-800:hover,
-html.light .hover\:bg-slate-800\/30:hover,
-html.light .hover\:bg-slate-800\/40:hover,
-html.light .hover\:bg-slate-800\/60:hover,
-html.light .hover\:bg-slate-800\/80:hover {
-  background-color: #f1f5f9 !important;
-}
-
-/* 7. Sidebar danh mục chương */
+/* Sidebar - Light Mode */
 html.light aside nav button,
 html.light .fixed.inset-0 nav button {
-  background-color: #f8fafc !important;
+  background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04) !important;
 }
 
 html.light aside nav button:hover,
 html.light .fixed.inset-0 nav button:hover {
-  background-color: #f1f5f9 !important;
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
 }
 
 html.light aside nav button[aria-current="page"],
 html.light .fixed.inset-0 nav button[aria-current="page"] {
   background-color: #eef2ff !important;
-  border-color: #a5b4fc !important;
+  border-color: #c7d2fe !important;
+  position: relative !important;
+}
+
+html.light aside nav button[aria-current="page"]::before,
+html.light .fixed.inset-0 nav button[aria-current="page"]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10%;
+  bottom: 10%;
+  width: 4px;
+  background-color: #4f46e5;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 html.light aside nav button[aria-current="page"] span.font-semibold,
 html.light .fixed.inset-0 nav button[aria-current="page"] span.font-semibold {
-  color: #1e1b4b !important;
+  color: #3730a3 !important;
 }
 
-/* Sửa tương phản cho số thứ tự chương (Order Badge) cạnh tên chương học trong Light Mode */
 html.light aside nav button .bg-indigo-600,
 html.light .fixed.inset-0 nav button .bg-indigo-600,
 html.light nav button .bg-indigo-600 {
@@ -189,668 +323,451 @@ html.light nav button .bg-indigo-600 {
   color: #ffffff !important;
 }
 
-html.light aside nav button .bg-indigo-600 *,
-html.light .fixed.inset-0 nav button .bg-indigo-600 *,
-html.light nav button .bg-indigo-600 * {
-  color: #ffffff !important;
-}
-
 html.light aside nav button .bg-emerald-600,
 html.light .fixed.inset-0 nav button .bg-emerald-600,
 html.light nav button .bg-emerald-600 {
-  background-color: #059669 !important;
-  color: #ffffff !important;
-}
-
-html.light aside nav button .bg-emerald-600 *,
-html.light .fixed.inset-0 nav button .bg-emerald-600 *,
-html.light nav button .bg-emerald-600 * {
+  background-color: #047857 !important;
   color: #ffffff !important;
 }
 
 html.light aside nav button .bg-slate-800,
 html.light .fixed.inset-0 nav button .bg-slate-800,
 html.light nav button .bg-slate-800 {
-  background-color: #e2e8f0 !important;
-  color: #334155 !important;
-}
-
-html.light aside nav button .bg-slate-800 *,
-html.light .fixed.inset-0 nav button .bg-slate-800 *,
-html.light nav button .bg-slate-800 * {
-  color: #334155 !important;
-}
-
-/* 8. Bảng độ phức tạp CoreConcepts */
-html.light table thead,
-html.light table thead tr,
-html.light table thead th {
   background-color: #f1f5f9 !important;
-  color: #0f172a !important;
-  border-bottom-color: #e2e8f0 !important;
+  color: #475569 !important;
 }
 
-html.light table thead th * {
-  color: #0f172a !important;
-}
-
-html.light table tbody tr:hover {
-  background-color: #f8fafc !important;
-}
-
-/* 9. Thẻ cảnh báo Bẫy thường gặp (Pitfalls) trong Light Mode */
-
-/* 9.1. Thẻ loại Edge Case (Amber) */
-html.light .bg-amber-950\/10,
-html.light .bg-amber-950\/20,
-html.light .bg-amber-950\/30 {
-  background-color: #fffbeb !important;
-  border-color: #fcd34d !important;
-}
-
-html.light .bg-amber-950\/10 .p-2.rounded-xl,
-html.light .bg-amber-950\/20 .p-2.rounded-xl,
-html.light .bg-amber-950\/30 .p-2.rounded-xl {
-  background-color: #fef3c7 !important;
-  border-color: #f59e0b !important;
-  color: #b45309 !important;
-}
-
-html.light .bg-amber-950\/10 .p-2.rounded-xl svg,
-html.light .bg-amber-950\/20 .p-2.rounded-xl svg,
-html.light .bg-amber-950\/30 .p-2.rounded-xl svg {
-  stroke: #b45309 !important;
-}
-
-html.light .bg-amber-500\/15 {
-  background-color: #fef3c7 !important;
-  border-color: #f59e0b !important;
-  color: #92400e !important;
-}
-
-html.light .bg-amber-500\/15 * {
-  color: #92400e !important;
-}
-
-/* 9.2. Thẻ loại Tràn số (Rose) */
-html.light .bg-rose-950\/10,
-html.light .bg-rose-950\/20,
-html.light .bg-rose-950\/30 {
-  background-color: #fff1f2 !important;
-  border-color: #fecdd3 !important;
-}
-
-html.light .bg-rose-950\/10 .p-2.rounded-xl,
-html.light .bg-rose-950\/20 .p-2.rounded-xl,
-html.light .bg-rose-950\/30 .p-2.rounded-xl {
-  background-color: #ffe4e6 !important;
-  border-color: #fda4af !important;
-  color: #be123c !important;
-}
-
-html.light .bg-rose-950\/10 .p-2.rounded-xl svg,
-html.light .bg-rose-950\/20 .p-2.rounded-xl svg,
-html.light .bg-rose-950\/30 .p-2.rounded-xl svg {
-  stroke: #be123c !important;
-}
-
-html.light .bg-rose-500\/15 {
-  background-color: #ffe4e6 !important;
-  border-color: #fda4af !important;
-  color: #9f1239 !important;
-}
-
-html.light .bg-rose-500\/15 * {
-  color: #9f1239 !important;
-}
-
-/* 9.3. Thẻ loại Bộ nhớ (Purple) */
-html.light .bg-purple-950\/10,
-html.light .bg-purple-950\/20,
-html.light .bg-purple-950\/30 {
-  background-color: #faf5ff !important;
-  border-color: #e9d5ff !important;
-}
-
-html.light .bg-purple-950\/10 .p-2.rounded-xl,
-html.light .bg-purple-950\/20 .p-2.rounded-xl,
-html.light .bg-purple-950\/30 .p-2.rounded-xl {
-  background-color: #f3e8ff !important;
-  border-color: #d8b4fe !important;
-  color: #6b21a8 !important;
-}
-
-html.light .bg-purple-950\/10 .p-2.rounded-xl svg,
-html.light .bg-purple-950\/20 .p-2.rounded-xl svg,
-html.light .bg-purple-950\/30 .p-2.rounded-xl svg {
-  stroke: #6b21a8 !important;
-}
-
-html.light .bg-purple-500\/15 {
-  background-color: #f3e8ff !important;
-  border-color: #d8b4fe !important;
-  color: #6b21a8 !important;
-}
-
-html.light .bg-purple-500\/15 * {
-  color: #6b21a8 !important;
-}
-
-/* 9.4. Nội dung mô tả chi tiết bên trong thẻ Pitfalls */
-html.light .bg-slate-950\/50 {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #1e293b !important;
-}
-
-html.light .bg-slate-950\/50 .markdown-body p,
-html.light .bg-slate-950\/50 .markdown-body div {
-  color: #1e293b !important;
-}
-
-html.light .bg-slate-950\/50 .markdown-body code:not(pre code) {
-  background-color: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
-  color: #4338ca !important;
-}
-
-html.light .bg-slate-950\/50 .text-indigo-400 {
-  color: #4f46e5 !important;
-}
-
-html.light .text-amber-200,
-html.light .text-amber-200\/90,
-html.light .text-amber-300 {
-  color: #92400e !important;
-}
-
-html.light .text-rose-200,
-html.light .text-rose-300 {
-  color: #9f1239 !important;
-}
-
-html.light .text-purple-200,
-html.light .text-purple-300 {
-  color: #6b21a8 !important;
-}
-
-/* 10. Modal và biểu mẫu nhập liệu */
-html.light .fixed.inset-0 .bg-slate-900,
-html.light [role="dialog"] {
-  background-color: #ffffff !important;
-  border-color: #e2e8f0 !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-}
-
-html.light input,
-html.light textarea,
-html.light select {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
-}
-
-html.light input:focus,
-html.light textarea:focus,
-html.light select:focus {
-  border-color: #6366f1 !important;
-  box-shadow: 0 0 0 1px #6366f1 !important;
-}
-
-/* 11. Cô lập và bảo vệ giao diện Dark Editor của CodeViewer trong cả 2 theme */
-.code-viewer-container,
-html.light .code-viewer-container {
-  background-color: #0d1117 !important;
-  border-color: #30363d !important;
-  color: #e6edf3 !important;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.15) !important;
-}
-
-html.light .code-viewer-container .code-viewer-header,
-.code-viewer-container .code-viewer-header {
-  background-color: #161b22 !important;
-  border-bottom-color: #30363d !important;
-  color: #8b949e !important;
-}
-
-html.light .code-viewer-container .code-viewer-title,
-.code-viewer-container .code-viewer-title {
-  color: #e6edf3 !important;
-}
-
-html.light .code-viewer-container .code-viewer-lang,
-.code-viewer-container .code-viewer-lang {
-  background-color: #21262d !important;
-  color: #8b949e !important;
-  border: 1px solid #30363d !important;
-}
-
-html.light .code-viewer-container .code-viewer-copy,
-.code-viewer-container .code-viewer-copy {
-  background-color: #21262d !important;
-  color: #c9d1d9 !important;
-  border-color: #30363d !important;
-}
-
-html.light .code-viewer-container .code-viewer-copy:hover,
-.code-viewer-container .code-viewer-copy:hover {
-  background-color: #30363d !important;
-  color: #ffffff !important;
-}
-
-html.light .code-viewer-container .code-viewer-body,
-.code-viewer-container .code-viewer-body {
-  background-color: #0d1117 !important;
-}
-
-html.light .code-viewer-container .code-viewer-gutter,
-.code-viewer-container .code-viewer-gutter {
-  background-color: #161b22 !important;
-  border-right-color: #30363d !important;
-  color: #6e7681 !important;
-}
-
-html.light .code-viewer-container pre,
-.code-viewer-container pre,
-html.light .code-viewer-container code,
-.code-viewer-container code,
-html.light .code-viewer-container code[class*="language-"],
-.code-viewer-container code[class*="language-"] {
-  color: #e6edf3 !important;
-  background-color: transparent !important;
-  text-shadow: none !important;
-}
-
-/* Các token cú pháp Prism trên nền tối */
-html.light .code-viewer-container .token.comment,
-.code-viewer-container .token.comment,
-html.light .code-viewer-container .token.prolog,
-.code-viewer-container .token.prolog {
-  color: #8b949e !important;
-  font-style: italic;
-}
-
-html.light .code-viewer-container .token.punctuation,
-.code-viewer-container .token.punctuation {
-  color: #e6edf3 !important;
-}
-
-html.light .code-viewer-container .token.boolean,
-.code-viewer-container .token.boolean,
-html.light .code-viewer-container .token.number,
-.code-viewer-container .token.number,
-html.light .code-viewer-container .token.constant,
-.code-viewer-container .token.constant {
-  color: #79c0ff !important;
-}
-
-html.light .code-viewer-container .token.string,
-.code-viewer-container .token.string,
-html.light .code-viewer-container .token.char,
-.code-viewer-container .token.char {
-  color: #a5d6ff !important;
-}
-
-html.light .code-viewer-container .token.operator,
-.code-viewer-container .token.operator,
-html.light .code-viewer-container .token.keyword,
-.code-viewer-container .token.keyword {
-  color: #ff7b72 !important;
-}
-
-html.light .code-viewer-container .token.function,
-.code-viewer-container .token.function,
-html.light .code-viewer-container .token.class-name,
-.code-viewer-container .token.class-name {
-  color: #d2a8ff !important;
-}
-
-html.light .code-viewer-container .token.variable,
-.code-viewer-container .token.variable {
-  color: #ffa657 !important;
-}
-
-/* Khối mã Markdown ``` */
-.markdown-body pre,
-html.light .markdown-body pre {
-  background-color: #0d1117 !important;
-  border-color: #30363d !important;
-  color: #79c0ff !important;
-}
-
-.markdown-body pre code,
-html.light .markdown-body pre code {
-  color: #79c0ff !important;
-  background-color: transparent !important;
-}
-
-/* Mã inline `...` */
-.markdown-body code:not(pre code) {
+/* Sidebar - Dark Mode */
+html:not(.light) aside nav button,
+html.dark aside nav button,
+html:not(.light) .fixed.inset-0 nav button,
+html.dark .fixed.inset-0 nav button {
   background-color: #1e293b !important;
-  color: #c7d2fe !important;
   border-color: #334155 !important;
 }
 
-html.light .markdown-body code:not(pre code) {
-  background-color: #f1f5f9 !important;
-  color: #4338ca !important;
-  border-color: #cbd5e1 !important;
+html:not(.light) aside nav button:hover,
+html.dark aside nav button:hover {
+  background-color: #273449 !important;
 }
 
-/* 12. KaTeX toán học và văn bản Markdown sắc nét */
-.markdown-body {
-  color: #f1f5f9;
+html:not(.light) aside nav button[aria-current="page"],
+html.dark aside nav button[aria-current="page"] {
+  background-color: rgba(99, 102, 241, 0.18) !important;
+  border-color: #818cf8 !important;
 }
 
-.markdown-body p,
-.markdown-body div,
-.markdown-body li {
-  color: #f1f5f9;
+html:not(.light) aside nav button[aria-current="page"] span.font-semibold,
+html.dark aside nav button[aria-current="page"] span.font-semibold {
+  color: #e0e7ff !important;
 }
 
-.markdown-body strong {
-  color: #ffffff !important;
-  font-weight: 700;
-}
-
-.markdown-body em {
-  color: #e2e8f0;
-}
-
-.markdown-body h3,
-.markdown-body h4,
-.markdown-body h5 {
+html:not(.light) aside nav button .bg-indigo-600,
+html.dark aside nav button .bg-indigo-600 {
+  background-color: #6366f1 !important;
   color: #ffffff !important;
 }
 
-.markdown-body .inline-math,
-.markdown-body .katex {
-  color: #f8fafc;
-}
-
-/* Table trong MarkdownView - Dark Mode (Mặc định) */
-.markdown-body table {
-  background-color: #0b1120 !important;
-  border-color: #1e293b !important;
-}
-
-.markdown-body table thead,
-.markdown-body table thead tr,
-.markdown-body table thead th {
-  background-color: #020617 !important;
-  color: #ffffff !important;
-  font-weight: 700 !important;
-  border-bottom: 2px solid #334155 !important;
-}
-
-.markdown-body table thead th * {
+html:not(.light) aside nav button .bg-emerald-600,
+html.dark aside nav button .bg-emerald-600 {
+  background-color: #059669 !important;
   color: #ffffff !important;
 }
 
-.markdown-body table tbody tr {
-  background-color: #0b1120 !important;
-}
-
-.markdown-body table tbody tr:hover {
-  background-color: #162035 !important;
-}
-
-.markdown-body table tbody td {
-  color: #f1f5f9 !important;
-  border-bottom: 1px solid #1e293b !important;
-}
-
-.markdown-body table tbody td * {
-  color: #f1f5f9 !important;
-}
-
-.markdown-body table tbody td strong {
-  color: #ffffff !important;
-  font-weight: 700;
-}
-
-.markdown-body table tbody td .katex {
-  color: #f8fafc !important;
-}
-
-/* Light mode overrides cho Markdown */
-html.light .markdown-body,
-html.light .markdown-body p,
-html.light .markdown-body div,
-html.light .markdown-body li {
-  color: #1e293b !important;
-}
-
-html.light .markdown-body strong {
-  color: #0f172a !important;
-  font-weight: 700;
-}
-
-html.light .markdown-body em {
-  color: #334155 !important;
-}
-
-html.light .markdown-body h3,
-html.light .markdown-body h4,
-html.light .markdown-body h5 {
-  color: #0f172a !important;
-}
-
-html.light .markdown-body .inline-math,
-html.light .markdown-body .katex,
-html.light .katex,
-html.light .katex-html {
-  color: #0f172a !important;
-}
-
-html.light .markdown-body table {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-}
-
-html.light .markdown-body table thead,
-html.light .markdown-body table thead tr,
-html.light .markdown-body table thead th {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
-  font-weight: 700 !important;
-  border-bottom: 2px solid #cbd5e1 !important;
-}
-
-html.light .markdown-body table thead th,
-html.light .markdown-body table thead th * {
-  color: #0f172a !important;
-}
-
-html.light .markdown-body table tbody tr {
-  background-color: #ffffff !important;
-}
-
-html.light .markdown-body table tbody tr:hover {
-  background-color: #f8fafc !important;
-}
-
-html.light .markdown-body table tbody td {
-  color: #0f172a !important;
-  border-bottom: 1px solid #e2e8f0 !important;
-}
-
-html.light .markdown-body table tbody td,
-html.light .markdown-body table tbody td *,
-html.light .markdown-body table tbody td .katex,
-html.light .markdown-body table tbody td .katex *,
-html.light .markdown-body table tbody td .katex-html,
-html.light .markdown-body table tbody td .katex-html *,
-html.light .markdown-body table tbody td .inline-math,
-html.light .markdown-body table tbody td .inline-math * {
-  color: #0f172a !important;
-}
-
-html.light .markdown-body table tbody td strong {
-  color: #0f172a !important;
-  font-weight: 700 !important;
-}
-
-html.light .markdown-body table tbody td code {
-  color: #0f172a !important;
-  background-color: #f1f5f9 !important;
-}
-
-html.light .markdown-body blockquote {
-  background-color: #eef2ff !important;
-  border-left-color: #6366f1 !important;
-  color: #312e81 !important;
+html:not(.light) aside nav button .bg-slate-800,
+html.dark aside nav button .bg-slate-800 {
+  background-color: #334155 !important;
+  color: #cbd5e1 !important;
 }
 
 /* ========================================================
-   13. TỐI ƯU ĐẶC BIỆT MÀU SẮC VÀ ĐỘ TƯƠNG PHẢN CHO TẤT CẢ NÚT (BUTTONS & CONTROLS) TRONG LIGHT MODE
+   6. SHORTCUT BADGES (<kbd>)
    ======================================================== */
 
-/* 13.1. Các nút trên thanh Header */
-html.light header button {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #334155 !important;
+/* kbd - Light Mode */
+html.light kbd {
+  background-color: #f8fafc !important;
+  border: 1px solid #94a3b8 !important;
+  color: #475569 !important;
+  font-weight: 600 !important;
 }
 
-html.light header button:hover {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
+html.light nav[aria-label="Điều hướng chương tuần tự"] button kbd,
+html.light nav[aria-label="Điều hướng chương tuần tự"] kbd {
+  background-color: #f8fafc !important;
+  border: 1px solid #94a3b8 !important;
+  color: #475569 !important;
+  font-weight: 600 !important;
 }
 
-/* Nút Chế độ biên tập khi BẬT */
-html.light header button.bg-amber-500\/15,
-html.light header button[title*="Biên tập"].bg-amber-500\/15 {
-  background-color: #fef3c7 !important;
-  border-color: #f59e0b !important;
-  color: #92400e !important;
+html.light nav[aria-label="Điều hướng chương tuần tự"] button.bg-indigo-950\/20 kbd {
+  background-color: #f8fafc !important;
+  border: 1px solid #94a3b8 !important;
+  color: #475569 !important;
+  font-weight: 600 !important;
 }
 
-html.light header button.bg-amber-500\/15 strong {
+/* kbd - Dark Mode */
+html:not(.light) kbd,
+html.dark kbd {
+  background-color: #334155 !important;
+  border: 1px solid #475569 !important;
+  color: #e0e7ff !important;
+  font-weight: 600 !important;
+}
+
+/* ========================================================
+   7. STATUS & SEMANTIC CARDS / BADGES (Pastel Tones)
+   ======================================================== */
+
+/* 🟢 Dễ / Thành công / Đã làm */
+html.light .bg-emerald-500\/10,
+html.light .bg-emerald-500\/15,
+html.light .bg-emerald-500\/20,
+html.light .bg-emerald-950\/15 {
+  background-color: #ecfdf5 !important;
+  border-color: #a7f3d0 !important;
+  color: #047857 !important;
+}
+
+html.light .text-emerald-400,
+html.light .text-emerald-300 {
+  color: #047857 !important;
+}
+
+html:not(.light) .bg-emerald-500\/10,
+html.dark .bg-emerald-500\/10,
+html:not(.light) .bg-emerald-500\/15,
+html.dark .bg-emerald-500\/15,
+html:not(.light) .bg-emerald-500\/20,
+html.dark .bg-emerald-500\/20,
+html:not(.light) .bg-emerald-950\/15,
+html.dark .bg-emerald-950\/15 {
+  background-color: rgba(52, 211, 153, 0.12) !important;
+  border-color: rgba(52, 211, 153, 0.3) !important;
+}
+
+html:not(.light) .text-emerald-400,
+html.dark .text-emerald-400,
+html:not(.light) .text-emerald-300,
+html.dark .text-emerald-300 {
+  color: #6ee7b7 !important;
+}
+
+/* 🟡 Trung bình / Edge Case / Biên tập */
+html.light .bg-amber-950\/10,
+html.light .bg-amber-950\/20,
+html.light .bg-amber-950\/30,
+html.light .bg-amber-500\/10,
+html.light .bg-amber-500\/15,
+html.light .bg-amber-500\/20 {
+  background-color: #fffbeb !important;
+  border-color: #fde68a !important;
   color: #b45309 !important;
 }
 
-html.light header button.bg-amber-500\/15 svg {
-  stroke: #b45309 !important;
+html.light .text-amber-400,
+html.light .text-amber-300,
+html.light .text-yellow-400 {
+  color: #b45309 !important;
 }
 
-/* 13.2. Nút Thêm (+), Sửa (bút chì), Xóa (thùng rác) */
-/* Nút Thêm mới */
-html.light button.bg-indigo-600,
-html.light button.bg-cyan-600,
-html.light button.bg-emerald-600,
-html.light button.bg-amber-600,
-html.light button.bg-purple-600 {
-  color: #ffffff !important;
+html:not(.light) .bg-amber-950\/10,
+html.dark .bg-amber-950\/10,
+html:not(.light) .bg-amber-500\/15,
+html.dark .bg-amber-500\/15 {
+  background-color: rgba(251, 191, 36, 0.12) !important;
+  border-color: rgba(251, 191, 36, 0.3) !important;
 }
 
-/* Nút Sửa (Inline Edit) */
-html.light button[title*="Sửa"],
-html.light button[title*="Chỉnh sửa"] {
+html:not(.light) .text-amber-400,
+html.dark .text-amber-400,
+html:not(.light) .text-amber-300,
+html.dark .text-amber-300 {
+  color: #fcd34d !important;
+}
+
+/* 🔴 Khó / Tràn số / Xóa */
+html.light .bg-rose-950\/10,
+html.light .bg-rose-950\/20,
+html.light .bg-rose-950\/30,
+html.light .bg-rose-500\/10,
+html.light .bg-rose-500\/15,
+html.light .bg-rose-500\/20 {
+  background-color: #fff1f2 !important;
+  border-color: #fecdd3 !important;
+  color: #be123c !important;
+}
+
+html.light .text-rose-400,
+html.light .text-rose-300 {
+  color: #be123c !important;
+}
+
+html:not(.light) .bg-rose-950\/10,
+html.dark .bg-rose-950\/10,
+html:not(.light) .bg-rose-500\/15,
+html.dark .bg-rose-500\/15 {
+  background-color: rgba(251, 113, 133, 0.12) !important;
+  border-color: rgba(251, 113, 133, 0.3) !important;
+}
+
+html:not(.light) .text-rose-400,
+html.dark .text-rose-400,
+html:not(.light) .text-rose-300,
+html.dark .text-rose-300 {
+  color: #fda4af !important;
+}
+
+/* 🟣 Bộ nhớ / Giải thuật mẫu / Ghi chú / Từ khóa nhận diện / Hint */
+html.light .bg-purple-950\/10,
+html.light .bg-purple-950\/20,
+html.light .bg-purple-950\/30,
+html.light .bg-purple-500\/10,
+html.light .bg-purple-500\/15,
+html.light .bg-purple-500\/20,
+html.light .bg-indigo-500\/10,
+html.light .bg-indigo-500\/15,
+html.light .bg-indigo-500\/20,
+html.light .bg-indigo-600\/15,
+html.light .bg-indigo-600\/20,
+html.light .bg-indigo-950\/15,
+html.light .bg-indigo-950\/20,
+html.light .bg-indigo-950\/40 {
+  background-color: #f5f3ff !important;
+  border-color: #ddd6fe !important;
+  color: #3730a3 !important;
+}
+
+html.light .text-purple-400,
+html.light .text-purple-300,
+html.light .text-violet-400,
+html.light .text-violet-300,
+html.light .text-indigo-400,
+html.light .text-indigo-300,
+html.light .text-indigo-200,
+html.light .text-indigo-100 {
+  color: #3730a3 !important;
+}
+
+html:not(.light) .bg-purple-950\/10,
+html.dark .bg-purple-950\/10,
+html:not(.light) .bg-purple-500\/15,
+html.dark .bg-purple-500\/15 {
+  background-color: rgba(167, 139, 250, 0.14) !important;
+  border-color: rgba(167, 139, 250, 0.3) !important;
+}
+
+html:not(.light) .text-purple-400,
+html.dark .text-purple-400,
+html:not(.light) .text-purple-300,
+html.dark .text-purple-300 {
+  color: #c4b5fd !important;
+}
+
+/* 🔵 Thông tin / Mẹo (Cyan/Blue) */
+html.light .bg-cyan-500\/10,
+html.light .bg-cyan-500\/15,
+html.light .bg-cyan-500\/20 {
+  background-color: #f0f9ff !important;
+  border-color: #bae6fd !important;
+  color: #0369a1 !important;
+}
+
+html.light .text-cyan-400,
+html.light .text-cyan-300 {
+  color: #0369a1 !important;
+}
+
+html.light .text-yellow-400,
+html.light .text-yellow-300 {
+  color: #92400e !important;
+}
+
+html.light .text-orange-400,
+html.light .text-orange-300 {
+  color: #c2410c !important;
+}
+
+html.light .text-red-400,
+html.light .text-red-300 {
+  color: #b91c1c !important;
+}
+
+/* ========================================================
+   7B. TEMPLATE & PROBLEM CALLOUTS (Light Mode Contrast Overrides)
+   ======================================================== */
+
+/* Bí quyết tư duy nhanh / Khi nào nên áp dụng */
+html.light .template-when-callout {
+  background-color: #fffbeb !important;
+  border-color: #fde68a !important;
+  color: #1e293b !important;
+}
+html.light .template-when-callout strong,
+html.light .template-when-callout .text-amber-300,
+html.light .template-when-callout .text-amber-400 {
+  color: #92400e !important;
+}
+html.light .template-when-callout .text-slate-300,
+html.light .template-when-callout p,
+html.light .template-when-callout div {
+  color: #1e293b !important;
+}
+
+/* Điều chỉnh biến thể & Lưu ý cài đặt */
+html.light .template-notes-callout {
+  background-color: #f5f3ff !important;
+  border-color: #ddd6fe !important;
+  color: #1e293b !important;
+}
+html.light .template-notes-callout strong,
+html.light .template-notes-callout .text-indigo-300,
+html.light .template-notes-callout .text-indigo-400 {
+  color: #3730a3 !important;
+}
+html.light .template-notes-callout .text-slate-300,
+html.light .template-notes-callout p,
+html.light .template-notes-callout div {
+  color: #1e293b !important;
+}
+
+/* Nút gợi ý (Hint Toggle Button) & Khối gợi ý thuật toán */
+html.light .prob-hint-btn {
   background-color: #ffffff !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #4338ca !important;
+  border-color: #8493a8 !important;
+  color: #334155 !important;
 }
-
-html.light button[title*="Sửa"]:hover,
-html.light button[title*="Chỉnh sửa"]:hover {
-  background-color: #e0e7ff !important;
-  border-color: #818cf8 !important;
-  color: #312e81 !important;
+html.light .prob-hint-btn:hover {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
 }
-
-/* Nút Xóa (Inline Delete) */
-html.light button[title*="Xóa"]:not(.bg-rose-600) {
-  background-color: #ffffff !important;
-  border: 1px solid #fecaca !important;
-  color: #dc2626 !important;
-}
-
-html.light button[title*="Xóa"]:not(.bg-rose-600):hover {
-  background-color: #fee2e2 !important;
-  border-color: #f87171 !important;
-  color: #991b1b !important;
-}
-
-/* Nút Thêm chương mới nét đứt trong Sidebar */
-html.light aside button.border-dashed {
+html.light .prob-hint-btn.bg-indigo-600\/20 {
   background-color: #eef2ff !important;
   border-color: #818cf8 !important;
-  color: #4338ca !important;
+  color: #3730a3 !important;
+  font-weight: 700 !important;
 }
 
-html.light aside button.border-dashed:hover {
-  background-color: #e0e7ff !important;
-  border-color: #6366f1 !important;
-  color: #312e81 !important;
+/* Khối Gợi Ý Giải Thuật Nội Dung */
+html.light .bg-indigo-950\/20 {
+  background-color: #f5f3ff !important;
+  border-color: #c7d2fe !important;
+}
+html.light .bg-indigo-950\/20 strong,
+html.light .bg-indigo-950\/20 .text-indigo-300,
+html.light .bg-indigo-950\/20 .text-indigo-400 {
+  color: #3730a3 !important;
 }
 
-/* 13.3. Các bộ lọc trạng thái & độ khó (Status Filters & Tabs) */
-/* Tab "Tất cả" đang chọn */
-html.light #problems-section .prob-status-tabs button.bg-slate-800,
-html.light #problems-section .prob-status-tab-all {
-  background-color: #0f172a !important;
-  border-color: #0f172a !important;
-  color: #ffffff !important;
+/* ========================================================
+   7C. PATTERN & CORE CONCEPTS SPECIFIC BADGES (Light Mode Overrides)
+   ======================================================== */
+
+/* 1. Thẻ Từ Khóa Nhận Diện (Pattern Keyword Tag) */
+html.light .pattern-keyword-tag {
+  background-color: #eef2ff !important;
+  border-color: #c7d2fe !important;
+  color: #3730a3 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.05) !important;
 }
 
-html.light #problems-section .prob-status-tabs button.bg-slate-800 span,
-html.light #problems-section .prob-status-tab-all span {
-  color: #ffffff !important;
+html.light .pattern-keywords-title {
+  color: #3730a3 !important;
 }
 
-/* Tab "Chưa làm" đang chọn */
-html.light #problems-section button.bg-amber-500\/20 {
-  background-color: #fef3c7 !important;
-  border-color: #f59e0b !important;
-  color: #92400e !important;
+/* 2. Badge "Dạng bài & Bẫy" ở Header Module D */
+html.light .pattern-recognition-badge {
+  background-color: #f5f3ff !important;
+  border-color: #ddd6fe !important;
+  color: #5b21b6 !important;
+  font-weight: 700 !important;
 }
 
-html.light #problems-section button.bg-amber-500\/20 * {
-  color: #92400e !important;
+/* 3. Badge "Khái niệm cốt lõi" ở Header Module C */
+html.light .core-concepts-badge {
+  background-color: #f0f9ff !important;
+  border-color: #bae6fd !important;
+  color: #0369a1 !important;
+  font-weight: 700 !important;
 }
 
-/* Tab "Đã làm" đang chọn */
-html.light #problems-section button.bg-emerald-500\/20 {
-  background-color: #d1fae5 !important;
-  border-color: #10b981 !important;
-  color: #065f46 !important;
+/* 4. Khối Bí Quyết Tư Duy Nhanh (Pattern Reflex Box) */
+html.light .pattern-reflex-box {
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
 }
-
-html.light #problems-section button.bg-emerald-500\/20 * {
-  color: #065f46 !important;
+html.light .pattern-reflex-box span {
+  color: #475569 !important;
 }
-
-/* Tab không chọn trong ProblemList */
-html.light #problems-section button.text-slate-400 {
-  color: #64748b !important;
-}
-
-html.light #problems-section button.text-slate-400:hover {
+html.light .pattern-reflex-box p,
+html.light .pattern-reflex-box div {
   color: #0f172a !important;
-  background-color: #f1f5f9 !important;
 }
 
-/* Bộ lọc phân loại bẫy Pitfalls */
-html.light section[aria-labelledby="pattern-recognition-heading"] .bg-slate-900 {
-  background-color: #f1f5f9 !important;
+/* 5. Nút "Lưu ghi chú" (Save note button) & Nút Tím/Purple Primary Buttons */
+html.light button.bg-purple-600,
+html.light .prob-note-editor button.bg-purple-600 {
+  background-color: #7c3aed !important;
+  color: #ffffff !important;
+}
+html.light button.bg-purple-600:hover,
+html.light .prob-note-editor button.bg-purple-600:hover {
+  background-color: #6d28d9 !important;
+  color: #ffffff !important;
+}
+html.light .bg-indigo-950\/20 .text-slate-300,
+html.light .bg-indigo-950\/20 p,
+html.light .bg-indigo-950\/20 li,
+html.light .bg-indigo-950\/20 div {
+  color: #1e293b !important;
+}
+
+/* Nền khi hover vào hàng bài tập */
+html.light .problem-item-row {
+  background-color: #ffffff;
+  border-bottom-color: #e2e8f0 !important;
+}
+html.light .problem-item-row:hover {
+  background-color: #f8fafc !important;
+}
+html.light .problem-item-row.bg-emerald-950\/15 {
+  background-color: #ecfdf5 !important;
+}
+
+/* Thanh cấp độ / Progress bar track */
+html.light .w-32.bg-slate-900,
+html.light .w-44.bg-slate-900,
+html.light .bg-slate-900.rounded-full.h-2\.5 {
+  background-color: #e2e8f0 !important;
   border-color: #cbd5e1 !important;
 }
 
-html.light section[aria-labelledby="pattern-recognition-heading"] button.text-slate-400 {
-  color: #64748b !important;
+html:not(.light) .bg-cyan-500\/10,
+html.dark .bg-cyan-500\/10,
+html:not(.light) .bg-cyan-500\/15,
+html.dark .bg-cyan-500\/15 {
+  background-color: rgba(56, 189, 248, 0.12) !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
 }
 
-html.light section[aria-labelledby="pattern-recognition-heading"] button.text-slate-400:hover {
-  color: #0f172a !important;
-  background-color: #e2e8f0 !important;
+html:not(.light) .text-cyan-400,
+html.dark .text-cyan-400,
+html:not(.light) .text-cyan-300,
+html.dark .text-cyan-300 {
+  color: #7dd3fc !important;
 }
 
-/* 13.4. Các nút hành động trên từng dòng bài tập */
-/* Nút LeetCode */
+/* ========================================================
+   8. EXTERNAL LINKS (LeetCode & NeetCode)
+   ======================================================== */
+
+/* LeetCode Button - Light Mode */
 html.light a[href*="leetcode.com"] {
   background-color: #fffbeb !important;
-  border: 1px solid #fcd34d !important;
+  border: 1px solid #fde68a !important;
   color: #b45309 !important;
   font-weight: 600 !important;
 }
@@ -861,7 +778,16 @@ html.light a[href*="leetcode.com"]:hover {
   color: #78350f !important;
 }
 
-/* Nút NeetCode */
+/* LeetCode Button - Dark Mode */
+html:not(.light) a[href*="leetcode.com"],
+html.dark a[href*="leetcode.com"] {
+  background-color: rgba(251, 191, 36, 0.1) !important;
+  border: 1px solid rgba(251, 191, 36, 0.3) !important;
+  color: #fcd34d !important;
+  font-weight: 600 !important;
+}
+
+/* NeetCode Button - Light Mode */
 html.light a[href*="neetcode.io"] {
   background-color: #ecfeff !important;
   border: 1px solid #a5f3fc !important;
@@ -875,555 +801,713 @@ html.light a[href*="neetcode.io"]:hover {
   color: #155e75 !important;
 }
 
-/* Nút Gợi ý (Hint) */
-html.light button.bg-indigo-600\/20 {
-  background-color: #eef2ff !important;
-  border-color: #818cf8 !important;
-  color: #3730a3 !important;
-}
-
-html.light button.border-slate-700\/80 {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #334155 !important;
-}
-
-html.light button.border-slate-700\/80:hover {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
-}
-
-/* Nút Ghi chú (Note) khi có ghi chú */
-html.light button.bg-purple-500\/20 {
-  background-color: #faf5ff !important;
-  border-color: #c084fc !important;
-  color: #6b21a8 !important;
-}
-
-/* 13.5. Nút "Xem Template mẫu của Pattern này" */
-html.light button.bg-slate-800\/80.hover\:bg-indigo-600\/30 {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #4338ca !important;
+/* NeetCode Button - Dark Mode */
+html:not(.light) a[href*="neetcode.io"],
+html.dark a[href*="neetcode.io"] {
+  background-color: rgba(34, 211, 238, 0.1) !important;
+  border: 1px solid rgba(34, 211, 238, 0.3) !important;
+  color: #67e8f9 !important;
   font-weight: 600 !important;
 }
 
-html.light button.bg-slate-800\/80.hover\:bg-indigo-600\/30:hover {
-  background-color: #eef2ff !important;
-  border-color: #818cf8 !important;
+/* ========================================================
+   9. CODE VIEWER & PRISM SYNTAX HIGHLIGHTING
+   ======================================================== */
+
+/* CodeViewer Container - Light Mode (GitHub Light) */
+html.light .code-viewer-container {
+  background-color: #f6f8fa !important;
+  border-color: #d0d7de !important;
+  color: #24292f !important;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.06) !important;
+}
+
+html.light .code-viewer-container .code-viewer-header {
+  background-color: #eaeef2 !important;
+  border-bottom-color: #d0d7de !important;
+  color: #57606a !important;
+}
+
+html.light .code-viewer-container .code-viewer-title {
+  color: #24292f !important;
+}
+
+html.light .code-viewer-container .code-viewer-lang {
+  background-color: #ffffff !important;
+  color: #57606a !important;
+  border: 1px solid #d0d7de !important;
+}
+
+html.light .code-viewer-container .code-viewer-copy {
+  background-color: #ffffff !important;
+  color: #24292f !important;
+  border-color: #d0d7de !important;
+}
+
+html.light .code-viewer-container .code-viewer-copy:hover {
+  background-color: #f3f4f6 !important;
+  color: #0f172a !important;
+}
+
+html.light .code-viewer-container .code-viewer-body {
+  background-color: #f6f8fa !important;
+}
+
+html.light .code-viewer-container .code-viewer-gutter {
+  background-color: #f6f8fa !important;
+  border-right-color: #d0d7de !important;
+  color: #8c959f !important;
+}
+
+html.light .code-viewer-container pre,
+html.light .code-viewer-container code,
+html.light .code-viewer-container code[class*="language-"] {
+  color: #24292f !important;
+  background-color: transparent !important;
+}
+
+/* Light Mode Prism Tokens */
+html.light .code-viewer-container .token.comment,
+html.light .code-viewer-container .token.prolog {
+  color: #59636e !important;
+  font-style: italic !important;
+}
+
+html.light .code-viewer-container .token.punctuation {
+  color: #24292f !important;
+}
+
+html.light .code-viewer-container .token.keyword,
+html.light .code-viewer-container .token.operator {
+  color: #cf222e !important;
+}
+
+html.light .code-viewer-container .token.function,
+html.light .code-viewer-container .token.class-name {
+  color: #8250df !important;
+}
+
+html.light .code-viewer-container .token.string,
+html.light .code-viewer-container .token.char {
+  color: #0a3069 !important;
+}
+
+html.light .code-viewer-container .token.number,
+html.light .code-viewer-container .token.boolean,
+html.light .code-viewer-container .token.constant {
+  color: #0550ae !important;
+}
+
+html.light .code-viewer-container .token.variable {
+  color: #953800 !important;
+}
+
+/* CodeViewer Container - Dark Mode (Soft Dark #1b2335) */
+html:not(.light) .code-viewer-container,
+html.dark .code-viewer-container {
+  background-color: #1b2335 !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25) !important;
+}
+
+html:not(.light) .code-viewer-container .code-viewer-header,
+html.dark .code-viewer-container .code-viewer-header {
+  background-color: #242f45 !important;
+  border-bottom-color: #334155 !important;
+  color: #94a3b8 !important;
+}
+
+html:not(.light) .code-viewer-container .code-viewer-title,
+html.dark .code-viewer-container .code-viewer-title {
+  color: #e2e8f0 !important;
+}
+
+html:not(.light) .code-viewer-container .code-viewer-lang,
+html.dark .code-viewer-container .code-viewer-lang {
+  background-color: #273449 !important;
+  color: #94a3b8 !important;
+  border: 1px solid #334155 !important;
+}
+
+html:not(.light) .code-viewer-container .code-viewer-copy,
+html.dark .code-viewer-container .code-viewer-copy {
+  background-color: #273449 !important;
+  color: #94a3b8 !important;
+  border-color: #334155 !important;
+}
+
+html:not(.light) .code-viewer-container .code-viewer-copy:hover,
+html.dark .code-viewer-container .code-viewer-copy:hover {
+  background-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+html:not(.light) .code-viewer-container .code-viewer-body,
+html.dark .code-viewer-container .code-viewer-body {
+  background-color: #1b2335 !important;
+}
+
+html:not(.light) .code-viewer-container .code-viewer-gutter,
+html.dark .code-viewer-container .code-viewer-gutter {
+  background-color: #1b2335 !important;
+  border-right-color: #334155 !important;
+  color: #7c8ba1 !important;
+}
+
+html:not(.light) .code-viewer-container pre,
+html.dark .code-viewer-container pre,
+html:not(.light) .code-viewer-container code,
+html.dark .code-viewer-container code,
+html:not(.light) .code-viewer-container code[class*="language-"],
+html.dark .code-viewer-container code[class*="language-"] {
+  color: #e2e8f0 !important;
+  background-color: transparent !important;
+}
+
+/* Dark Mode Prism Tokens */
+html:not(.light) .code-viewer-container .token.comment,
+html.dark .code-viewer-container .token.comment {
+  color: #8b9bb4 !important;
+  font-style: italic !important;
+}
+
+html:not(.light) .code-viewer-container .token.punctuation,
+html.dark .code-viewer-container .token.punctuation {
+  color: #e2e8f0 !important;
+}
+
+html:not(.light) .code-viewer-container .token.keyword,
+html.dark .code-viewer-container .token.keyword,
+html:not(.light) .code-viewer-container .token.operator,
+html.dark .code-viewer-container .token.operator {
+  color: #ff7b72 !important;
+}
+
+html:not(.light) .code-viewer-container .token.function,
+html.dark .code-viewer-container .token.function,
+html:not(.light) .code-viewer-container .token.class-name,
+html.dark .code-viewer-container .token.class-name {
+  color: #d2a8ff !important;
+}
+
+html:not(.light) .code-viewer-container .token.string,
+html.dark .code-viewer-container .token.string {
+  color: #a5d6ff !important;
+}
+
+html:not(.light) .code-viewer-container .token.number,
+html.dark .code-viewer-container .token.number,
+html:not(.light) .code-viewer-container .token.boolean,
+html.dark .code-viewer-container .token.boolean {
+  color: #79c0ff !important;
+}
+
+html:not(.light) .code-viewer-container .token.variable,
+html.dark .code-viewer-container .token.variable {
+  color: #ffa657 !important;
+}
+
+/* ========================================================
+   10. MARKDOWN & KATEX MATH STYLING
+   ======================================================== */
+
+/* Markdown Content - Light Mode */
+html.light .markdown-body,
+html.light .markdown-body p,
+html.light .markdown-body div,
+html.light .markdown-body li {
+  color: #334155 !important;
+}
+
+html.light .markdown-body strong {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+html.light .markdown-body em {
+  color: #475569 !important;
+}
+
+html.light .markdown-body h2,
+html.light .markdown-body h3,
+html.light .markdown-body h4,
+html.light .markdown-body h5 {
+  color: #0f172a !important;
+}
+
+/* Blockquote / Trích dẫn & Callout ghi nhớ - Light Mode */
+html.light blockquote,
+html.light .markdown-body blockquote {
+  background-color: #f5f3ff !important;
+  border-left-color: #6366f1 !important;
   color: #312e81 !important;
 }
 
-/* 13.6. Nút chuyển đổi ngôn ngữ và số dòng (Templates) */
-html.light #templates-section .bg-slate-900\/80,
-html.light #templates-section .bg-slate-900 {
-  background-color: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
+html.light blockquote em,
+html.light .markdown-body blockquote em {
+  color: #3730a3 !important;
 }
 
-html.light #templates-section button[role="tab"].text-slate-400 {
-  color: #64748b !important;
+html.light blockquote strong,
+html.light .markdown-body blockquote strong {
+  color: #1e1b4b !important;
 }
 
-html.light #templates-section button[role="tab"].text-slate-400:hover {
+html.light blockquote code,
+html.light .markdown-body blockquote code {
+  background-color: #e0e7ff !important;
+  color: #4338ca !important;
+  border-color: #c7d2fe !important;
+}
+
+/* Horizontal Rules - Đường phân cách ngang */
+html.light hr,
+html.light .markdown-body hr {
+  border-top-color: #e2e8f0 !important;
+}
+
+html:not(.light) hr,
+html.dark hr,
+html:not(.light) .markdown-body hr,
+html.dark .markdown-body hr {
+  border-top-color: rgba(51, 65, 85, 0.8) !important;
+}
+
+html.light .markdown-body .inline-math,
+html.light .markdown-body .katex,
+html.light .katex,
+html.light .katex-html {
   color: #0f172a !important;
-  background-color: #e2e8f0 !important;
 }
 
-/* Nút bật/tắt số dòng */
-html.light #templates-section button.bg-slate-800 {
-  background-color: #0f172a !important;
-  color: #ffffff !important;
-  border-color: #0f172a !important;
+/* Markdown Content - Dark Mode */
+html:not(.light) .markdown-body,
+html.dark .markdown-body,
+html:not(.light) .markdown-body p,
+html.dark .markdown-body p,
+html:not(.light) .markdown-body div,
+html.dark .markdown-body div,
+html:not(.light) .markdown-body li,
+html.dark .markdown-body li {
+  color: #e2e8f0 !important;
 }
 
-html.light #templates-section button.bg-slate-900\/60 {
+html:not(.light) .markdown-body strong,
+html.dark .markdown-body strong {
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+}
+
+html:not(.light) .markdown-body h3,
+html.dark .markdown-body h3,
+html:not(.light) .markdown-body h4,
+html.dark .markdown-body h4,
+html:not(.light) .markdown-body h5,
+html.dark .markdown-body h5 {
+  color: #f8fafc !important;
+}
+
+html:not(.light) .markdown-body .inline-math,
+html.dark .markdown-body .inline-math,
+html:not(.light) .markdown-body .katex,
+html.dark .markdown-body .katex,
+html:not(.light) .katex,
+html.dark .katex,
+html:not(.light) .katex-html,
+html.dark .katex-html {
+  color: #f8fafc !important;
+}
+
+/* Inline Code Blocks inside Markdown */
+html.light .markdown-body code:not(pre code) {
+  background-color: #eef2ff !important;
+  color: #4f46e5 !important;
+  border-color: #c7d2fe !important;
+}
+
+html:not(.light) .markdown-body code:not(pre code),
+html.dark .markdown-body code:not(pre code) {
+  background-color: rgba(99, 102, 241, 0.15) !important;
+  color: #a5b4fc !important;
+  border-color: rgba(165, 180, 252, 0.3) !important;
+}
+
+/* Markdown Pre Code Blocks */
+html.light .markdown-body pre {
+  background-color: #f6f8fa !important;
+  border-color: #d0d7de !important;
+  color: #24292f !important;
+}
+
+html.light .markdown-body pre code {
+  color: #24292f !important;
+}
+
+html:not(.light) .markdown-body pre,
+html.dark .markdown-body pre {
+  background-color: #1b2335 !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+html:not(.light) .markdown-body pre code,
+html.dark .markdown-body pre code {
+  color: #e2e8f0 !important;
+}
+
+/* ========================================================
+   11. TABLES (CoreConcepts & Comparison Tables)
+   ======================================================== */
+
+table {
+  border-collapse: collapse !important;
+}
+
+table th,
+table td {
+  display: table-cell !important;
+  vertical-align: middle !important;
+}
+
+/* Table - Light Mode */
+html.light table,
+html.light .markdown-body table {
   background-color: #ffffff !important;
-  color: #64748b !important;
-  border-color: #cbd5e1 !important;
+  border-color: #e2e8f0 !important;
+  border-collapse: collapse !important;
 }
 
-html.light #templates-section button.bg-slate-900\/60:hover {
-  background-color: #f1f5f9 !important;
+html.light table thead,
+html.light table thead tr,
+html.light table thead th,
+html.light .markdown-body table thead th {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+}
+
+html.light table thead th *,
+html.light .markdown-body table thead th * {
   color: #0f172a !important;
 }
 
-/* 13.7. Nút Điều Hướng Chương Trước / Sau (Chapter Navigation) */
+html.light table tbody tr,
+html.light .markdown-body table tbody tr {
+  background-color: #ffffff !important;
+}
+
+html.light table tbody tr:hover,
+html.light .markdown-body table tbody tr:hover {
+  background-color: #f8fafc !important;
+}
+
+html.light table tbody td,
+html.light .markdown-body table tbody td {
+  color: #334155 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+html.light table tbody td *,
+html.light .markdown-body table tbody td * {
+  color: #334155 !important;
+}
+
+/* Table - Dark Mode */
+html:not(.light) table,
+html.dark table,
+html:not(.light) .markdown-body table,
+html.dark .markdown-body table {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+html:not(.light) table thead,
+html.dark table thead,
+html:not(.light) table thead tr,
+html.dark table thead tr,
+html:not(.light) table thead th,
+html.dark table thead th,
+html:not(.light) .markdown-body table thead th,
+html.dark .markdown-body table thead th {
+  background-color: #273449 !important;
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid #334155 !important;
+}
+
+html:not(.light) table thead th *,
+html.dark table thead th *,
+html:not(.light) .markdown-body table thead th *,
+html.dark .markdown-body table thead th * {
+  color: #f8fafc !important;
+}
+
+html:not(.light) table tbody tr,
+html.dark table tbody tr,
+html:not(.light) .markdown-body table tbody tr,
+html.dark .markdown-body table tbody tr {
+  background-color: #1e293b !important;
+}
+
+html:not(.light) table tbody tr:hover,
+html.dark table tbody tr:hover,
+html:not(.light) .markdown-body table tbody tr:hover,
+html.dark .markdown-body table tbody tr:hover {
+  background-color: #273449 !important;
+}
+
+html:not(.light) table tbody td,
+html.dark table tbody td,
+html:not(.light) .markdown-body table tbody td,
+html.dark .markdown-body table tbody td {
+  color: #e2e8f0 !important;
+  border-bottom: 1px solid #334155 !important;
+}
+
+html:not(.light) table tbody td *,
+html.dark table tbody td *,
+html:not(.light) .markdown-body table tbody td *,
+html.dark .markdown-body table tbody td * {
+  color: #e2e8f0 !important;
+}
+
+/* ========================================================
+   12. BUTTONS & CONTROLS (Primary, Secondary, Modals)
+   ======================================================== */
+
+/* Primary & Action Buttons - Light Mode */
+html.light button.bg-indigo-600 {
+  background-color: #4f46e5 !important;
+  color: #ffffff !important;
+}
+html.light button.bg-indigo-600:hover {
+  background-color: #4338ca !important;
+  color: #ffffff !important;
+}
+
+html.light button.bg-cyan-600 {
+  background-color: #0e7490 !important;
+  color: #ffffff !important;
+}
+html.light button.bg-cyan-600:hover {
+  background-color: #155e75 !important;
+  color: #ffffff !important;
+}
+
+html.light button.bg-amber-600 {
+  background-color: #b45309 !important;
+  color: #ffffff !important;
+}
+html.light button.bg-amber-600:hover {
+  background-color: #92400e !important;
+  color: #ffffff !important;
+}
+
+html.light button.bg-emerald-600 {
+  background-color: #047857 !important;
+  color: #ffffff !important;
+}
+html.light button.bg-emerald-600:hover {
+  background-color: #065f46 !important;
+  color: #ffffff !important;
+}
+
+html.light button.bg-violet-600 {
+  background-color: #6d28d9 !important;
+  color: #ffffff !important;
+}
+html.light button.bg-violet-600:hover {
+  background-color: #5b21b6 !important;
+  color: #ffffff !important;
+}
+
+/* Tab Lists & Language Switchers (Python / C++ tabs) - Light Mode */
+html.light [role="tablist"] {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light [role="tablist"] button[role="tab"] {
+  color: #475569 !important;
+}
+html.light [role="tablist"] button[role="tab"]:hover {
+  color: #0f172a !important;
+}
+
+html.light [role="tablist"] button[role="tab"][aria-selected="true"],
+html.light [role="tablist"] button[role="tab"].bg-violet-600,
+html.light [role="tablist"] button[role="tab"].bg-indigo-600 {
+  background-color: #4f46e5 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.1) !important;
+}
+
+html:not(.light) button.bg-indigo-600,
+html.dark button.bg-indigo-600 {
+  background-color: #6366f1 !important;
+  color: #ffffff !important;
+}
+html:not(.light) button.bg-indigo-600:hover,
+html.dark button.bg-indigo-600:hover {
+  background-color: #818cf8 !important;
+}
+
+/* Modals & Dialogs */
+html.light .fixed.inset-0 .bg-slate-900,
+html.light [role="dialog"] {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.1) !important;
+}
+
+html:not(.light) .fixed.inset-0 .bg-slate-900,
+html.dark .fixed.inset-0 .bg-slate-900,
+html:not(.light) [role="dialog"],
+html.dark [role="dialog"] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.light input,
+html.light textarea,
+html.light select {
+  background-color: #ffffff !important;
+  border-color: #8493a8 !important;
+  color: #0f172a !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #64748b !important;
+}
+
+html:not(.light) input,
+html.dark input,
+html:not(.light) textarea,
+html.dark textarea,
+html:not(.light) select,
+html.dark select {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+html:not(.light) input::placeholder,
+html.dark input::placeholder,
+html:not(.light) textarea::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Chapter Navigation Buttons */
 html.light nav[aria-label="Điều hướng chương tuần tự"] button.bg-slate-900\/60 {
   background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
+  border-color: #e2e8f0 !important;
   color: #0f172a !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.06) !important;
 }
 
 html.light nav[aria-label="Điều hướng chương tuần tự"] button.bg-slate-900\/60:hover {
   background-color: #f8fafc !important;
-  border-color: #94a3b8 !important;
-}
-
-html.light nav[aria-label="Điều hướng chương tuần tự"] button.bg-slate-900\/60 .bg-slate-800 {
-  background-color: #f1f5f9 !important;
   border-color: #cbd5e1 !important;
-  color: #475569 !important;
 }
 
 html.light nav[aria-label="Điều hướng chương tuần tự"] button.bg-indigo-950\/20 {
   background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%) !important;
-  border-color: #a5b4fc !important;
-  color: #1e1b4b !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+  border-color: #c7d2fe !important;
+  color: #3730a3 !important;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.06) !important;
 }
 
 html.light nav[aria-label="Điều hướng chương tuần tự"] button.bg-indigo-950\/20:hover {
-  border-color: #6366f1 !important;
+  border-color: #818cf8 !important;
 }
 
 html.light nav[aria-label="Điều hướng chương tuần tự"] button.bg-indigo-950\/20 .text-white {
-  color: #1e1b4b !important;
+  color: #3730a3 !important;
 }
 
 html.light nav[aria-label="Điều hướng chương tuần tự"] button.bg-indigo-950\/20 .text-indigo-400\/80 {
-  color: #4338ca !important;
-}
-
-html.light nav[aria-label="Điều hướng chương tuần tự"] button.bg-indigo-950\/20 .bg-indigo-600\/30 {
-  background-color: #4f46e5 !important;
-  border-color: #4338ca !important;
-  color: #ffffff !important;
-}
-
-/* Sửa tương phản cho phím tắt <kbd> trong Light Mode */
-html.light kbd {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #334155 !important;
-  font-weight: 600 !important;
-}
-
-html.light nav[aria-label="Điều hướng chương tuần tự"] button kbd,
-html.light nav[aria-label="Điều hướng chương tuần tự"] kbd {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #334155 !important;
-  font-weight: 700 !important;
-}
-
-html.light nav[aria-label="Điều hướng chương tuần tự"] button.bg-indigo-950\/20 kbd,
-html.light nav[aria-label="Điều hướng chương tuần tự"] button.bg-indigo-950\/20 kbd * {
-  background-color: #ffffff !important;
-  border-color: #a5b4fc !important;
-  color: #4338ca !important;
-  font-weight: 700 !important;
-}
-
-/* 13.8. Nút Hủy và Đóng trong Hộp thoại Modal */
-html.light [role="dialog"] button.bg-slate-800,
-html.light .fixed.inset-0 button.bg-slate-800 {
-  background-color: #f1f5f9 !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #334155 !important;
-}
-
-html.light [role="dialog"] button.bg-slate-800:hover,
-html.light .fixed.inset-0 button.bg-slate-800:hover {
-  background-color: #e2e8f0 !important;
-  color: #0f172a !important;
-}
-
-html.light [role="dialog"] button.text-slate-400,
-html.light .fixed.inset-0 button.text-slate-400 {
-  color: #64748b !important;
-}
-
-html.light [role="dialog"] button.text-slate-400:hover,
-html.light .fixed.inset-0 button.text-slate-400:hover {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
-}
-
-/* 13.9. Nút Macro KaTeX trong Trình soạn thảo */
-html.light .p-2.rounded-xl.bg-slate-950\/80 {
-  background-color: #f8fafc !important;
-  border-color: #cbd5e1 !important;
-}
-
-html.light button.bg-slate-900.text-indigo-300 {
-  background-color: #ffffff !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #4338ca !important;
-  font-weight: 600 !important;
-}
-
-html.light button.bg-slate-900.text-indigo-300:hover {
-  background-color: #eef2ff !important;
-  border-color: #818cf8 !important;
-  color: #312e81 !important;
-}
-
-/* 13.10. Tinh chỉnh màu Light Mode cho Badge, Keywords, Callouts, Problem Buttons & Empty State */
-/* Core Concepts Badge */
-/* Core Concepts & Pattern Recognition Badges */
-html.light .core-concepts-badge {
-  background-color: #ecfeff !important;
-  border-color: #a5f3fc !important;
-  color: #0e7490 !important;
-  font-weight: 600 !important;
-}
-
-html.light .pattern-recognition-badge {
-  background-color: #eef2ff !important;
-  border-color: #c7d2fe !important;
-  color: #4338ca !important;
-  font-weight: 600 !important;
-}
-
-/* Keywords nhận diện & Reflex Box (PatternRecognition) */
-html.light .pattern-keywords-title {
-  color: #4338ca !important;
-  font-weight: 700 !important;
-}
-
-html.light .pattern-keywords-title svg {
-  color: #6366f1 !important;
-}
-
-html.light .pattern-keyword-tag {
-  background-color: #eef2ff !important;
-  border-color: #c7d2fe !important;
-  color: #3730a3 !important;
-  font-weight: 600 !important;
-}
-
-html.light .pattern-reflex-box {
-  background-color: #f8fafc !important;
-  border-color: #e2e8f0 !important;
-  color: #1e293b !important;
-}
-
-html.light .pattern-reflex-box span.text-slate-400 {
-  color: #64748b !important;
-}
-
-html.light .pattern-reflex-box .text-slate-200 {
-  color: #1e293b !important;
-}
-
-html.light .pattern-reflex-box .text-amber-300 {
-  color: #b45309 !important;
-}
-
-html.light .pattern-reflex-box .text-indigo-300 {
-  color: #4338ca !important;
-}
-
-html.light .pattern-reflex-box svg {
-  color: #6366f1 !important;
-}
-
-/* Điều chỉnh biến thể & Lưu ý cài đặt + Khi nào nên áp dụng (AlgorithmicTemplates) */
-html.light .template-notes-callout {
-  background-color: #eef2ff !important;
-  border-color: #c7d2fe !important;
-  color: #334155 !important;
-}
-
-html.light .template-notes-callout strong {
-  color: #312e81 !important;
-}
-
-html.light .template-notes-callout svg {
   color: #4f46e5 !important;
 }
 
-html.light .template-notes-callout .text-slate-300 {
-  color: #334155 !important;
+/* Chapter Completion Banner (Chương cuối - Light Mode) */
+html.light .chapter-completion-banner {
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 50%, #f0fdfa 100%) !important;
+  border-color: #a7f3d0 !important;
+  box-shadow: 0 1px 4px 0 rgba(16, 185, 129, 0.12) !important;
 }
 
-html.light .template-when-callout {
-  background-color: #fffbeb !important;
-  border-color: #fde68a !important;
-  color: #334155 !important;
-}
-
-html.light .template-when-callout strong {
-  color: #92400e !important;
-}
-
-html.light .template-when-callout svg {
-  color: #d97706 !important;
-}
-
-html.light .template-when-callout .text-slate-300 {
-  color: #334155 !important;
-}
-
-/* 13.11. Nền phần tử khi Hover & 4 nút thao tác (Gợi ý, Ghi chú, Sửa, Xóa) trong ProblemList Light Mode */
-html.light #problems-section .problem-item-row {
-  background-color: #ffffff;
-  transition: background-color 0.15s ease;
-}
-
-html.light #problems-section .problem-item-row:hover {
-  background-color: #f8fafc !important;
-}
-
-html.light #problems-section .problem-item-row.bg-emerald-950\/15 {
-  background-color: #f0fdf4 !important;
-}
-
-html.light #problems-section .problem-item-row.bg-emerald-950\/15:hover {
+html.light .chapter-completion-banner .completion-trophy-icon {
   background-color: #d1fae5 !important;
-}
-
-/* Các nút gợi ý, ghi chú bài tập (ProblemList) */
-html.light #problems-section .prob-hint-btn,
-html.light .prob-hint-btn {
-  background-color: #ffffff !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #334155 !important;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-}
-
-html.light #problems-section .prob-hint-btn:hover,
-html.light .prob-hint-btn:hover {
-  background-color: #f1f5f9 !important;
-  border-color: #94a3b8 !important;
-  color: #0f172a !important;
-}
-
-html.light #problems-section .prob-hint-btn svg,
-html.light .prob-hint-btn svg {
-  color: #475569 !important;
-}
-
-html.light #problems-section .prob-hint-btn.bg-indigo-600\/20,
-html.light .prob-hint-btn.bg-indigo-600\/20 {
-  background-color: #eef2ff !important;
-  border-color: #818cf8 !important;
-  color: #3730a3 !important;
-  font-weight: 600 !important;
-}
-
-html.light #problems-section .prob-hint-btn.bg-indigo-600\/20 svg,
-html.light .prob-hint-btn.bg-indigo-600\/20 svg {
-  color: #4338ca !important;
-}
-
-html.light #problems-section .prob-note-btn,
-html.light .prob-note-btn {
-  background-color: #ffffff !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #334155 !important;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-}
-
-html.light #problems-section .prob-note-btn:hover,
-html.light .prob-note-btn:hover {
-  background-color: #f1f5f9 !important;
-  border-color: #94a3b8 !important;
-  color: #0f172a !important;
-}
-
-html.light #problems-section .prob-note-btn svg,
-html.light .prob-note-btn svg {
-  color: #475569 !important;
-}
-
-html.light #problems-section .prob-note-btn.bg-purple-500\/20,
-html.light .prob-note-btn.bg-purple-500\/20 {
-  background-color: #faf5ff !important;
-  border-color: #c084fc !important;
-  color: #6b21a8 !important;
-  font-weight: 600 !important;
-}
-
-html.light #problems-section .prob-note-btn.bg-purple-500\/20 svg,
-html.light .prob-note-btn.bg-purple-500\/20 svg {
-  color: #7e22ce !important;
-}
-
-/* Nút Sửa (Edit) & Xóa (Delete) trên toàn bộ ứng dụng (ProblemList, Patterns, Pitfalls, Concepts) */
-html.light #problems-section .prob-edit-btn,
-html.light .crud-edit-btn,
-html.light .prob-edit-btn {
-  background-color: #ffffff !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #059669 !important;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-}
-
-html.light #problems-section .prob-edit-btn:hover,
-html.light .crud-edit-btn:hover,
-html.light .prob-edit-btn:hover {
-  background-color: #ecfdf5 !important;
   border-color: #6ee7b7 !important;
   color: #047857 !important;
 }
 
-html.light #problems-section .prob-edit-btn svg,
-html.light .crud-edit-btn svg,
-html.light .prob-edit-btn svg {
-  color: #059669 !important;
+html.light .chapter-completion-banner .completion-trophy-icon svg {
+  stroke: #047857 !important;
 }
 
-html.light #problems-section .prob-delete-btn,
-html.light .crud-delete-btn,
-html.light .prob-delete-btn {
-  background-color: #ffffff !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #dc2626 !important;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+html.light .chapter-completion-banner .completion-title {
+  color: #065f46 !important;
 }
 
-html.light #problems-section .prob-delete-btn:hover,
-html.light .crud-delete-btn:hover,
-html.light .prob-delete-btn:hover {
-  background-color: #fef2f2 !important;
-  border-color: #fca5a5 !important;
-  color: #b91c1c !important;
+html.light .chapter-completion-banner .completion-title svg {
+  stroke: #059669 !important;
 }
 
-html.light #problems-section .prob-delete-btn svg,
-html.light .crud-delete-btn svg,
-html.light .prob-delete-btn svg {
-  color: #dc2626 !important;
+html.light .chapter-completion-banner .completion-subtitle {
+  color: #047857 !important;
 }
 
-/* Đường phân cách CRUD trong dòng bài tập */
-html.light .prob-crud-divider {
-  border-color: #cbd5e1 !important;
+html.light .chapter-completion-banner .completion-restart-btn {
+  background-color: #059669 !important;
+  border-color: #047857 !important;
+  color: #ffffff !important;
+  box-shadow: 0 1px 3px 0 rgba(5, 150, 105, 0.25) !important;
 }
 
-/* Khối gợi ý giải thuật khi mở ra trong ProblemList */
-html.light #problems-section .rounded-xl.border-indigo-500\/30.bg-indigo-950\/20 {
-  background-color: #eef2ff !important;
-  border-color: #c7d2fe !important;
-  color: #334155 !important;
+html.light .chapter-completion-banner .completion-restart-btn:hover {
+  background-color: #047857 !important;
+  border-color: #065f46 !important;
+  color: #ffffff !important;
 }
 
-html.light #problems-section .rounded-xl.border-indigo-500\/30.bg-indigo-950\/20 strong {
-  color: #312e81 !important;
+html.light .chapter-completion-banner .completion-restart-btn svg {
+  stroke: #ffffff !important;
 }
 
-/* Khối soạn thảo Ghi chú cá nhân trong ProblemList Light Mode */
-html.light #problems-section .prob-note-editor,
-html.light .prob-note-editor {
-  background-color: #faf5ff !important;
-  border-color: #c084fc !important;
-  color: #3b0764 !important;
+html.light .chapter-completion-banner .completion-restart-btn span {
+  color: #ffffff !important;
 }
 
-html.light #problems-section .prob-note-editor .text-purple-300,
-html.light .prob-note-editor .text-purple-300,
-html.light #problems-section .prob-note-editor .text-purple-300 *,
-html.light .prob-note-editor .text-purple-300 * {
-  color: #6b21a8 !important;
-  font-weight: 700 !important;
-}
-
-html.light #problems-section .prob-note-editor svg,
-html.light .prob-note-editor svg {
-  color: #7e22ce !important;
-}
-
-html.light #problems-section .prob-note-editor textarea,
-html.light .prob-note-editor textarea {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
-}
-
-html.light #problems-section .prob-note-editor textarea::placeholder,
-html.light .prob-note-editor textarea::placeholder {
-  color: #64748b !important;
-}
-
-/* Khối xem trước Ghi chú cá nhân (khi đóng editor) */
-html.light #problems-section .prob-note-preview,
-html.light .prob-note-preview {
-  background-color: #faf5ff !important;
-  border-color: #e9d5ff !important;
-  color: #334155 !important;
-}
-
-html.light #problems-section .prob-note-preview:hover,
-html.light .prob-note-preview:hover {
-  background-color: #f3e8ff !important;
-  border-color: #c084fc !important;
-}
-
-html.light #problems-section .prob-note-preview svg,
-html.light .prob-note-preview svg {
-  color: #7e22ce !important;
-}
-
-html.light #problems-section .prob-note-preview .text-slate-300,
-html.light .prob-note-preview .text-slate-300 {
-  color: #1e293b !important;
-}
-
-html.light #problems-section .prob-note-preview .text-slate-500,
-html.light .prob-note-preview .text-slate-500 {
-  color: #6b21a8 !important;
-  font-weight: 600 !important;
-}
-
-/* Nền của thông báo "Không có bài tập phù hợp" (ProblemList empty state) */
-html.light .problem-empty-state {
-  background-color: #f8fafc !important;
-  border-color: #cbd5e1 !important;
-}
-
-html.light .problem-empty-state h4 {
-  color: #1e293b !important;
-  font-weight: 700 !important;
-}
-
-html.light .problem-empty-state p {
-  color: #64748b !important;
-}
-
-html.light .problem-empty-state svg {
-  color: #94a3b8 !important;
-}
-
-
-/* ========================================================
-   GLOBAL BASE STYLES
-   ======================================================== */
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background-color: #070b14;
-  color: #e2e8f0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-/* Custom scrollbar */
+/* Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-
 ::-webkit-scrollbar-track {
   background: #0f172a;
 }
-
-html.light ::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
 ::-webkit-scrollbar-thumb {
   background: #334155;
   border-radius: 4px;
 }
-
-html.light ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-}
-
 ::-webkit-scrollbar-thumb:hover {
   background: #475569;
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }

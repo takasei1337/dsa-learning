@@ -104,9 +104,9 @@ export const ProblemList: React.FC<ProblemListProps> = ({
   }
 
   const difficultyLabels: Record<Difficulty, string> = {
-    easy: 'Easy',
-    medium: 'Medium',
-    hard: 'Hard',
+    easy: 'Dễ',
+    medium: 'Trung bình',
+    hard: 'Khó',
   }
 
   // Lọc bài tập theo trạng thái, độ khó, và từ khóa tìm kiếm

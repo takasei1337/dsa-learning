@@ -119,17 +119,17 @@ export const ChapterNavigation: React.FC<ChapterNavigationProps> = ({
           ) : (
             // B-02: Chương cuối cùng thay nút Sau bằng thông báo hoàn thành + nút "Về chương đầu"
             <div className="space-y-2">
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-950/40 to-teal-950/40 border border-emerald-500/30 text-right flex items-center justify-between gap-3 shadow-lg">
+              <div className="chapter-completion-banner p-4 rounded-2xl bg-gradient-to-r from-emerald-950/40 to-teal-950/40 border border-emerald-500/30 text-right flex items-center justify-between gap-3 shadow-lg">
                 <div className="flex items-center gap-2.5 text-left">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+                  <div className="completion-trophy-icon w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
                     <Trophy className="w-5 h-5" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-emerald-300 flex items-center gap-1">
+                    <div className="completion-title text-xs font-bold text-emerald-300 flex items-center gap-1">
                       <Sparkles className="w-3.5 h-3.5" />
                       Hoàn thành lộ trình 6 chương!
                     </div>
-                    <div className="text-[11px] text-slate-400">
+                    <div className="completion-subtitle text-[11px] text-slate-400">
                       Bạn đã duyệt qua toàn bộ giáo trình.
                     </div>
                   </div>
@@ -138,7 +138,7 @@ export const ChapterNavigation: React.FC<ChapterNavigationProps> = ({
                 {firstChapter && (
                   <button
                     onClick={() => onSelectChapter(firstChapter.id)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600 text-emerald-200 hover:text-white border border-emerald-500/50 text-xs font-bold transition cursor-pointer shrink-0"
+                    className="completion-restart-btn flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600 text-emerald-200 hover:text-white border border-emerald-500/50 text-xs font-bold transition cursor-pointer shrink-0"
                     title="Quay lại chương 1"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />

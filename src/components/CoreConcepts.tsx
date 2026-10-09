@@ -255,7 +255,7 @@ export const CoreConcepts: React.FC<CoreConceptsProps> = ({
 
         {/* Khung cuộn ngang độc lập cho bảng (C-11: không làm tràn trang ở 360px) */}
         <div className="overflow-x-auto max-w-full">
-          <table className="w-full text-left text-xs min-w-[620px]">
+          <table className="w-full text-left text-xs min-w-[620px] border-collapse">
             {/* Hàng tiêu đề cố định (C-11) */}
             <thead className="bg-slate-950 text-slate-200 uppercase text-[11px] border-b border-slate-800 sticky top-0 backdrop-blur z-10 font-mono">
               <tr>
@@ -271,7 +271,7 @@ export const CoreConcepts: React.FC<CoreConceptsProps> = ({
             </thead>
 
             {/* Thân bảng với 5 cột chuẩn hóa */}
-            <tbody className="divide-y divide-slate-800/60 font-sans">
+            <tbody className="font-sans">
               {sortedComplexities.map((row) => {
                 const growth = GROWTH_LEVEL_CONFIG[row.level] || GROWTH_LEVEL_CONFIG.constant
 
@@ -281,9 +281,11 @@ export const CoreConcepts: React.FC<CoreConceptsProps> = ({
                     className={`transition ${growth.bgClass} hover:bg-slate-800/20`}
                   >
                     {/* Cột 1: Cấu trúc / Thao tác */}
-                    <td className="py-3.5 px-4 font-medium text-slate-100 flex items-center gap-2">
-                      <span className={`w-2 h-2 rounded-full shrink-0 ${growth.dotClass}`} />
-                      <span>{row.operation}</span>
+                    <td className="py-3.5 px-4 font-medium text-slate-100 align-middle">
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2 h-2 rounded-full shrink-0 ${growth.dotClass}`} />
+                        <span>{row.operation}</span>
+                      </div>
                     </td>
 
                     {/* Cột 2: Time Complexity (LaTeX) */}

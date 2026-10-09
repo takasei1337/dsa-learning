@@ -184,7 +184,7 @@ export interface LaTeXMacro {
  */
 export interface UserSettings {
   language: 'python' | 'cpp' // Ngôn ngữ code đang chọn (mặc định 'python')
-  theme: 'light' | 'dark' | 'system' // Giao diện (mặc định 'dark' / 'system')
+  theme: 'light' | 'dark' | 'system' // Giao diện (mặc định 'light')
   editMode: boolean // Trạng thái Chế độ biên tập
   lineNumbers: boolean // Bật/tắt số dòng code
   macros?: LaTeXMacro[] // Macro tùy chỉnh

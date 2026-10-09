@@ -4,6 +4,8 @@ import type {
   UserSettings,
   ProblemProgress,
   ExportPayload,
+  Concept,
+  ComplexityRow,
 } from '../types'
 import { initialSeedData } from '../data/seedData'
 
@@ -21,7 +23,7 @@ export const STORAGE_KEYS = {
  */
 export const DEFAULT_SETTINGS: UserSettings = {
   language: 'python',
-  theme: 'dark',
+  theme: 'light',
   editMode: false,
   lineNumbers: true,
   macros: [],
@@ -75,6 +77,39 @@ export class StorageAdapter {
             console.warn('[StorageAdapter] Dữ liệu content lỗi schema, đang khôi phục SeedData...')
             const migrated = this.migrateContent(parsed)
             this.saveContent(migrated)
+          } else {
+            // Tự động đồng bộ các concepts và complexityRows mặc định nếu có cập nhật trong initialSeedData
+            let hasContentUpdate = false
+            if (Array.isArray(parsed.concepts)) {
+              parsed.concepts = parsed.concepts.map((c: Concept) => {
+                const seedC = initialSeedData.concepts.find((sc) => sc.id === c.id)
+                if (seedC && (seedC.body !== c.body || seedC.title !== c.title)) {
+                  hasContentUpdate = true
+                  return { ...c, title: seedC.title, body: seedC.body }
+                }
+                return c
+              })
+            }
+            if (Array.isArray(parsed.complexityRows)) {
+              for (const seedRow of initialSeedData.complexityRows) {
+                const existingIndex = parsed.complexityRows.findIndex((r: ComplexityRow) => r.id === seedRow.id)
+                if (existingIndex === -1) {
+                  parsed.complexityRows.push(seedRow)
+                  hasContentUpdate = true
+                } else if (
+                  parsed.complexityRows[existingIndex].operation !== seedRow.operation ||
+                  parsed.complexityRows[existingIndex].time !== seedRow.time ||
+                  parsed.complexityRows[existingIndex].space !== seedRow.space ||
+                  parsed.complexityRows[existingIndex].note !== seedRow.note
+                ) {
+                  parsed.complexityRows[existingIndex] = seedRow
+                  hasContentUpdate = true
+                }
+              }
+            }
+            if (hasContentUpdate) {
+              this.saveContent(parsed)
+            }
           }
         } catch (e) {
           console.error('[StorageAdapter] Content JSON hỏng, nạp lại SeedData gốc:', e)

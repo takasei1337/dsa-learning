@@ -90,26 +90,48 @@ export const seedConcepts: Concept[] = [
   {
     id: 'con-01',
     chapterId: 'ch-01',
-    title: 'Mô hình tư duy: Mảng động & Bảng băm',
-    body: `### 1. Bản chất bộ nhớ RAM của mảng
-- **Mảng tĩnh**: Cấp phát một khối địa chỉ **liên tục trên RAM**. Nhờ địa chỉ tính theo công thức $\\text{Address}(i) = \\text{Base} + i \\times \\text{ElementSize}$, CPU truy xuất phần tử bất kỳ tức thì trong $O(1)$. Điểm yếu: kích thước cố định, chèn hoặc xóa ở đầu tốn $O(N)$ do phải dịch chuyển toàn bộ phần tử phía sau.
-- **Mảng động**: Đại diện là \`std::vector\` trong C++ và \`list\` trong Python.
-  - Khi mảng đầy dung lượng capacity, hệ điều hành cấp phát một vùng nhớ mới có kích thước gấp đôi ($2\\times$), sao chép toàn bộ dữ liệu cũ sang và giải phóng vùng nhớ cũ.
-  - **Chi phí phân bổ Amortized $O(1)$**: Mặc dù thao tác mở rộng tốn $O(N)$, nhưng việc này diễn ra rất hiếm ($N$ lần thêm mới chỉ tốn một lần cấp phát lại $N$), nên trung bình mỗi thao tác \`append()\` chỉ tốn $O(1)$.
+    title: 'Bí kíp thực chiến: Mảng & Bảng băm (Array & Hashing)',
+    body: `### 💡 Khẩu quyết cốt lõi
+> *"Muốn truy cập tức thì theo thứ tự thì dùng **Mảng**. Muốn tra cứu siêu tốc xem 'đã từng gặp đứa này chưa' thì dùng **Bảng băm**."*
 
-### 2. Bảng băm & Cơ chế giải quyết va chạm
-- **Cơ chế**: Ánh xạ một khóa có kiểu dữ liệu bất kỳ thành một chỉ số nguyên trong mảng thông qua hàm băm: $\\text{index} = \\text{hash}(key) \\pmod{\\text{capacity}}$.
-- **Giải quyết va chạm**:
-  - **Separate Chaining**: Mỗi ô bucket chứa một danh sách liên kết. Nếu va chạm nhiều (bucket $> 8$ phần tử trong Java 8+), bucket tự động chuyển thành cây đỏ đen Red-Black Tree để đảm bảo tra cứu xấu nhất là $O(\\log N)$ thay vì thoái hóa thành $O(N)$.
-  - **Open Addressing**: Khi ô bị trùng, thuật toán tìm ô trống tiếp theo dựa trên cơ chế nhảy có xáo trộn để tránh tụ cụm dữ liệu.
-- **Sự đánh đổi**: Tốn dung lượng bộ nhớ phụ $O(N)$ để nhận về tốc độ tra cứu, chèn, xóa trung bình đạt $O(1)$.
+---
 
-### 3. Bảng so sánh đặc tính thực chiến
-| Cấu trúc dữ liệu | Truy cập ngẫu nhiên | Thêm/Xóa cuối | Thêm/Xóa đầu | Tìm kiếm phần tử | Bộ nhớ phụ |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Mảng tĩnh** | $O(1)$ | Không hỗ trợ | Không hỗ trợ | $O(N)$ | $O(1)$ |
-| **Mảng động** | $O(1)$ | $O(1)$ amortized | $O(N)$ | $O(N)$ | Hệ số mở rộng $1.5\\times - 2\\times$ |
-| **Bảng băm** | Không có thứ tự | $O(1)$ | $O(1)$ | $O(1)$ trung bình | $O(N)$ lưu bảng băm |`,
+### 1. Bản chất trực quan (Dễ nhớ nhất)
+- **Mảng (Array / Vector / List)**:
+  - Giống như **dãy ghế rạp chiếu phim** đánh số liên tục \`0, 1, 2, ...\`.
+  - Nhờ địa chỉ RAM liền kề $\\text{Address}(i) = \\text{Base} + i \\times \\text{Size}$, biết số ghế là đến ngay lập tức trong $O(1)$.
+  - Nhưng nếu chen thêm người vào giữa hoặc đuổi người ở đầu hàng đi thì **tất cả người phía sau phải dịch ghế** $\\rightarrow$ tốn $O(N)$.
+- **Bảng băm (Hash Table / Hash Map / Hash Set)**:
+  - Giống như **tủ gửi đồ cá nhân gắn nhãn**: Bạn đưa chìa khóa (Key) qua máy (Hàm băm), máy chỉ ngay đến đúng ngăn tủ (Value) trong $O(1)$.
+  - **Đánh đổi kinh điển (Space-Time Tradeoff)**: Tốn thêm RAM (tạo nhiều ngăn tủ trống để tránh xung đột) để đổi lấy thời gian tìm kiếm thần tốc $O(1)$ thay vì phải lội bộ tìm từng người $O(N)$.
+
+---
+
+### 2. Dấu hiệu nhận diện đề bài (Phản xạ giải đề)
+| Đọc đề thấy dấu hiệu này... | 👉 Bật công tắc nghĩ ngay đến: | Ví dụ bài tập |
+| :--- | :--- | :--- |
+| Kiểm tra mảng có **phần tử trùng lặp**? | **Hash Set** (vừa duyệt vừa kiểm tra \`if x in seen\`) | *Contains Duplicate* |
+| Tìm **cặp phần tử** có tổng bằng $K$? | **Hash Map** lưu \`value -> index\` để tra cứu phần bù | *Two Sum* |
+| Đếm **số lần xuất hiện (tần suất)**? | **Mảng tần suất \`count[26]\`** hoặc **Hash Map** | *Valid Anagram* |
+| **Gom nhóm** phần tử có chung tính chất? | Hash Map với **Key là chữ ký chuẩn hóa** | *Group Anagrams* |
+| Tìm **Top $K$** phần tử xuất hiện nhiều nhất? | **Bucket Sort** (Tần suất làm chỉ số mảng) | *Top K Frequent Elements* |
+
+---
+
+### 3. Ba dạng bài cốt lõi & Cách tư duy
+1. **Kỹ thuật tra cứu phần bù trong $O(1)$ (*Two Sum*)**:
+   - Vừa đi vừa ghi sổ: Đến số \`x\`, tự hỏi *"Trước đây mình đã gặp số \`target - x\` chưa?"*. Nếu có trong map thì trả về kết quả ngay mà không cần lồng 2 vòng lặp $O(N^2)$.
+2. **Tạo "Chữ ký" để gom nhóm (*Group Anagrams*)**:
+   - Hai từ là đảo chữ của nhau khi có cùng chữ ký (chuỗi ký tự sắp xếp \`"aet"\` hoặc mảng 26 số đếm tần suất). Dùng chữ ký làm Key của Hash Map.
+3. **Bucket Sort tránh thuật toán Sắp xếp (*Top K Frequent*)**:
+   - Tạo mảng các thùng có kích thước $N + 1$, trong đó **chỉ số thùng là tần suất xuất hiện**. Duyệt từ thùng lớn nhất về nhỏ nhất là lấy được Top $K$ trong $O(N)$ mà không cần sort tốn $O(N \\log N)$.
+
+---
+
+### ⚠️ Bẫy sinh viên hay gặp
+- **Lãng phí sắp xếp**: Thấy bài toán đếm hoặc tìm trùng lặp vội vàng gọi \`sort()\` làm mất $O(N \\log N)$ trong khi Hash Map giải được trong $O(N)$.
+- **Khóa không băm được (Unhashable Type)**: Trong Python, List không thể làm Key cho Dict (phải ép kiểu sang \`tuple\`).
+- **Mảng ký tự cố định**: Nếu đề chỉ gồm chữ cái thường \`'a'-'z'\`, dùng mảng cố định \`int count[26]\` nhanh và tối ưu bộ nhớ hơn Hash Map rất nhiều.`,
     order: 1,
     createdAt: '2026-10-08T00:00:00Z',
     updatedAt: '2026-10-08T00:00:00Z',
@@ -119,18 +141,55 @@ export const seedConcepts: Concept[] = [
   {
     id: 'con-02',
     chapterId: 'ch-02',
-    title: 'Mô hình tư duy: Kỹ thuật Two Pointers',
-    body: `### 1. Bản chất: Thu hẹp không gian trạng thái
-- Phương pháp vét cạn Brute-force kiểm tra mọi cặp $(i, j)$ với $i < j$, tạo thành không gian tìm kiếm kích thước ma trận tam giác $\\frac{N(N-1)}{2} \\approx O(N^2)$.
-- Kỹ thuật Two Pointers khai thác **tính đơn điệu** của dữ liệu đã sắp xếp. Mỗi khi ta so sánh tổng $A[left] + A[right]$ với $target$:
-  - Nếu tổng nhỏ hơn $target$: Mọi phần tử từ $left$ đến $right-1$ khi ghép với $left$ đều sẽ nhỏ hơn $target$. Do đó ta loại bỏ an toàn toàn bộ hàng $left$ bằng cách tăng \`left++\`.
-  - Nếu tổng lớn hơn $target$: Ta loại bỏ an toàn toàn bộ cột $right$ bằng cách giảm \`right--\`.
-- **Kết quả**: Mỗi bước loại bỏ hẳn một hàng hoặc một cột của không gian trạng thái, giảm độ phức tạp từ $O(N^2)$ xuống tối đa $N$ bước ($O(N)$).
+    title: 'Bí kíp thực chiến: Kỹ thuật Hai Con Trỏ (Two Pointers)',
+    body: `### 💡 Khẩu quyết cốt lõi
+> *"Hai con trỏ sinh ra để 'bỏ túi' $O(N^2)$ thu về $O(N)$. Thay vì thử mọi cặp vô ích, ta ép 2 con trỏ di chuyển theo quy luật đơn điệu để loại hàng triệu trường hợp cùng lúc."*
 
-### 2. Ba biến thể Two Pointers kinh điển
-1. **Hai đầu đối xứng**: \`left = 0\`, \`right = n - 1\`. Thường dùng cho bài toán tìm cặp số, diện tích chứa nước Container With Most Water, hoặc kiểm tra chuỗi đối xứng Valid Palindrome.
-2. **Con trỏ nhanh - chậm**: Hai con trỏ xuất phát cùng phía nhưng tốc độ khác nhau. Dùng trong duyệt mảng tại chỗ như Move Zeroes, Remove Duplicates hoặc phát hiện chu trình.
-3. **Cố định kết hợp hai con trỏ**: Dùng vòng lặp cố định $K-2$ phần tử bên ngoài, bên trong chạy con trỏ đối xứng cho 2 phần tử cuối như 3Sum $O(N^2)$, 4Sum $O(N^3)$.`,
+---
+
+### 1. Bản chất trực quan (Dễ nhớ nhất)
+- Giả sử cần tìm 2 bạn học sinh có tổng chiều cao bằng đúng $170\\text{ cm}$:
+  - Nếu học sinh đứng lộn xộn: Bạn phải ghép cặp từng người một $\\rightarrow$ tốn $O(N^2)$.
+  - Nếu học sinh **đã xếp hàng từ thấp đến cao**: Cho bạn thứ nhất đứng ở đầu hàng (thấp nhất) và bạn thứ hai đứng ở cuối hàng (cao nhất).
+    - Nếu tổng $> 170$: Bạn cao nhất quá cao, phải lùi lại người thấp hơn (giảm con trỏ phải \`right--\`).
+    - Nếu tổng $< 170$: Bạn thấp nhất quá lùn, phải tiến lên người cao hơn (tăng con trỏ trái \`left++\`).
+  - Không bao giờ phải thử lại những cặp vô lý $\\rightarrow$ Duyệt đúng 1 lượt mảng là xong $O(N)$!
+
+---
+
+### 2. Ba mẫu hình Two Pointers kinh điển
+\`\`\`
+1. Hai đầu kẹp vào (Opposite Direction):
+   [ L -------------->           <-------------- R ]
+   (Dùng cho mảng đã sắp xếp, Palindrome, Container With Water)
+
+2. Rùa và Thỏ / Nhanh & Chậm (Same Direction):
+   [ Slow, Fast -------------> ]
+   (Dùng cho xóa trùng lặp tại chỗ, dồn số 0, phát hiện chu trình)
+
+3. Song song trên 2 mảng khác nhau:
+   Mảng A: [ P1 ------> ]
+   Mảng B: [ P2 ------> ]
+   (Dùng cho Merge Sorted Array, tìm giao/hợp 2 danh sách)
+\`\`\`
+
+---
+
+### 3. Dấu hiệu nhận diện đề bài (Phản xạ thực chiến)
+| Đọc đề thấy dấu hiệu này... | 👉 Bật công tắc nghĩ ngay đến: | Ví dụ bài tập |
+| :--- | :--- | :--- |
+| Mảng **đã sắp xếp**, tìm cặp số có tổng bằng $K$ | **Hai đầu kẹp vào** (\`left < right\`) | *Two Sum II* |
+| Tìm bộ 3 số có tổng bằng 0 | **Cố định 1 số + kẹp 2 con trỏ** | *3Sum* |
+| Tối ưu diện tích chứa nước giữa 2 thanh | **Hai đầu kẹp vào**, dịch thanh thấp hơn | *Container With Most Water* |
+| Kiểm tra chuỗi đối xứng, bỏ qua ký tự đặc biệt | **Hai đầu tiến vào giữa** so từng cặp | *Valid Palindrome* |
+| Xóa phần tử trùng lặp / dồn số 0 tại chỗ | **Con trỏ nhanh & chậm** (\`slow\`, \`fast\`) | *Move Zeroes*, *Remove Duplicates* |
+
+---
+
+### ⚠️ Bẫy sinh viên hay gặp
+- **Quên \`sort()\`**: Áp dụng kỹ thuật kẹp 2 đầu cho mảng chưa sắp xếp mà quên sort trước $\\rightarrow$ Sai logic hoàn toàn.
+- **Trùng lặp nghiệm trong 3Sum**: Quên bỏ qua các số giống nhau bằng vòng lặp phụ (\`while nums[left] == nums[left+1]\`).
+- **Tràn mảng khi nhảy con trỏ phụ**: Trong các vòng lặp phụ bỏ qua ký tự trùng, luôn phải kẹp thêm điều kiện \`left < right\` trước để tránh lỗi \`Index Out Of Bounds\`.`,
     order: 1,
     createdAt: '2026-10-08T00:00:00Z',
     updatedAt: '2026-10-08T00:00:00Z',
@@ -140,17 +199,48 @@ export const seedConcepts: Concept[] = [
   {
     id: 'con-03',
     chapterId: 'ch-03',
-    title: 'Mô hình tư duy: Ngăn xếp Stack & Monotonic Stack',
-    body: `### 1. Bản chất: Cấu trúc LIFO & Khử đệ quy
-- Ngăn xếp hoạt động theo cơ chế **Last In, First Out (LIFO)**: Phần tử đưa vào sau cùng sẽ được lấy ra đầu tiên. Mọi thao tác \`push\`, \`pop\`, \`top\` đều đạt $O(1)$.
-- **Mô hình tư duy**: Tương tự như ngăn kéo xếp đĩa ăn hoặc Call Stack của chương trình máy tính. Khi một bài toán có tính chất phụ thuộc lồng nhau như cặp ngoặc \`{[()]}\` hay lời gọi hàm, Stack là cấu trúc dữ liệu tự nhiên nhất để lưu trữ ngữ cảnh chưa hoàn tất.
+    title: 'Bí kíp thực chiến: Ngăn Xếp & Monotonic Stack',
+    body: `### 💡 Khẩu quyết cốt lõi
+> *"Ngăn xếp (LIFO) dùng để 'trì hoãn xử lý'. Khi chưa đủ thông tin ở hiện tại thì tạm cất vào ngăn xếp. Đến khi gặp thời cơ thích hợp thì lôi phần tử gần nhất ra xử lý ngay."*
 
-### 2. Monotonic Stack & Hiện tượng che bóng
-- **Định nghĩa**: Ngăn xếp mà giá trị các phần tử bên trong luôn được duy trì theo thứ tự tăng dần hoặc giảm dần nghiêm ngặt.
-- **Hiện tượng che bóng**:
-  - Tưởng tượng một hàng người có chiều cao khác nhau đứng nhìn về phía mặt trời lặn. Một người cao đứng ở vị trí sau sẽ che khuất tầm nhìn của những người thấp hơn đứng trước họ.
-  - Khi duyệt phần tử $x$: ta liên tục loại bỏ (\`pop\`) các phần tử trong stack yếu thế hơn $x$, vì từ thời điểm này trở đi, $x$ sẽ là ứng viên tối ưu hơn cho mọi phần tử xuất hiện ở phía sau.
-- **Phân tích độ phức tạp**: Dù có vòng lặp \`while\` bên trong vòng \`for\`, nhưng mỗi phần tử trong mảng chỉ được đưa vào stack đúng **1 lần** và lấy ra khỏi stack tối đa **1 lần**. Do đó, tổng số thao tác amortized trên toàn mảng $N$ phần tử luôn được giới hạn ở mức **$2N$ thao tác** $\\rightarrow O(N)$ thời gian.`,
+---
+
+### 1. Bản chất trực quan (Dễ nhớ nhất)
+- Giống hệt **chồng đĩa ăn cơm**: Cái đĩa bạn đặt lên sau cùng sẽ là cái đĩa bạn nhấc ra đầu tiên (Last In, First Out).
+- **Quy luật giải quyết**: Càng vào sau thì càng "tươi mới", càng ưu tiên giải quyết trước.
+  - Ví dụ: Mở ngoặc \`(\` rồi mở tiếp \`[\` thì ngoặc \`]\` phải đóng cho \`[\` trước, chứ không thể nhảy cóc đóng cho \`(\` được.
+
+---
+
+### 2. Dấu hiệu nhận diện đề bài (Phản xạ thực chiến)
+| Đọc đề thấy dấu hiệu này... | 👉 Bật công tắc nghĩ ngay đến: | Ví dụ bài tập |
+| :--- | :--- | :--- |
+| Kiểm tra **cặp đóng/mở tương ứng**, chuỗi ngoặc | **Stack cơ bản** (Gặp mở thì push, gặp đóng thì pop) | *Valid Parentheses* |
+| Tính toán biểu thức dạng hậu tố (Postfix) | **Stack lưu toán hạng** (Gặp dấu thì pop 2 số ra tính) | *Evaluate Reverse Polish Notation* |
+| Cần lấy giá trị nhỏ nhất của Stack trong $O(1)$ | **Min Stack** (Lưu kèm giá trị nhỏ nhất hiện tại) | *Min Stack* |
+| Tìm **phần tử lớn hơn / nhỏ hơn đầu tiên** bên phải | **Ngăn xếp đơn điệu (Monotonic Stack)** | *Daily Temperatures*, *Next Greater Element* |
+| Tính diện tích hình chữ nhật lớn nhất trong biểu đồ cột | **Monotonic Stack lưu chỉ số (Index)** | *Largest Rectangle in Histogram* |
+
+---
+
+### 3. Ba dạng bài cốt lõi & Cách tư duy
+1. **Khớp cặp đối xứng (*Valid Parentheses*)**:
+   - Dùng map ánh xạ: \`mapping = {')': '(', '}': '{', ']': '['}\`.
+   - Gặp ngoặc mở $\\rightarrow$ push. Gặp ngoặc đóng $\\rightarrow$ pop ra so khớp. Cuối cùng stack phải rỗng.
+2. **Min Stack trong $O(1)$**:
+   - Mỗi lần push một số vào, lưu kèm luôn giá trị nhỏ nhất tính tới thời điểm đó theo cặp \`(val, current_min)\`.
+3. **Ngăn xếp đơn điệu (Monotonic Stack - "Vũ khí hạng nặng")**:
+   - **Tư duy Bài toán *Daily Temperatures*** (Sau bao nhiêu ngày thì trời ấm hơn?):
+     - Duy trì Stack chứa các ngày có nhiệt độ **giảm dần**.
+     - Khi gặp ngày mới có nhiệt độ **cao hơn** đỉnh Stack: Ngày mới này chính là "ngày ấm hơn đầu tiên" mà đỉnh Stack mong chờ! Ta liên tục pop các ngày thấp hơn ra và ghi nhận khoảng cách: \`res[prev_day] = curr_day - prev_day\`.
+     - Dù có vòng \`while\` trong vòng \`for\`, mỗi ngày chỉ vào stack 1 lần và ra 1 lần $\\rightarrow$ Tổng thời gian đạt $O(N)$!
+
+---
+
+### ⚠️ Bẫy sinh viên hay gặp
+- **Lỗi Stack Empty**: Gọi \`top()\` hoặc \`stack[-1]\` khi chưa kiểm tra stack có rỗng không (\`!stack.empty()\` / \`len(stack) > 0\`) gây Crash chương trình.
+- **Lưu giá trị thay vì lưu chỉ số (Index)**: Trong Monotonic Stack, phần lớn bài tập hỏi về **khoảng cách** (bao nhiêu ngày, chiều rộng cột). Luôn ưu tiên lưu **chỉ số (Index)** vào Stack, khi cần giá trị thì tra cứu \`arr[index]\`.
+- **Phần tử tồn dư**: Sau khi duyệt hết mảng, những phần tử còn sót lại trong Stack nghĩa là không tìm thấy phần tử nào lớn hơn nó trong tương lai (kết quả mặc định \`0\` hoặc \`-1\`).`,
     order: 1,
     createdAt: '2026-10-08T00:00:00Z',
     updatedAt: '2026-10-08T00:00:00Z',
@@ -160,20 +250,63 @@ export const seedConcepts: Concept[] = [
   {
     id: 'con-04',
     chapterId: 'ch-04',
-    title: 'Mô hình tư duy: Tìm kiếm nhị phân & Ranh giới đơn điệu',
-    body: `### 1. Bản chất: Phân định ranh giới nhị phân
-- Tìm kiếm nhị phân không chỉ áp dụng cho mảng đã sắp xếp. Bản chất sâu xa của thuật toán là tìm kiếm **điểm chuyển tiếp giữa hai trạng thái True/False** trên một hàm mệnh đề $P(x)$ có tính chất đơn điệu:
-$$P(x): [\\text{False}, \\text{False}, \\dots, \\text{False}, \\mathbf{True}, \\text{True}, \\dots, \\text{True}]$$
-- Mỗi bước so sánh tại phần tử trung vị $mid$, ta loại trừ chắc chắn một nửa không gian tìm kiếm, giảm số bước tối đa xuống $\\lceil \\log_2 N \\rceil$ bước.
+    title: 'Bí kíp thực chiến: Tìm Kiếm Nhị Phân (Binary Search)',
+    body: `### 💡 Khẩu quyết cốt lõi
+> *"Mỗi phép so sánh loại ngay một nửa thế giới. Thay vì duyệt tuần tự $O(N)$, Binary Search khai thác trật tự sắp xếp để chạm đích sau $\\approx 30$ bước trên 1 tỷ phần tử với thời gian $O(\\log N)$."*
 
-### 2. Công thức tính trung điểm chống tràn số 32-bit
-- **Sai lầm kinh điển**: Phép tính \`mid = (left + right) / 2\` có thể gây tràn số nguyên 32-bit khi $left + right > 2^{31} - 1$ (dẫn tới giá trị âm trong C++ hoặc Java).
-- **Chuẩn an toàn**:
-$$mid = left + \\lfloor \\frac{right - left}{2} \\rfloor$$
+---
 
-### 3. Tìm kiếm nhị phân trên không gian kết quả (Binary Search on Answer)
-- Áp dụng khi bài toán yêu cầu: *"Tìm giá trị nhỏ nhất sao cho..."* hoặc *"Tìm giá trị lớn nhất mà vẫn thỏa mãn..."*.
-- Nếu ta có thể viết một hàm kiểm tra khả thi \`feasible(k)\` chạy trong $O(N)$, và hàm này mang tính đơn điệu (nếu $k$ thỏa mãn thì mọi giá trị lớn hơn $k$ cũng thỏa mãn), ta có thể nhị phân trực tiếp trên khoảng đáp án $[\\text{min\\_val}, \\text{max\\_val}]$ với chi phí tổng thể $O(N \\log(\\text{range}))$.`,
+### 1. Kiến thức cốt lõi & Nguyên lý hoạt động (Từ giáo trình)
+- **Bài toán & Điều kiện áp dụng**:
+  - *Bài toán phát biểu*: Cho mảng $a[0..n-1]$ đã được sắp xếp theo thứ tự không giảm và một số $x$, cần tìm chỉ số $i$ sao cho $a[i] = x$.
+  - **Điều kiện tiên quyết**: Mảng bắt buộc phải được sắp xếp trước. Ngoài ra, cấu trúc dữ liệu phải lưu trữ các phần tử tại các vị trí bộ nhớ liền kề (truy cập ngẫu nhiên $O(1)$) và các phần tử phải có tính so sánh thứ tự.
+- **Nguyên lý hoạt động**:
+  - So sánh $x$ với phần tử nằm ở vị trí chính giữa mảng $a[mid]$.
+  - Nếu $x = a[mid]$: Thuật toán dừng và trả về chỉ số cần tìm.
+  - Nếu $x < a[mid]$: Lặp lại quá trình tìm kiếm ở nửa bên trái ($L$).
+  - Nếu $x > a[mid]$: Lặp lại quá trình tìm kiếm ở nửa bên phải ($R$).
+- **Cài đặt thuật toán**:
+  - **Cài đặt dạng vòng lặp (Iterative)**: Khởi tạo \`lower = 0\`, \`upper = n - 1\`. Trong khi \`lower <= upper\`, tính \`mid = lower + (upper - lower) // 2\`; cập nhật \`upper = mid - 1\` nếu $a[mid] > x$, hoặc \`lower = mid + 1\` nếu $a[mid] < x$.
+  - **Cài đặt dạng đệ quy (Recursive)**: Kiểm tra điều kiện dừng \`lower > upper\`, tính trung điểm và đệ quy thu hẹp khoảng tìm kiếm.
+- **Độ phức tạp & Đánh giá**:
+  - Độ phức tạp thời gian đạt **$O(\\log N)$** do độ dài đoạn cần khảo sát giảm đi một nửa sau mỗi bước lặp.
+  - Tốc độ vượt trội hơn hẳn tìm kiếm tuần tự $O(N)$ khi làm việc với tập dữ liệu lớn. Thuật toán cũng đặc biệt phù hợp khi tìm kiếm trên dữ liệu lớn ở bộ nhớ ngoài.
+- **Mở rộng trên Cây nhị phân tìm kiếm (BST)**:
+  - Nguyên lý chia đôi phạm vi tìm kiếm còn được áp dụng trên Cây nhị phân tìm kiếm (BST) với thời gian thực hiện $O(h)$, trong đó $h$ là chiều cao của cây (độ cao trung bình $h = O(\\log N)$, trường hợp suy biến thành đường thẳng là $O(N)$).
+
+---
+
+### 2. Dấu hiệu nhận diện đề bài (Phản xạ giải đề NeetCode)
+| Đọc đề thấy dấu hiệu này... | 👉 Bật công tắc nghĩ ngay đến: | Ví dụ bài tập |
+| :--- | :--- | :--- |
+| Mảng **đã sắp xếp**, yêu cầu thời gian $O(\\log N)$ | **Binary Search cơ bản** (\`while lower <= upper\`) | *Binary Search* |
+| Ma trận 2D có từng hàng hoặc toàn bộ đã sắp xếp | **Flatten ma trận về mảng 1D ảo** (\`mid // cols, mid % cols\`) | *Search a 2D Matrix* |
+| Mảng đã sắp xếp nhưng **bị xoay quanh một trục** | **Kiểm tra nửa nào sắp xếp chuẩn** để thu hẹp | *Search in Rotated Sorted Array*, *Find Min in Rotated Array* |
+| Tìm vị trí xuất hiện **đầu tiên hoặc cuối cùng** | **Lower Bound / Upper Bound** (không ngắt khi gặp target) | *Find First and Last Position*, *Search Insert Position* |
+| Tìm **giá trị nhỏ nhất/lớn nhất thỏa mãn điều kiện** | **Binary Search on Answer** (Hàm \`feasible(k)\` đơn điệu) | *Koko Eating Bananas* |
+| Lưu trữ và tra cứu theo **mốc thời gian timestamp** | **Binary Search trên danh sách timestamp** | *Time Based Key-Value Store* |
+
+---
+
+### 3. Bốn dạng bài cốt lõi & Kỹ thuật mở rộng
+1. **Tránh lỗi tràn số nguyên (Integer Overflow)**:
+   - Trong C++ hoặc Java, biểu thức \`mid = (lower + upper) / 2\` sẽ tràn số khi \`lower + upper > 2^31 - 1\`. Luôn dùng:
+   $$mid = lower + \\lfloor \\frac{upper - lower}{2} \\rfloor$$
+2. **Binary Search trên Mảng quay (Rotated Sorted Array)**:
+   - Tại mọi điểm \`mid\`, **luôn có ít nhất một trong hai nửa được sắp xếp tăng dần hoàn chỉnh** (nếu \`nums[lower] <= nums[mid]\` thì nửa trái chuẩn, ngược lại nửa phải chuẩn).
+   - Kiểm tra xem \`target\` có nằm lọt vào nửa chuẩn đó không để quyết định thu hẹp nửa còn lại.
+3. **Binary Search tìm Biên (Lower Bound / Upper Bound / First & Last)**:
+   - Ngay cả khi gặp \`nums[mid] == target\`, không return ngay mà lưu lại vị trí kết quả tạm thời, sau đó tiếp tục ép biên (\`upper = mid - 1\` để tìm biên trái nhất, hoặc \`lower = mid + 1\` để tìm biên phải nhất).
+4. **Binary Search trên Không gian nghiệm (Binary Search on Answer)**:
+   - Không tìm kiếm trên mảng cho sẵn mà tìm giá trị tối ưu $x \\in [min\\_val, max\\_val]$.
+   - Viết hàm kiểm tra \`feasible(k) -> bool\` mang tính đơn điệu. Ví dụ với *Koko Eating Bananas*: Thử tốc độ ăn từ 1 đến $\\max(piles)$, tính tổng thời gian cần thiết; nếu ăn kịp trong $H$ giờ thì thử tốc độ chậm hơn (\`upper = mid\`), ngược lại phải tăng tốc độ (\`lower = mid + 1\`).
+
+---
+
+### ⚠️ Bẫy sinh viên hay gặp
+- **Vòng lặp vô hạn**: Cập nhật \`lower = mid\` khi dùng \`while lower < upper\` khiến thuật toán dậm chân tại chỗ khi còn 2 phần tử kề nhau.
+- **Lẫn lộn điều kiện dừng**: Khi dùng khoảng đóng $[lower, upper]$, vòng lặp phải là \`while lower <= upper\`. Khi dùng nửa mở $[lower, upper)$, vòng lặp là \`while lower < upper\`.
+- **Làm tròn chia nguyên trong Parametric Search**: Khi tính số giờ hoặc số chuyến tàu \`ceil(p / speed)\`, phải dùng phép chia trần \`(p + speed - 1) // speed\` thay vì chia nguyên thường làm thiếu giờ.`,
     order: 1,
     createdAt: '2026-10-08T00:00:00Z',
     updatedAt: '2026-10-08T00:00:00Z',
@@ -183,21 +316,70 @@ $$mid = left + \\lfloor \\frac{right - left}{2} \\rfloor$$
   {
     id: 'con-05',
     chapterId: 'ch-05',
-    title: 'Mô hình tư duy: Kỹ thuật Sliding Window',
-    body: `### 1. Bản chất: Mô hình con sâu đo Caterpillar
-- Sliding Window là kỹ thuật tối ưu hóa bài toán trên **mảng con hoặc chuỗi con liên tục**.
-- **Mô hình tư duy**: Tưởng tượng con sâu đo bò trên cành cây:
-  - Đầu sâu (con trỏ \`right\`) bò về phía trước để nạp thêm phần tử vào cửa sổ.
-  - Đuôi sâu (con trỏ \`left\`) co lại khi cửa sổ vi phạm điều kiện bài toán để loại bỏ bớt phần tử.
-- Thay vì tính toán lại toàn bộ đoạn $[left, right]$ từ đầu tốn $O(N)$, ta chỉ cập nhật gia tăng phần tử vừa vào và phần tử vừa ra với chi phí $O(1)$.
+    title: 'Bí kíp thực chiến: Cửa Sổ Trượt (Sliding Window & Subarray)',
+    body: `### 💡 Khẩu quyết cốt lõi
+> *"Mảng con liên tiếp đổi biên, chỉ thêm phần tử mới bớt phần tử xưa. Thay vì tính lại từ đầu tốn $O(N^2)$ hay $O(N^3)$, ta duy trì trạng thái cửa sổ cập nhật gia tăng trong $O(1)$ để đạt tổng chi phí toàn bài $O(N)$."*
 
-### 2. Phân loại hai dạng bài toán cốt lõi
-1. **Cửa sổ cố định kích thước $K$**:
-   - Chiều dài cửa sổ luôn bằng $K$.
-   - Mỗi bước: Thêm $A[right]$ vào tập trạng thái, loại bỏ $A[right - K]$ ra khỏi tập trạng thái. Độ phức tạp toàn bài: $O(N)$.
-2. **Cửa sổ biến thiên**:
-   - **Tìm cửa sổ dài nhất**: Mở rộng \`right\` liên tục, chỉ dùng \`while\` thu hẹp \`left\` khi điều kiện bị vi phạm. Cập nhật kết quả cực đại khi cửa sổ hợp lệ: \`best = max(best, right - left + 1)\`.
-   - **Tìm cửa sổ ngắn nhất**: Mở rộng \`right\` đến khi điều kiện được thỏa mãn, sau đó dùng \`while\` thu hẹp \`left\` nhiều nhất có thể để tìm kích thước tối thiểu trước khi điều kiện bị phá vỡ.`,
+---
+
+### 1. Bản chất trực quan & Kiến thức từ giáo trình
+- **Định nghĩa mảng con liên tiếp (Contiguous Subarray)**:
+  - Một mảng con bao gồm các phần tử liên tiếp từ chỉ số $i$ đến $j$ ($0 \\le i \\le j \\le n-1$).
+- **Nguyên lý dịch chuyển biên (Mở rộng cửa sổ)**:
+  - Khi duyệt các mảng con, thay vì tính lại tổng các phần tử từ đầu làm độ phức tạp vọt lên $O(N^3)$, tổng mảng con từ $i$ đến $j$ tính nhanh bằng cách lấy tổng từ $i$ đến $j-1$ cộng thêm phần tử mới $a[j]$:
+  $$S_{i..j} = S_{i..j-1} + a[j]$$
+  - Đây chính là thao tác cốt lõi khi **mở rộng biên phải** của một Cửa sổ trượt để nạp thêm phần tử mới trong $O(1)$ mà không phải tính toán lại từ đầu.
+- **Tối ưu hóa bằng Quy hoạch động (Thuật toán Kadane)**:
+  - Tìm tổng mảng con lớn nhất kết thúc tại vị trí $i$ theo công thức truy hồi:
+  $$S_i = \\begin{cases} S_{i-1} + a_i & \\text{nếu } S_{i-1} > 0 \\\\ a_i & \\text{nếu } S_{i-1} \\le 0 \\end{cases}$$
+  - Thuật toán Kadane đạt độ phức tạp **$O(N)$** thời gian và **$O(1)$** bộ nhớ, giúp tối ưu hóa việc duyệt mảng con mà không cần các vòng lặp lồng nhau.
+
+---
+
+### 2. Hai dạng Cửa sổ trượt trọng tâm trên NeetCode
+1. **Cửa sổ trượt kích thước cố định (Fixed-Size Sliding Window)**:
+   - *Đặc điểm*: Kích thước cửa sổ $K$ được cố định trước không đổi.
+   - *Cơ chế*: Khởi tạo cửa sổ đầu tiên từ $0$ đến $K-1$. Mỗi bước dịch sang phải:
+     - **Thêm phần tử tại \`right\`**: Nạp \`arr[right]\` vào tập trạng thái.
+     - **Bớt phần tử tại \`left\`**: Loại bỏ \`arr[left]\` (với \`left = right - K + 1\`).
+     - Cập nhật kết quả trong **$O(1)$**.
+   - *Bài tập NeetCode tiêu biểu*: *Best Time to Buy and Sell Stock*, *Permutation in String*, *Sliding Window Maximum*.
+2. **Cửa sổ trượt kích thước linh hoạt (Variable-Size Sliding Window - Mô hình sâu đo Caterpillar)**:
+   - *Đặc điểm*: Kích thước cửa sổ tự co/dãn tùy thuộc vào điều kiện bài toán.
+   - *Cơ chế hoạt động*:
+     - Dùng con trỏ \`right\` mở rộng cửa sổ từng bước để nạp phần tử.
+     - Khi điều kiện cửa sổ bị vi phạm (hoặc khi cần thu nhỏ để tìm cửa sổ tối ưu), dùng con trỏ \`left\` co dần cửa sổ lại cho đến khi thỏa mãn trở lại.
+   - *Bài tập NeetCode tiêu biểu*: *Longest Substring Without Repeating Characters*, *Longest Repeating Character Replacement*, *Minimum Window Substring*.
+
+---
+
+### 3. Cấu trúc dữ liệu bổ trợ cho Sliding Window
+- **Bảng băm / Mảng tần suất (Hash Map / Frequency Array \`count[26]\`)**:
+  - Dùng để đếm tần suất xuất hiện của các ký tự nằm trong cửa sổ hiện tại và so sánh với tần suất mục tiêu (áp dụng trong *Permutation in String*, *Minimum Window Substring*).
+- **Hàng đợi đơn điệu hai đầu (Monotonic Deque)**:
+  - Duy trì các phần tử giảm dần theo giá trị để phần tử ở đầu Deque luôn là giá trị Lớn nhất của cửa sổ.
+  - Cho phép truy xuất Max/Min trong cửa sổ kích thước $K$ trong thời gian **$O(1)$** (áp dụng trong *Sliding Window Maximum*).
+
+---
+
+### 4. Dấu hiệu nhận diện đề bài (Phản xạ giải đề)
+| Đọc đề thấy dấu hiệu này... | 👉 Bật công tắc nghĩ ngay đến: | Ví dụ bài tập |
+| :--- | :--- | :--- |
+| Mua và bán cổ phiếu tìm lợi nhuận tối đa | **Sliding Window 2 con trỏ** (Dời \`left = right\` khi gặp đáy mới) | *Best Time to Buy & Sell Stock* |
+| Chuỗi con dài nhất **không có ký tự trùng** | **Cửa sổ biến thiên dài nhất** (\`set\` hoặc map vị trí) | *Longest Substring Without Repeating* |
+| Chuỗi con dài nhất sau khi **thay thế tối đa $K$ ký tự** | **Cửa sổ biến thiên** (\`window_len - max_freq <= k\`) | *Longest Repeating Character Replacement* |
+| Kiểm tra chuỗi chứa **hoán vị** của chuỗi khác | **Cửa sổ cố định kích thước $len(S1)$** + So khớp tần suất | *Permutation in String* |
+| Chuỗi con ngắn nhất chứa **đủ các ký tự của chuỗi $T$** | **Cửa sổ biến thiên ngắn nhất** (Thu hẹp \`left\` trong \`while\`) | *Minimum Window Substring* |
+| Tìm phần tử lớn nhất trong **mọi cửa sổ trượt kích thước $K$** | **Monotonic Deque** lưu chỉ số mảng | *Sliding Window Maximum* |
+
+---
+
+### ⚠️ Bẫy sinh viên hay gặp
+- **Dùng \`if\` thay vì \`while\` khi thu hẹp cửa sổ**: Khi nạp một phần tử mới vào khiến cửa sổ vi phạm, việc chỉ dịch con trỏ trái một lần (\`left += 1\`) có thể chưa đủ để làm cửa sổ hợp lệ. Bắt buộc phải dùng \`while\` co cửa sổ liên tục.
+- **Cập nhật đáp án sai thời điểm**:
+  - Tìm cửa sổ dài nhất: Cập nhật \`max_len\` **sau** khi đã thu hẹp \`left\` về trạng thái hợp lệ.
+  - Tìm cửa sổ ngắn nhất: Cập nhật \`min_len\` **bên trong** vòng lặp \`while\` khi cửa sổ còn đang hợp lệ, trước khi co tiếp \`left += 1\`.
+- **Cố dùng Sliding Window cho mảng có số âm**: Nếu mảng có số âm, tổng không còn tính chất đơn điệu tăng khi mở rộng cửa sổ (Sliding Window sẽ sai, phải chuyển sang dùng Prefix Sum + Hash Map).`,
     order: 1,
     createdAt: '2026-10-08T00:00:00Z',
     updatedAt: '2026-10-08T00:00:00Z',
@@ -207,19 +389,70 @@ $$mid = left + \\lfloor \\frac{right - left}{2} \\rfloor$$
   {
     id: 'con-06',
     chapterId: 'ch-06',
-    title: 'Mô hình tư duy: Danh sách liên kết & Kỹ thuật con trỏ',
-    body: `### 1. Bản chất: Khối bộ nhớ phân mảnh trên Heap
-- Khác với mảng cấp phát liên tục, các nút của danh sách liên kết nằm rải rác bất kỳ nơi nào trên bộ nhớ Heap và kết nối với nhau bằng con trỏ địa chỉ \`next\`.
-- **Hệ quả**: Không có tính chất Cache Locality, truy cập ngẫu nhiên tốn $O(N)$. Bù lại, thao tác chèn hoặc xóa nút khi đã nắm giữ con trỏ chỉ tốn $O(1)$ mà không cần dịch chuyển dữ liệu.
+    title: 'Bí kíp thực chiến: Danh Sách Liên Kết (Linked List)',
+    body: `### 💡 Khẩu quyết cốt lõi
+> *"Bộ nhớ phân tán trên Heap, con trỏ làm cầu nối duyên. Muốn sửa đổi không lo dịch mảng $O(1)$, nhưng truy cập ngẫu nhiên phải trả giá $O(N)$. Nắm chắc Dummy Node và cặp con trỏ Nhanh - Chậm là mở khóa toàn bộ bài tập."*
 
-### 2. Hai kỹ thuật then chốt trong Linked List
-- **Kỹ thuật Dummy Node**:
-  - *Vấn đề*: Khi xóa hoặc chèn phần tử ở đầu danh sách, con trỏ \`head\` thay đổi khiến code phát sinh nhiều câu lệnh \`if-else\` xử lý trường hợp biên.
-  - *Giải pháp*: Khởi tạo một nút giả \`dummy = ListNode(0)\` trỏ tới \`head\`. Mọi thao tác trên danh sách đều quy về xử lý nút ở giữa, cuối cùng chỉ cần trả về \`dummy.next\`.
-- **Kỹ thuật Fast & Slow Pointers**:
-  - Cho con trỏ chậm \`slow\` đi 1 bước, con trỏ nhanh \`fast\` đi 2 bước.
-  - **Tìm trung điểm**: Khi \`fast\` chạm cuối danh sách, \`slow\` luôn nằm chính xác ở vị trí chính giữa.
-  - **Phát hiện chu trình**: Nếu danh sách có chu trình khép kín, \`fast\` chắc chắn sẽ bắt kịp \`slow\` từ phía sau với bộ nhớ phụ $O(1)$.`,
+---
+
+### 1. Kiến thức cốt lõi & Các thao tác cơ bản (Từ giáo trình)
+- **Khái niệm & Cấu trúc Node**:
+  - **Danh sách liên kết đơn (Singly Linked List)**: Tập hợp các nút (node) có thứ tự, trong đó bộ nhớ được **cấp phát phân tán trên Heap** (khác với mảng liên tục trên RAM).
+  - **Cấu trúc nút (Node)**: Mỗi nút gồm 2 thành phần chính: **Dữ liệu (Value/Data)** và **Con trỏ (\`next\`)** lưu địa chỉ của phần tử kế tiếp.
+  - Danh sách được quản lý thông qua con trỏ đầu **\`head\`**, phần tử cuối cùng có con trỏ \`next\` trỏ về **\`NULL\`**.
+- **Các thao tác cơ bản**:
+  - **Duyệt (\`Traversal\`) & Tìm kiếm (\`Search\`)**: Dùng con trỏ tạm duyệt qua từng nút \`p = p->next\` cho đến khi gặp \`NULL\` ($O(N)$).
+  - **Chèn nút mới (\`Insertion\`)**:
+    - Chèn vào đầu (\`insertFirst\`): Gán \`new_node->next = head\`, cập nhật \`head = new_node\` trong **$O(1)$**.
+    - Chèn vào cuối (\`insertLast\`): Duyệt tìm nút cuối (\`lastNode->next == NULL\`), gán \`lastNode->next = new_node\` ($O(N)$).
+    - Chèn trước nút cho trước (\`insertBeforeNode\`): Tìm nút đứng trước (\`prevNode\`), cập nhật \`new_node->next = p\` và \`prevNode->next = new_node\`.
+  - **Xóa nút (\`Deletion\`)**: Kiểm tra điều kiện \`head == NULL\` hoặc nút cần xóa \`p == NULL\`. Nếu xóa nút đầu, cập nhật \`head = head->next\` và giải phóng bộ nhớ (\`free(p)\`).
+  - **Đảo ngược danh sách (\`Reverse\`)**: Sử dụng 3 con trỏ tịnh tiến **\`prev\`**, **\`curr\`**, **\`next_temp\`** trong vòng lặp \`while (curr != NULL)\` để đảo hướng liên kết \`curr->next = prev\` với thời gian **$O(N)$** và bộ nhớ **$O(1)$**.
+- **Ứng dụng của Linked List trong giáo trình**:
+  - **Cài đặt Cấu trúc dữ liệu**: Làm nền tảng cài đặt Ngăn xếp (Stack) với thao tác \`push\`/\`pop\` ở đầu danh sách, và Hàng đợi (Queue) quản lý 2 đầu \`first\`/\`last\`.
+  - **Biểu diễn Đồ thị**: Dùng làm Danh sách kề (\`Adjacency List\`) để lưu các đỉnh kề của mỗi đỉnh trên đồ thị.
+
+---
+
+### 2. Các kỹ thuật nâng cao then chốt trên NeetCode
+1. **Con trỏ Nút giả (Dummy Head / Sentinel Node)**:
+   - *Tác dụng*: Tránh phải xử lý riêng các trường hợp biên đặc biệt (khi danh sách rỗng, hoặc khi thao tác trực tiếp trên nút \`head\`).
+   - *Cơ chế*: Khởi tạo \`dummy = ListNode(0)\`, gán \`dummy.next = head\`. Mọi thao tác đều thực hiện sau \`dummy\`. Cuối bài trả về \`dummy.next\`.
+   - *Ứng dụng*: *Merge Two Sorted Lists*, *Add Two Numbers*, *Remove Nth Node From End of List*.
+2. **Kỹ thuật Con trỏ Nhanh & Chậm (Fast & Slow Pointers / Floyd's Cycle Detection)**:
+   - *Nguyên lý*: Con trỏ \`slow\` đi 1 nút (\`slow = slow.next\`), con trỏ \`fast\` đi 2 nút (\`fast = fast.next.next\`).
+   - *Ứng dụng*:
+     - **Tìm điểm giữa danh sách (Middle of List)**: Khi \`fast\` chạm cuối thì \`slow\` nằm chính xác ở vị trí chính giữa.
+     - **Phát hiện chu trình (Linked List Cycle)**: Nếu có chu trình, \`fast\` chắc chắn sẽ bắt kịp \`slow\` từ phía sau với bộ nhớ phụ $O(1)$.
+3. **Con trỏ giữ khoảng cách cố định (Fixed-Gap Two Pointers)**:
+   - *Ứng dụng trong bài Remove Nth Node From End of List*: Cho \`fast\` đi trước \`slow\` đúng $N$ bước. Khi \`fast\` tiến tới cuối danh sách, \`slow\` sẽ đứng ngay trước nút thứ $N$ từ dưới lên cần xóa.
+4. **Danh sách liên kết đôi (Doubly Linked List - DLL) & LRU Cache**:
+   - Mỗi nút chứa cả 2 con trỏ \`prev\` và \`next\`.
+   - Kết hợp **Hash Map** (lưu \`key -> Node\`) với **Doubly Linked List** để thực hiện thêm/xóa phần tử ở đầu/cuối danh sách với độ phức tạp thời gian đạt **$O(1)$** (*LRU Cache*).
+5. **Kỹ thuật kết hợp 3 bước (Split + Reverse + Merge)**:
+   - *Ứng dụng trong bài Reorder List hoặc Palindrome List*:
+     - Bước 1: Dùng Fast & Slow Pointers để chia danh sách thành 2 nửa.
+     - Bước 2: Đảo ngược nửa sau của danh sách.
+     - Bước 3: Trộn xen kẽ hai nửa danh sách lại với nhau.
+
+---
+
+### 3. Dấu hiệu nhận diện đề bài (Phản xạ giải đề)
+| Đọc đề thấy dấu hiệu này... | 👉 Bật công tắc nghĩ ngay đến: | Ví dụ bài tập |
+| :--- | :--- | :--- |
+| Đảo ngược toàn bộ danh sách liên kết | **3 con trỏ tịnh tiến** (\`prev, curr, next_temp\`) | *Reverse Linked List* |
+| Trộn hai danh sách đã sắp xếp thành một | **Dummy Node** + So sánh 2 con trỏ | *Merge Two Sorted Lists* |
+| Sắp xếp xen kẽ $L_0 \\to L_n \\to L_1 \\to L_{n-1} \\dots$ | **Split (Fast/Slow) + Reverse nửa sau + Merge** | *Reorder List* |
+| Xóa nút thứ $N$ từ cuối danh sách đếm lên | **Fixed-Gap Two Pointers** (\`fast\` đi trước $N$ bước) | *Remove Nth Node From End* |
+| Kiểm tra danh sách có vòng lặp vô tận không | **Floyd Cycle Detection** (\`slow\` 1 bước, \`fast\` 2 bước) | *Linked List Cycle* |
+| Thiết kế bộ nhớ đệm dung lượng $C$, xóa LRU | **Hash Map kết hợp Doubly Linked List** | *LRU Cache* |
+
+---
+
+### ⚠️ Bẫy sinh viên hay gặp
+- **Mất liên kết (Lost Pointer)**: Gán \`curr.next = prev\` trước khi lưu \`next_temp = curr.next\` làm mất vĩnh viễn địa chỉ của các nút phía sau.
+- **Lỗi Null Pointer Dereference**: Truy cập \`fast.next.next\` khi \`fast\` hoặc \`fast.next\` là \`None\`/\`NULL\`. Luôn kiểm tra điều kiện an toàn: \`while fast and fast.next:\`.
+- **Rò rỉ chu trình khi đảo nửa sau**: Trong bài *Reorder List*, sau khi tìm trung điểm, phải ngắt liên kết \`slow.next = None\` để tách biệt hoàn toàn hai nửa danh sách, tránh tạo vòng lặp vô hạn.`,
     order: 1,
     createdAt: '2026-10-08T00:00:00Z',
     updatedAt: '2026-10-08T00:00:00Z',
@@ -374,6 +607,26 @@ export const seedComplexityRows: ComplexityRow[] = [
     level: 'log',
     order: 3,
   },
+  {
+    id: 'cx-04-04',
+    chapterId: 'ch-04',
+    operation: 'Tìm kiếm trên mảng quay (Rotated Array)',
+    time: '$O(\\log N)$',
+    space: '$O(1)$',
+    note: 'Phân tích nửa tăng dần để loại trừ nửa còn lại trong O(log N).',
+    level: 'log',
+    order: 4,
+  },
+  {
+    id: 'cx-04-05',
+    chapterId: 'ch-04',
+    operation: 'Tìm kiếm trên Cây nhị phân tìm kiếm (BST)',
+    time: '$O(h)$',
+    space: '$O(1)$',
+    note: 'Chiều cao h = O(log N) trung bình, trường hợp suy biến tốn O(N).',
+    level: 'log',
+    order: 5,
+  },
 
   // Chapter 5: Sliding Window
   {
@@ -395,6 +648,26 @@ export const seedComplexityRows: ComplexityRow[] = [
     note: 'Cả con trỏ trái và phải chỉ dịch về phía trước tối đa N bước.',
     level: 'linear',
     order: 2,
+  },
+  {
+    id: 'cx-05-03',
+    chapterId: 'ch-05',
+    operation: 'Thuật toán Kadane (Tổng mảng con lớn nhất)',
+    time: '$O(N)$',
+    space: '$O(1)$',
+    note: 'Quy hoạch động dịch chuyển biên: S[i] = max(a[i], S[i-1] + a[i]).',
+    level: 'linear',
+    order: 3,
+  },
+  {
+    id: 'cx-05-04',
+    chapterId: 'ch-05',
+    operation: 'Cửa sổ trượt với Monotonic Deque',
+    time: '$O(N)$',
+    space: '$O(K)$',
+    note: 'Truy xuất Max/Min trong cửa sổ kích thước K trong O(1) mỗi bước.',
+    level: 'linear',
+    order: 4,
   },
 
   // Chapter 6: Linked List
@@ -437,6 +710,26 @@ export const seedComplexityRows: ComplexityRow[] = [
     note: 'Con trỏ nhanh đuổi kịp con trỏ chậm trong tối đa N bước lặp.',
     level: 'linear',
     order: 4,
+  },
+  {
+    id: 'cx-06-05',
+    chapterId: 'ch-06',
+    operation: 'Thao tác Get / Put trên LRU Cache',
+    time: '$O(1)$',
+    space: '$O(C)$',
+    note: 'Kết hợp Hash Map với Doubly Linked List đạt O(1) cho cả hai thao tác.',
+    level: 'constant',
+    order: 5,
+  },
+  {
+    id: 'cx-06-06',
+    chapterId: 'ch-06',
+    operation: 'Kỹ thuật Reorder List (Split + Reverse + Merge)',
+    time: '$O(N)$',
+    space: '$O(1)$',
+    note: 'Chia đôi mảng, đảo ngược nửa sau và trộn xen kẽ tại chỗ.',
+    level: 'linear',
+    order: 6,
   },
 ]
 

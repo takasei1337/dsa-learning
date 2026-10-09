@@ -59,4 +59,25 @@ describe('MarkdownView Component', () => {
     expect(html).toContain('$100')
     expect(html).not.toContain('katex')
   })
+
+  it('render dấu gạch phân cách --- thành thẻ <hr> thay vì dòng chữ thông thường', () => {
+    const text = `Phần 1
+---
+Phần 2
+***
+Phần 3`
+    const html = renderToString(<MarkdownView content={text} />)
+    expect(html).toContain('<hr')
+    expect(html).toContain('border-t')
+    expect(html).not.toContain('<p>---</p>')
+    expect(html).not.toContain('<p>***</p>')
+  })
+
+  it('render khối trích dẫn > thành thẻ <blockquote> với nội dung được parse', () => {
+    const text = '> "Muốn truy cập tức thì theo thứ tự thì dùng **Mảng**."'
+    const html = renderToString(<MarkdownView content={text} />)
+    expect(html).toContain('<blockquote')
+    expect(html).toContain('<strong')
+    expect(html).toContain('Mảng')
+  })
 })

@@ -151,10 +151,24 @@ export const Header: React.FC<HeaderProps> = ({
     setSearchQuery('')
   }
 
-  // Đổi theme Sáng / Tối
+  // Đổi theme Sáng / Tối với GPU View Transitions mượt mà 60fps
   const toggleTheme = () => {
     const nextTheme = settings.theme === 'dark' ? 'light' : 'dark'
-    onUpdateSettings({ theme: nextTheme })
+
+    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
+      ;(document as unknown as { startViewTransition: (cb: () => void) => void }).startViewTransition(() => {
+        if (nextTheme === 'light') {
+          document.documentElement.classList.add('light')
+          document.documentElement.classList.remove('dark')
+        } else {
+          document.documentElement.classList.add('dark')
+          document.documentElement.classList.remove('light')
+        }
+        onUpdateSettings({ theme: nextTheme })
+      })
+    } else {
+      onUpdateSettings({ theme: nextTheme })
+    }
   }
 
   // Áp dụng class theme vào thẻ html
@@ -327,8 +341,8 @@ export const Header: React.FC<HeaderProps> = ({
                               <span className="font-medium group-hover:text-emerald-300 truncate">
                                 {prob.title}
                               </span>
-                              <span className="text-[10px] uppercase font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 shrink-0">
-                                {prob.difficulty}
+                              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 shrink-0">
+                                {prob.difficulty === 'easy' ? 'Dễ' : prob.difficulty === 'medium' ? 'Trung bình' : 'Khó'}
                               </span>
                             </div>
                             {parentChapter && (
@@ -477,8 +491,8 @@ export const Header: React.FC<HeaderProps> = ({
                       className="w-full text-left p-2.5 rounded-lg bg-slate-950/60 border border-slate-800/80 flex items-center justify-between text-white"
                     >
                       <span className="text-xs">{prob.title}</span>
-                      <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
-                        {prob.difficulty}
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                        {prob.difficulty === 'easy' ? 'Dễ' : prob.difficulty === 'medium' ? 'Trung bình' : 'Khó'}
                       </span>
                     </button>
                   ))}

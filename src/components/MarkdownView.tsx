@@ -310,7 +310,30 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({ content, className =
         continue
       }
 
-      // 3. Tiêu đề cấp 3 (###) và cấp 4 (####)
+      // 3. Đường kẻ ngang phân cách (Horizontal Rule: ---, ***, ___ hoặc - - -)
+      if (/^\s*([-*_])(?:\s*\1){2,}\s*$/.test(line)) {
+        elements.push(
+          <hr
+            key={`hr-${i}`}
+            className="my-5 border-0 border-t border-slate-700/80"
+          />,
+        )
+        continue
+      }
+
+      // 4. Tiêu đề cấp 2 (##), cấp 3 (###) và cấp 4 (####)
+      if (trimmed.startsWith('## ')) {
+        elements.push(
+          <h3
+            key={`h2-${i}`}
+            className="text-base font-bold text-white mt-5 mb-2.5 flex items-center gap-2 border-b border-slate-800/90 pb-2"
+          >
+            {parseInline(trimmed.slice(3), `h2-${i}`)}
+          </h3>,
+        )
+        continue
+      }
+
       if (trimmed.startsWith('### ')) {
         elements.push(
           <h4
@@ -382,7 +405,7 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({ content, className =
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="font-sans">
                 {rows.map((row, rIdx) => (
                   <tr
                     key={rIdx}
@@ -459,13 +482,14 @@ export const MarkdownView: React.FC<MarkdownViewProps> = ({ content, className =
       }
 
       // 7. Khối trích dẫn (Blockquote >)
-      if (trimmed.startsWith('> ')) {
+      if (trimmed.startsWith('>')) {
+        const quoteContent = trimmed.replace(/^>\s?/, '')
         elements.push(
           <blockquote
             key={`quote-${i}`}
             className="my-2.5 pl-3.5 py-1.5 border-l-4 border-indigo-400 bg-indigo-950/40 text-indigo-100 rounded-r-lg text-xs italic"
           >
-            {parseInline(trimmed.slice(2), `quote-c-${i}`)}
+            {parseInline(quoteContent, `quote-c-${i}`)}
           </blockquote>,
         )
         continue
